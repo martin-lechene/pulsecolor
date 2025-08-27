@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PulseColor — Animez vos couleurs & SVG avec la musique</title>
+  <meta name="description" content="Landing page d'un produit qui anime des couleurs, des SVG et des visuels en temps réel en fonction de la musique (micro ou fichier audio)." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-a: 260 95% 60%;
+      --bg-b: 200 95% 60%;
+      --glow: 0.35;
+      --blob-rot: 0deg;
+      --blob-scale: 1;
+      --pulse: 1;
+      --accent: 270 100% 67%;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color: #0e0e12; background: hsl(240 10% 4%);
+      --grad: radial-gradient(1200px 1200px at 10% 10%, hsl(var(--bg-a) / 0.25), transparent 60%),
+              radial-gradient(1200px 1200px at 90% 90%, hsl(var(--bg-b) / 0.25), transparent 60%),
+              linear-gradient(120deg, hsl(var(--bg-a) / 0.35), hsl(var(--bg-b) / 0.35));
+      background-image: var(--grad);
+      background-attachment: fixed;
+    }
+    .wrapper { max-width: 1200px; margin: 0 auto; padding: 32px; }
+
+    /* Nav */
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .logo { display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:0.2px; color:white; text-decoration:none; }
+    .logo svg { filter: drop-shadow(0 8px 24px hsl(var(--accent)/0.5)); }
+    .nav a.btn { text-decoration:none; color:#0b0b11; background:white; padding:10px 16px; border-radius:14px; font-weight:600; }
+    .nav .ghost { background:transparent; color:white; border:1px solid hsl(0 0% 100% / 0.2); }
+
+    /* Hero */
+    .hero { display:grid; grid-template-columns: 1.2fr 1fr; align-items:center; gap: 32px; padding: 64px 0; }
+    .hero h1 { font-size:clamp(32px, 5vw, 64px); line-height:1.05; margin:0; color:white; }
+    .hero p { color:hsl(0 0% 95% / 0.8); font-size: clamp(16px, 2.2vw, 20px); }
+    .cta-row { display:flex; flex-wrap:wrap; gap:12px; margin-top: 18px; }
+    .btn-primary { background: linear-gradient(120deg, hsl(var(--bg-a)), hsl(var(--bg-b))); color:white; border:0; padding:14px 20px; border-radius:16px; font-weight:800; letter-spacing:0.2px; cursor:pointer; }
+    .btn-secondary { background: hsl(240 10% 10% / 0.6); color:white; border:1px solid hsl(0 0% 100% / 0.18); padding:14px 20px; border-radius:16px; font-weight:700; cursor:pointer; }
+
+    /* Demo Card */
+    .demo { position:relative; border-radius:28px; overflow:hidden; background: hsl(240 10% 6% / 0.7); border:1px solid hsl(0 0% 100% / 0.06); box-shadow: 0 30px 80px hsl(250 80% 50% / 0.2); }
+    .demo .bar { position:absolute; inset:0;  pointer-events:none; }
+    .demo .canvas { aspect-ratio: 1 / 1; display:grid; place-items:center; }
+    .controls { display:flex; gap:10px; flex-wrap:wrap; padding: 18px; background: hsl(240 10% 6% / 0.6); border-top: 1px solid hsl(0 0% 100% / 0.06); }
+    input[type="file"] { display:none; }
+    label.file { border:1px dashed hsl(0 0% 100% / 0.2); color:white; padding:12px 14px; border-radius:14px; cursor:pointer; }
+    .meters { display:flex; gap:8px; align-items: flex-end; margin-left:auto; height: 36px; }
+    .meters span { display:block; width:8px; background:white; border-radius:999px; transform: scaleY(0.2); transform-origin: bottom; opacity:0.85; }
+
+    /* Features */
+    .section { padding: 64px 0; }
+    .section h2 { color:white; font-size: clamp(24px, 4vw, 40px); margin: 0 0 16px; }
+    .kpis { display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; }
+    .kpis .card { background:hsl(240 10% 8% / 0.7); border:1px solid hsl(0 0% 100% / 0.08); border-radius:20px; padding:20px; color:white; }
+
+    .grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:18px; }
+    .feature { background:hsl(240 10% 8% / 0.7); border:1px solid hsl(0 0% 100% / 0.08); border-radius:20px; padding:20px; color:white; }
+
+    /* Pricing */
+    .pricing { display:grid; grid-template-columns: repeat(3, 1fr); gap:18px; }
+    .plan { background: hsl(240 10% 8% / 0.7); border:1px solid hsl(0 0% 100% / 0.1); border-radius:22px; padding:22px; color:white; }
+    .plan.highlight { border-color: hsl(var(--bg-a)); box-shadow: 0 20px 60px hsl(var(--bg-a) / 0.35); }
+    .price { font-size: 44px; font-weight: 800; }
+
+    /* Footer */
+    footer { color: hsl(0 0% 100% / 0.7); border-top:1px solid hsl(0 0% 100% / 0.08); padding: 32px 0; }
+
+    /* Responsive */
+    @media (max-width: 980px) {
+      .hero { grid-template-columns: 1fr; }
+      .kpis, .grid, .pricing { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <!-- NAV -->
+    <nav class="nav">
+      <a class="logo" href="#">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="hsl(var(--bg-a))"/>
+              <stop offset="100%" stop-color="hsl(var(--bg-b))"/>
+            </linearGradient>
+          </defs>
+          <path d="M12 3c4.97 0 9 4.03 9 9s-4.03 9-9 9S3 16.97 3 12" stroke="url(#g1)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M3 12c0-1 .2-2 .6-2.9" stroke="url(#g1)" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        PulseColor
+      </a>
+      <div style="display:flex; gap:10px">
+        <a class="btn ghost" href="#pricing">Tarifs</a>
+        <a class="btn" style="background:linear-gradient(120deg, hsl(var(--bg-a)), hsl(var(--bg-b))); color:white" href="#demo">Essayer</a>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero">
+      <div>
+        <h1>Animez vos couleurs, SVG & visuels… <br> au rythme de la musique.</h1>
+        <p>PulseColor transforme une piste audio ou votre micro en animations spectaculaires : dégradés, blobs SVG, logos, lumières et plus encore. Parfait pour sites, events, streamers et DJs.</p>
+        <div class="cta-row">
+          <button class="btn-primary" onclick="document.getElementById('demo').scrollIntoView({behavior:'smooth'})">Lancer la démo</button>
+          <button class="btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Voir les fonctionnalités</button>
+        </div>
+      </div>
+      <div class="demo" id="demo">
+        <div class="canvas">
+          <!-- Reactive SVG Scene -->
+          <svg id="reactiveSVG" viewBox="0 0 600 600" width="100%" height="100%" style="max-height:520px">
+            <defs>
+              <radialGradient id="bg" cx="50%" cy="50%" r="60%">
+                <stop offset="0%" stop-color="hsl(var(--bg-a))" stop-opacity="0.9" />
+                <stop offset="100%" stop-color="hsl(var(--bg-b))" stop-opacity="0.25" />
+              </radialGradient>
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="8" result="colored" />
+                <feMerge>
+                  <feMergeNode in="colored" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+
+            <rect x="0" y="0" width="600" height="600" fill="url(#bg)" />
+
+            <!-- Pulse ring -->
+            <circle id="ring" cx="300" cy="300" r="120" fill="none" stroke="white" stroke-opacity="0.85" stroke-width="8" />
+
+            <!-- Morphing blob -->
+            <g transform="translate(300,300)">
+              <path id="blob" d="M120,0 C120,66 66,120 0,120 C-66,120 -120,66 -120,0 C-120,-66 -66,-120 0,-120 C66,-120 120,-66 120,0Z" fill="white" fill-opacity="0.92" filter="url(#glow)"/>
+            </g>
+
+            <!-- Bars -->
+            <g id="bars" transform="translate(60,520)"></g>
+          </svg>
+        </div>
+        <div class="bar"></div>
+        <div class="controls">
+          <button class="btn-secondary" id="micBtn">🎤 Micro</button>
+          <label class="file" for="fileInput">📁 Importer audio</label>
+          <input id="fileInput" type="file" accept="audio/*" />
+          <button class="btn-primary" id="playPause" disabled>▶︎ Lecture</button>
+          <div class="meters" aria-hidden="true">
+            <span id="m-bass" style="height: 30%"></span>
+            <span id="m-mid" style="height: 20%"></span>
+            <span id="m-high" style="height: 10%"></span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- KPIs / Social proof -->
+    <section class="section">
+      <div class="kpis">
+        <div class="card"><strong style="font-size:28px">+120</strong><br/>Projets animés</div>
+        <div class="card"><strong style="font-size:28px"><span id="msAvg">3.6</span> ms</strong><br/>Latence moyenne</div>
+        <div class="card"><strong style="font-size:28px">#1</strong><br/>Audio-reactif web</div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="section">
+      <h2>Fonctionnalités clés</h2>
+      <div class="grid">
+        <div class="feature"><strong>🎧 Analyse temps réel</strong><br/>Basée sur l'API Web Audio : FFT, bandes (basses/médiums/aigus), détection de beat simple.</div>
+        <div class="feature"><strong>🎨 Couleurs dynamiques</strong><br/>Dégradés HSL, lueurs et intensité réactives à l'énergie du signal.</div>
+        <div class="feature"><strong>🧩 SVG & Logos</strong><br/>Morphing et stroke au rythme : idéal pour logos, blobs, formes géométriques.</div>
+        <div class="feature"><strong>🧪 Intégration facile</strong><br/>Script léger, fonctionne avec micro ou fichier audio. Aucun backend requis.</div>
+        <div class="feature"><strong>⚡ Performances</strong><br/>Animé par <code>requestAnimationFrame</code> + CSS variables pour un rendu fluide.</div>
+        <div class="feature"><strong>🔒 Respect vie privée</strong><br/>Accès micro local uniquement, rien n'est envoyé côté serveur.</div>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="section">
+      <h2>Tarifs</h2>
+      <div class="pricing">
+        <div class="plan">
+          <div style="font-weight:800; opacity:.85">Starter</div>
+          <div class="price">Gratuit</div>
+          <ul>
+            <li>Demo embarquée</li>
+            <li>Guide intégration</li>
+            <li>Usage personnel</li>
+          </ul>
+          <button class="btn-secondary" style="width:100%">Commencer</button>
+        </div>
+        <div class="plan highlight">
+          <div style="font-weight:800; opacity:.85">Pro</div>
+          <div class="price">19€ / mois</div>
+          <ul>
+            <li>SDK audio-réactif</li>
+            <li>Templates logos & blobs</li>
+            <li>Support prioritaire</li>
+          </ul>
+          <button class="btn-primary" style="width:100%">Essai 14 jours</button>
+        </div>
+        <div class="plan">
+          <div style="font-weight:800; opacity:.85">Entreprise</div>
+          <div class="price">Sur mesure</div>
+          <ul>
+            <li>Licence multi-sites</li>
+            <li>Animations custom</li>
+            <li>SLA & intégration</li>
+          </ul>
+          <button class="btn-secondary" style="width:100%">Contacter</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section">
+      <h2>FAQ</h2>
+      <div class="grid">
+        <div class="feature"><strong>Le micro fonctionne-t-il sur mobile ?</strong><br/>Oui, sur la plupart des navigateurs modernes (iOS nécessite un geste utilisateur pour démarrer l'audio).</div>
+        <div class="feature"><strong>Puis-je l'intégrer sur un site existant ?</strong><br/>Totalement. Copiez le script démo et ciblez vos propres SVG/CSS.</div>
+        <div class="feature"><strong>Fichiers pris en charge</strong><br/>Tous les formats lus par le navigateur (mp3, wav, m4a, ogg…).</div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="nav">
+        <div style="color:white">© <span id="year"></span> PulseColor</div>
+        <div style="display:flex; gap:12px">
+          <a class="btn ghost" href="#">Documentation</a>
+          <a class="btn ghost" href="#">Contact</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const yearEl = document.getElementById('year');
+    yearEl.textContent = new Date().getFullYear();
+
+    // Audio & Visuals
+    const micBtn = document.getElementById('micBtn');
+    const fileInput = document.getElementById('fileInput');
+    const playPause = document.getElementById('playPause');
+
+    const svg = document.getElementById('reactiveSVG');
+    const ring = document.getElementById('ring');
+    const blob = document.getElementById('blob');
+    const barsGroup = document.getElementById('bars');
+
+    const mBass = document.getElementById('m-bass');
+    const mMid = document.getElementById('m-mid');
+    const mHigh = document.getElementById('m-high');
+
+    // Build visual bars
+    const BARS = 32; // lower number for performance
+    for (let i = 0; i < BARS; i++) {
+      const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      rect.setAttribute('x', String(i * (480 / BARS)));
+      rect.setAttribute('y', '-8');
+      rect.setAttribute('width', String( (480 / BARS) - 4 ));
+      rect.setAttribute('height', '6');
+      rect.setAttribute('rx', '3');
+      rect.setAttribute('fill', 'white');
+      rect.setAttribute('fill-opacity', '0.85');
+      barsGroup.appendChild(rect);
+    }
+
+    let ctx, analyser, sourceNode, dataArray, audio, rafId;
+    let started = false;
+
+    function setupAudioNodes(streamOrBufferSource) {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      ctx = ctx || new AudioCtx();
+      analyser = ctx.createAnalyser();
+      analyser.fftSize = 2048;
+      analyser.smoothingTimeConstant = 0.8;
+      const gain = ctx.createGain();
+      gain.gain.value = 1.0;
+
+      if (streamOrBufferSource instanceof MediaStream) {
+        sourceNode = ctx.createMediaStreamSource(streamOrBufferSource);
+      } else {
+        sourceNode = streamOrBufferSource; // AudioBufferSourceNode
+      }
+      sourceNode.connect(gain);
+      gain.connect(analyser);
+      analyser.connect(ctx.destination); // for audible playback
+
+      dataArray = new Uint8Array(analyser.frequencyBinCount);
+      visualize();
+    }
+
+    function visualize() {
+      cancelAnimationFrame(rafId);
+      const bars = Array.from(barsGroup.children);
+      const ringBase = 120;
+      const blobBase = 120;
+
+      const lerp = (a, b, t) => a + (b - a) * t;
+      const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+
+      let beat = 0;
+      let bassAvgPrev = 0;
+
+      const tick = () => {
+        analyser.getByteFrequencyData(dataArray);
+        const N = dataArray.length;
+
+        // Split into bands
+        const bassEnd = Math.floor(N * 0.08);
+        const midEnd = Math.floor(N * 0.4);
+
+        let bassSum = 0, midSum = 0, highSum = 0;
+        for (let i = 0; i < N; i++) {
+          const v = dataArray[i] / 255;
+          if (i < bassEnd) bassSum += v; else if (i < midEnd) midSum += v; else highSum += v;
+        }
+        const bassAvg = bassSum / bassEnd;
+        const midAvg = midSum / (midEnd - bassEnd);
+        const highAvg = highSum / (N - midEnd);
+
+        // Simple beat: rising bass crossing a threshold
+        const threshold = 0.35;
+        const rising = bassAvg > bassAvgPrev && bassAvg > threshold;
+        beat = rising ? lerp(beat, 1, 0.5) : lerp(beat, 0, 0.08);
+        bassAvgPrev = lerp(bassAvgPrev, bassAvg, 0.2);
+
+        // Update meters
+        mBass.style.height = `${clamp(bassAvg * 100, 4, 100)}%`;
+        mMid.style.height = `${clamp(midAvg * 100, 4, 100)}%`;
+        mHigh.style.height = `${clamp(highAvg * 100, 4, 100)}%`;
+
+        // Bars heights
+        for (let i = 0; i < bars.length; i++) {
+          const v = dataArray[i] / 255;
+          const h = Math.max(6, v * 260);
+          bars[i].setAttribute('y', String(-h));
+          bars[i].setAttribute('height', String(h));
+        }
+
+        // Ring stroke + radius pulsing with bass
+        const r = ringBase + bassAvg * 40 + beat * 16;
+        ring.setAttribute('r', String(r));
+        ring.setAttribute('stroke-width', String(6 + midAvg * 12));
+
+        // Blob morph (simple squish using a parametric circle)
+        const points = 60;
+        const kBass = 0.55 + bassAvg * 0.45 + beat * 0.2;
+        const kMid = 0.55 + midAvg * 0.35;
+        const kHigh = 0.5 + highAvg * 0.25;
+        const radius = blobBase * (0.9 + bassAvg * 0.15);
+        const coords = [];
+        for (let i = 0; i < points; i++) {
+          const t = (i / points) * Math.PI * 2;
+          const wobble = Math.sin(t * 3) * kMid + Math.cos(t * 5) * kHigh;
+          const rad = radius * (1 + wobble * 0.15);
+          const x = Math.cos(t) * rad;
+          const y = Math.sin(t) * rad;
+          coords.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+        }
+        const d = `M${coords[0]} C${coords[10]} ${coords[20]} ${coords[30]} ${coords[30]} C${coords[40]} ${coords[50]} ${coords[0]} ${coords[10]} ${coords[0]} Z`;
+        blob.setAttribute('d', d);
+
+        // Background hues via CSS variables
+        const hueA = Math.floor(lerp(200, 320, midAvg + beat * 0.2));
+        const hueB = Math.floor(lerp(160, 260, highAvg));
+        document.documentElement.style.setProperty('--bg-a', `${hueA} 95% ${60 + Math.floor(beat * 20)}%`);
+        document.documentElement.style.setProperty('--bg-b', `${hueB} 95% 60%`);
+        document.documentElement.style.setProperty('--glow', String(0.2 + midAvg * 0.6));
+
+        rafId = requestAnimationFrame(tick);
+      };
+      rafId = requestAnimationFrame(tick);
+    }
+
+    async function startMic() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        setupAudioNodes(stream);
+        started = true;
+        playPause.disabled = true; // mic streams are live
+        micBtn.textContent = '🎤 Micro — ON';
+      } catch (e) {
+        alert('Accès micro refusé ou indisponible. Essayez un fichier audio.');
+        console.error(e);
+      }
+    }
+
+    function loadFile(file) {
+      const url = URL.createObjectURL(file);
+      audio = new Audio();
+      audio.src = url;
+      audio.crossOrigin = 'anonymous';
+      audio.addEventListener('canplay', async () => {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        ctx = ctx || new AudioCtx();
+        const track = ctx.createMediaElementSource(audio);
+        setupAudioNodes(track);
+        playPause.disabled = false;
+      }, { once: true });
+    }
+
+    micBtn.addEventListener('click', () => {
+      if (!started) startMic();
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files?.[0];
+      if (file) loadFile(file);
+    });
+
+    playPause.addEventListener('click', async () => {
+      if (!audio) return;
+      if (audio.paused) {
+        await audio.play();
+        playPause.textContent = '⏸︎ Pause';
+      } else {
+        audio.pause();
+        playPause.textContent = '▶︎ Lecture';
+      }
+    });
+
+    // Small perf metric mock
+    const msAvg = document.getElementById('msAvg');
+    let t0 = performance.now(), frames = 0;
+    function perf() {
+      frames++;
+      const t = performance.now();
+      if (t - t0 > 1000) {
+        const fps = frames / ((t - t0) / 1000);
+        const ms = (1000 / fps).toFixed(1);
+        msAvg.textContent = ms;
+        t0 = t; frames = 0;
+      }
+      requestAnimationFrame(perf);
+    }
+    requestAnimationFrame(perf);
+  </script>
+</body>
+</html>
