@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Visualizer - PulseColor</title>
+    <link rel="stylesheet" href="css/visualizer.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <!-- Interface de contrôle -->
+    <div class="controls">
+        <div class="control-panel">
+            <h1>🎵 Audio Visualizer</h1>
+            
+            <!-- Sélection de fichier audio -->
+            <div class="audio-input">
+                <input type="file" id="audioFile" accept="audio/*" />
+                <label for="audioFile" class="file-label">📁 Choisir un fichier audio</label>
+            </div>
+
+            <!-- Contrôles de lecture -->
+            <div class="playback-controls">
+                <button id="playBtn" class="control-btn">▶️ Lecture</button>
+                <button id="pauseBtn" class="control-btn">⏸️ Pause</button>
+                <button id="stopBtn" class="control-btn">⏹️ Stop</button>
+                <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.7" />
+                <label for="volumeSlider">🔊 Volume</label>
+            </div>
+
+            <!-- Sélecteur de visualiseur -->
+            <div class="visualizer-selector">
+                <label for="visualizerSelect">🎨 Type de Visualiseur:</label>
+                <select id="visualizerSelect">
+                    <option value="circular-radial">1. Circulaire Radial (Arc-en-ciel)</option>
+                    <option value="grid-3d">2. Grille 3D Wireframe</option>
+                    <option value="linear-grid">3. Linéaire avec Grille</option>
+                    <option value="classic-bars">4. Barres Classiques</option>
+                    <option value="neon-futuristic">5. Néon Futuriste</option>
+                    <option value="multi-layer">6. Multi-Couches Cyan/Magenta</option>
+                    <option value="spectrum-analyzer">7. Analyseur de Spectre</option>
+                    <option value="collection-12">8. Collection de 12 Visualiseurs</option>
+                    <option value="spectrogram">9. Spectrogramme Temporel</option>
+                    <option value="professional">10. Audio Professionnel</option>
+                    <option value="circular-simple">11. Circulaire Simple</option>
+                    <option value="arc-particles">12. Arc avec Particules</option>
+                    <option value="multi-lines">13. Multi-Lignes</option>
+                    <option value="symmetric">14. Symétrique</option>
+                    <option value="waveform-smooth">15. Forme d'Onde Douce</option>
+                </select>
+            </div>
+
+            <!-- Informations audio -->
+            <div class="audio-info">
+                <div id="currentTime">00:00</div>
+                <div id="duration">00:00</div>
+                <div id="fps">FPS: 60</div>
+                <div id="peakFreq">Pic: 0 Hz</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Zone de visualisation -->
+    <div class="visualizer-container">
+        <canvas id="visualizerCanvas"></canvas>
+        
+        <!-- Overlay pour les informations -->
+        <div class="visualizer-overlay">
+            <div class="visualizer-title" id="visualizerTitle">Sélectionnez un visualiseur</div>
+            <div class="frequency-labels" id="frequencyLabels"></div>
+        </div>
+    </div>
+
+    <!-- Instructions -->
+    <div class="instructions">
+        <p>🎧 <strong>Instructions:</strong> Sélectionnez un fichier audio, choisissez un visualiseur et profitez du spectacle !</p>
+        <p>💡 <strong>Astuce:</strong> Essayez différents types de musique pour voir des effets variés</p>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/visualizer.js"></script>
+    <script src="js/visualizers/circular-radial.js"></script>
+    <script src="js/visualizers/grid-3d.js"></script>
+    <script src="js/visualizers/linear-grid.js"></script>
+    <script src="js/visualizers/classic-bars.js"></script>
+    <script src="js/visualizers/neon-futuristic.js"></script>
+    <script src="js/visualizers/multi-layer.js"></script>
+    <script src="js/visualizers/spectrum-analyzer.js"></script>
+    <script src="js/visualizers/collection-12.js"></script>
+    <script src="js/visualizers/spectrogram.js"></script>
+    <script src="js/visualizers/professional.js"></script>
+    <script src="js/visualizers/circular-simple.js"></script>
+    <script src="js/visualizers/arc-particles.js"></script>
+    <script src="js/visualizers/multi-lines.js"></script>
+    <script src="js/visualizers/symmetric.js"></script>
+    <script src="js/visualizers/waveform-smooth.js"></script>
+</body>
+</html>
