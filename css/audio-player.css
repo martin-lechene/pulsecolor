@@ -462,3 +462,163 @@
     0% { transform: scaleX(0); }
     100% { transform: scaleX(1); }
 }
+
+/* Animations pour les cartes du hero */
+@keyframes card-pulse {
+    0%, 100% { 
+        transform: scale(1); 
+        box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+    }
+    50% { 
+        transform: scale(1.05); 
+        box-shadow: 0 8px 30px rgba(255, 255, 255, 0.3);
+    }
+}
+
+@keyframes firework-explode {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+/* Styles pour les cartes d'animation réactives */
+.animation-card {
+    position: relative;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.animation-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+}
+
+.animation-card[data-animation] {
+    transition: all 0.1s ease;
+}
+
+/* Effets spéciaux pour chaque type d'animation */
+.animation-card[data-animation="geometric"] {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(147, 51, 234, 0.2));
+}
+
+.animation-card[data-animation="audioBars"] {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(59, 130, 246, 0.2));
+}
+
+.animation-card[data-animation="circular"] {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(239, 68, 68, 0.2));
+}
+
+.animation-card[data-animation="matrix"] {
+    background: linear-gradient(135deg, rgba(75, 85, 99, 0.2), rgba(31, 41, 55, 0.2));
+}
+
+.animation-card[data-animation="fireworks"] {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(245, 158, 11, 0.2));
+}
+
+.animation-card[data-animation="dna"] {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2));
+}
+
+.animation-card[data-animation="fractal"] {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(16, 185, 129, 0.2));
+}
+
+/* Animation des icônes */
+.animation-icon {
+    font-size: 2rem;
+    transition: all 0.3s ease;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+/* Barres audio dans les cartes */
+.audio-bars {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 2px;
+    height: 20px;
+    align-items: end;
+    z-index: 10;
+}
+
+.audio-bars div {
+    width: 3px;
+    background: white;
+    border-radius: 1px;
+    transition: height 0.1s ease;
+    min-height: 2px;
+}
+
+/* Particules de feu d'artifice */
+.firework-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: firework-explode 1s ease-out forwards;
+    z-index: 20;
+}
+
+/* Effets de glow pour les cartes actives */
+.animation-card.audio-active {
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+}
+
+/* Responsive pour les cartes */
+@media (max-width: 768px) {
+    .animation-card {
+        padding: 1rem;
+    }
+    
+    .animation-icon {
+        font-size: 1.5rem;
+    }
+    
+    .audio-bars {
+        height: 15px;
+    }
+    
+    .audio-bars div {
+        width: 2px;
+    }
+}
+
+@media (max-width: 480px) {
+    .animation-card {
+        padding: 0.75rem;
+    }
+    
+    .animation-icon {
+        font-size: 1.25rem;
+    }
+    
+    .audio-bars {
+        height: 12px;
+    }
+    
+    .audio-bars div {
+        width: 1.5px;
+    }
+}

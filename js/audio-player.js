@@ -17,6 +17,17 @@ class AudioVisualizer {
             overall: 0    // Amplitude générale
         };
         
+        // Nouvelles propriétés pour les animations des cartes
+        this.cardAnimations = {
+            geometric: { intensity: 0, lastBeat: 0 },
+            audioBars: { intensity: 0, lastBeat: 0 },
+            circular: { intensity: 0, lastBeat: 0 },
+            matrix: { intensity: 0, lastBeat: 0 },
+            fireworks: { intensity: 0, lastBeat: 0 },
+            dna: { intensity: 0, lastBeat: 0 },
+            fractal: { intensity: 0, lastBeat: 0 }
+        };
+        
         this.init();
     }
 
@@ -375,6 +386,239 @@ class AudioVisualizer {
                 const opacity = 0.5 + intensity * 0.5;
                 element.style.opacity = opacity;
             });
+        });
+        
+        // Contrôler les animations des cartes du hero
+        this.controlCardAnimations();
+    }
+
+    controlCardAnimations() {
+        if (!this.isPlaying) {
+            // Réinitialiser les animations quand l'audio ne joue pas
+            this.resetCardAnimations();
+            return;
+        }
+
+        const { bass, mid, high, overall } = this.audioData;
+        const time = Date.now();
+        
+        // Détecter les beats basés sur les basses fréquences
+        const beatThreshold = 0.4;
+        const isBeat = bass > beatThreshold && (time - this.cardAnimations.geometric.lastBeat) > 200;
+        
+        if (isBeat) {
+            // Mettre à jour le dernier beat pour toutes les cartes
+            Object.values(this.cardAnimations).forEach(card => {
+                card.lastBeat = time;
+            });
+        }
+
+        // Animation Geometric - Réagit aux basses fréquences
+        this.animateCard('geometric', {
+            scale: 1 + bass * 0.3,
+            rotation: bass * 360,
+            glow: bass * 0.8,
+            pulse: isBeat ? 1.2 : 1
+        });
+
+        // Animation Audio Bars - Réagit aux moyennes fréquences
+        this.animateCard('audioBars', {
+            scale: 1 + mid * 0.2,
+            height: mid * 100,
+            color: `hsl(${180 + mid * 180}, 70%, 60%)`,
+            pulse: isBeat ? 1.15 : 1
+        });
+
+        // Animation Circular - Réagit aux hautes fréquences
+        this.animateCard('circular', {
+            scale: 1 + high * 0.25,
+            rotation: high * 720,
+            opacity: 0.6 + high * 0.4,
+            pulse: isBeat ? 1.1 : 1
+        });
+
+        // Animation Matrix - Réagit à l'amplitude générale
+        this.animateCard('matrix', {
+            scale: 1 + overall * 0.2,
+            speed: 1 + overall * 2,
+            opacity: 0.5 + overall * 0.5,
+            pulse: isBeat ? 1.25 : 1
+        });
+
+        // Animation Fireworks - Réagit aux beats
+        this.animateCard('fireworks', {
+            scale: 1 + (bass + mid) * 0.3,
+            intensity: isBeat ? 1 : 0.3,
+            color: `hsl(${30 + bass * 60}, 80%, 60%)`,
+            pulse: isBeat ? 1.3 : 1
+        });
+
+        // Animation DNA - Réagit aux moyennes et hautes fréquences
+        this.animateCard('dna', {
+            scale: 1 + (mid + high) * 0.2,
+            rotation: (mid + high) * 180,
+            opacity: 0.4 + (mid + high) * 0.6,
+            pulse: isBeat ? 1.18 : 1
+        });
+
+        // Animation Fractal - Réagit à toutes les fréquences
+        this.animateCard('fractal', {
+            scale: 1 + overall * 0.25,
+            growth: overall * 0.5,
+            color: `hsl(${120 + overall * 120}, 70%, 60%)`,
+            pulse: isBeat ? 1.22 : 1
+        });
+    }
+
+    animateCard(cardType, properties) {
+        const card = document.querySelector(`[data-animation="${cardType}"]`);
+        if (!card) return;
+
+        // Appliquer les transformations
+        const transforms = [];
+        
+        if (properties.scale) {
+            transforms.push(`scale(${properties.scale})`);
+        }
+        
+        if (properties.rotation) {
+            transforms.push(`rotate(${properties.rotation}deg)`);
+        }
+        
+        if (transforms.length > 0) {
+            card.style.transform = transforms.join(' ');
+        }
+
+        // Appliquer les autres propriétés
+        if (properties.opacity !== undefined) {
+            card.style.opacity = properties.opacity;
+        }
+
+        if (properties.glow) {
+            card.style.filter = `drop-shadow(0 0 ${properties.glow * 20}px rgba(255, 255, 255, ${properties.glow}))`;
+        }
+
+        if (properties.pulse) {
+            card.style.animation = `card-pulse ${2 / properties.pulse}s ease-in-out infinite`;
+        }
+
+        // Appliquer les couleurs si spécifiées
+        if (properties.color) {
+            const icon = card.querySelector('.animation-icon');
+            if (icon) {
+                icon.style.color = properties.color;
+            }
+        }
+
+        // Effets spéciaux pour certains types de cartes
+        switch (cardType) {
+            case 'audioBars':
+                this.animateAudioBars(card, properties);
+                break;
+            case 'fireworks':
+                this.animateFireworks(card, properties);
+                break;
+            case 'fractal':
+                this.animateFractal(card, properties);
+                break;
+        }
+    }
+
+    animateAudioBars(card, properties) {
+        // Créer des barres audio réactives
+        let barsContainer = card.querySelector('.audio-bars');
+        if (!barsContainer) {
+            barsContainer = document.createElement('div');
+            barsContainer.className = 'audio-bars';
+            barsContainer.style.cssText = `
+                position: absolute;
+                bottom: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                display: flex;
+                gap: 2px;
+                height: 20px;
+                align-items: end;
+            `;
+            
+            // Créer 5 barres
+            for (let i = 0; i < 5; i++) {
+                const bar = document.createElement('div');
+                bar.style.cssText = `
+                    width: 3px;
+                    background: white;
+                    border-radius: 1px;
+                    transition: height 0.1s ease;
+                `;
+                barsContainer.appendChild(bar);
+            }
+            
+            card.appendChild(barsContainer);
+        }
+
+        // Animer les barres
+        const bars = barsContainer.children;
+        for (let i = 0; i < bars.length; i++) {
+            const height = Math.random() * properties.height + 5;
+            bars[i].style.height = `${height}px`;
+            bars[i].style.opacity = 0.3 + Math.random() * 0.7;
+        }
+    }
+
+    animateFireworks(card, properties) {
+        // Créer des particules de feu d'artifice
+        if (properties.intensity > 0.8) {
+            this.createFireworkParticles(card);
+        }
+    }
+
+    createFireworkParticles(card) {
+        const particle = document.createElement('div');
+        particle.className = 'firework-particle';
+        particle.style.cssText = `
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: firework-explode 1s ease-out forwards;
+        `;
+        
+        // Position aléatoire
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = Math.random() * 100 + '%';
+        
+        card.appendChild(particle);
+        
+        // Supprimer après l'animation
+        setTimeout(() => {
+            if (particle.parentNode) {
+                particle.parentNode.removeChild(particle);
+            }
+        }, 1000);
+    }
+
+    animateFractal(card, properties) {
+        // Animer la croissance fractale
+        const icon = card.querySelector('.animation-icon');
+        if (icon && properties.growth) {
+            icon.style.transform = `scale(${1 + properties.growth})`;
+        }
+    }
+
+    resetCardAnimations() {
+        // Réinitialiser toutes les animations des cartes
+        const cards = document.querySelectorAll('[data-animation]');
+        cards.forEach(card => {
+            card.style.transform = 'scale(1) rotate(0deg)';
+            card.style.opacity = '1';
+            card.style.filter = 'none';
+            card.style.animation = 'none';
+            
+            // Supprimer les éléments temporaires
+            const tempElements = card.querySelectorAll('.audio-bars, .firework-particle');
+            tempElements.forEach(el => el.remove());
         });
     }
 

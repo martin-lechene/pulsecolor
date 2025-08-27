@@ -377,7 +377,7 @@
           <div class="doc-card">
             <h3>🔧 Personnalisation</h3>
             <p>Créez vos propres animations</p>
-            <a href="/docs/customization" class="btn btn-secondary">Personnaliser</a>
+            <a href="docs/personnalisations.html" class="btn btn-secondary">Personnaliser</a>
           </div>
         </div>
       </section>
@@ -436,9 +436,9 @@
         <div class="footer-links">
           <div class="footer-section">
             <h4>Projet</h4>
-            <a href="https://github.com/pulsecolor/pulsecolor" target="_blank" rel="noopener">GitHub</a>
-            <a href="/docs">Documentation</a>
-            <a href="/changelog">Changelog</a>
+            <a href="https://github.com/martin-lechene/pulsecolor" target="_blank" rel="noopener">GitHub</a>
+            <a href="docs/quickstart.html">Documentation</a>
+            <a href="changelogs.html">Changelog</a>
           </div>
           
           <div class="footer-section">
@@ -450,9 +450,9 @@
           
           <div class="footer-section">
             <h4>Support</h4>
-            <a href="/contact">Contact</a>
-            <a href="/support">Support</a>
-            <a href="/custom">Personnalisation</a>
+            <a href="contact.html">Contact</a>
+            <a href="support.html">Support</a>
+            <a href="docs/personnalisations.html">Personnalisation</a>
           </div>
         </div>
       </div>
@@ -527,7 +527,7 @@
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
+        navigator.serviceWorker.register('sw.js')
           .then(registration => console.log('SW registered'))
           .catch(error => console.log('SW registration failed'));
       });
