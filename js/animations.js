@@ -1915,17 +1915,6 @@ class NeuralNetworkAnimation extends BaseAnimation {
   }
 }
 
-// Export all animation classes
-window.BlobAnimation = BlobAnimation;
-window.ParticleAnimation = ParticleAnimation;
-window.WaveAnimation = WaveAnimation;
-window.GeometricAnimation = GeometricAnimation;
-window.BarsAnimation = BarsAnimation;
-window.CircularAnimation = CircularAnimation;
-window.MatrixAnimation = MatrixAnimation;
-window.FireworksAnimation = FireworksAnimation;
-window.DNAAnimation = DNAAnimation;
-window.FractalAnimation = FractalAnimation;
 // 12. NEW: Quantum Particles Animation with Wave-Particle Duality
 class QuantumParticlesAnimation extends BaseAnimation {
   constructor(svg, options = {}) {
@@ -2246,5 +2235,994 @@ class QuantumParticlesAnimation extends BaseAnimation {
   }
 }
 
+// 13. NEW: Crystal Lattice Symphony - Ultra-detailed 3D crystal network
+class CrystalLatticeAnimation extends BaseAnimation {
+  constructor(svg, options = {}) {
+    super(svg, { colorMode: 'frequency', ...options });
+    this.crystals = [];
+    this.latticePoints = [];
+    this.refractionRays = [];
+    this.crystalFaces = [];
+    this.diffractionPatterns = [];
+    this.crystalCount = 12;
+    this.latticeSize = 8;
+    this.refractionIndex = 1.5;
+  }
+
+  createElements() {
+    this.clear();
+    this.crystals = [];
+    this.latticePoints = [];
+    this.refractionRays = [];
+    this.crystalFaces = [];
+    this.diffractionPatterns = [];
+
+    // Create crystal container
+    this.crystalGroup = this.createElement('g', {
+      id: 'animation-crystals'
+    });
+    this.addElement(this.crystalGroup);
+
+    // Create lattice container
+    this.latticeGroup = this.createElement('g', {
+      id: 'animation-lattice'
+    });
+    this.addElement(this.latticeGroup);
+
+    // Create refraction container
+    this.refractionGroup = this.createElement('g', {
+      id: 'animation-refraction'
+    });
+    this.addElement(this.refractionGroup);
+
+    // Create diffraction container
+    this.diffractionGroup = this.createElement('g', {
+      id: 'animation-diffraction'
+    });
+    this.addElement(this.diffractionGroup);
+
+    // Create crystal lattice points
+    this.createLatticePoints();
+
+    // Create main crystals
+    for (let i = 0; i < this.crystalCount; i++) {
+      this.createCrystal();
+    }
+
+    // Create refraction rays
+    for (let i = 0; i < 15; i++) {
+      this.createRefractionRay();
+    }
+
+    // Create diffraction patterns
+    for (let i = 0; i < 6; i++) {
+      this.createDiffractionPattern();
+    }
+  }
+
+  createLatticePoints() {
+    for (let x = 0; x < this.latticeSize; x++) {
+      for (let y = 0; y < this.latticeSize; y++) {
+        for (let z = 0; z < this.latticeSize; z++) {
+          const point = {
+            x: (x / (this.latticeSize - 1)) * 600,
+            y: (y / (this.latticeSize - 1)) * 600,
+            z: (z / (this.latticeSize - 1)) * 200 - 100,
+            originalX: (x / (this.latticeSize - 1)) * 600,
+            originalY: (y / (this.latticeSize - 1)) * 600,
+            originalZ: (z / (this.latticeSize - 1)) * 200 - 100,
+            element: null,
+            connections: []
+          };
+
+          // Create lattice point element
+          point.element = this.createElement('circle', {
+            cx: point.x,
+            cy: point.y,
+            r: '2',
+            fill: this.getColorByFrequency(['bass', 'mid', 'high'][Math.floor(Math.random() * 3)]),
+            'fill-opacity': '0.6',
+            filter: 'url(#glow)'
+          });
+
+          this.latticeGroup.appendChild(point.element);
+          this.latticePoints.push(point);
+        }
+      }
+    }
+
+    // Create lattice connections
+    this.createLatticeConnections();
+  }
+
+  createLatticeConnections() {
+    this.latticePoints.forEach((point, index) => {
+      // Connect to nearest neighbors
+      this.latticePoints.forEach((otherPoint, otherIndex) => {
+        if (index !== otherIndex) {
+          const distance = Math.sqrt(
+            Math.pow(point.x - otherPoint.x, 2) + 
+            Math.pow(point.y - otherPoint.y, 2) + 
+            Math.pow(point.z - otherPoint.z, 2)
+          );
+          
+          if (distance < 100) {
+            const connection = this.createElement('line', {
+              x1: point.x,
+              y1: point.y,
+              x2: otherPoint.x,
+              y2: otherPoint.y,
+              stroke: this.getColorByFrequency('mid'),
+              'stroke-width': '1',
+              'stroke-opacity': '0.2',
+              'stroke-dasharray': '3,3'
+            });
+            
+            this.latticeGroup.appendChild(connection);
+            point.connections.push(connection);
+          }
+        }
+      });
+    });
+  }
+
+  createCrystal() {
+    const crystal = {
+      x: Math.random() * 600,
+      y: Math.random() * 600,
+      z: Math.random() * 200 - 100,
+      size: Math.random() * 30 + 20,
+      rotation: {
+        x: Math.random() * Math.PI * 2,
+        y: Math.random() * Math.PI * 2,
+        z: Math.random() * Math.PI * 2
+      },
+      faces: [],
+      vertices: [],
+      element: null,
+      glowElement: null,
+      type: ['octahedron', 'tetrahedron', 'cube'][Math.floor(Math.random() * 3)]
+    };
+
+    // Create crystal vertices based on type
+    this.createCrystalVertices(crystal);
+
+    // Create crystal faces
+    this.createCrystalFaces(crystal);
+
+    // Create main crystal element
+    crystal.element = this.createElement('g', {
+      id: `crystal-${this.crystals.length}`,
+      transform: `translate(${crystal.x},${crystal.y})`
+    });
+
+    // Create glow effect
+    crystal.glowElement = this.createElement('circle', {
+      cx: '0',
+      cy: '0',
+      r: crystal.size * 1.5,
+      fill: 'none',
+      stroke: this.getColorByFrequency(['bass', 'mid', 'high'][Math.floor(Math.random() * 3)]),
+      'stroke-width': '3',
+      'stroke-opacity': '0.3',
+      filter: 'url(#glow)'
+    });
+
+    crystal.element.appendChild(crystal.glowElement);
+    this.crystalGroup.appendChild(crystal.element);
+    this.crystals.push(crystal);
+  }
+
+  createCrystalVertices(crystal) {
+    switch (crystal.type) {
+      case 'octahedron':
+        crystal.vertices = [
+          { x: 0, y: 0, z: crystal.size },
+          { x: 0, y: 0, z: -crystal.size },
+          { x: crystal.size, y: 0, z: 0 },
+          { x: -crystal.size, y: 0, z: 0 },
+          { x: 0, y: crystal.size, z: 0 },
+          { x: 0, y: -crystal.size, z: 0 }
+        ];
+        break;
+      case 'tetrahedron':
+        const h = crystal.size * Math.sqrt(2/3);
+        crystal.vertices = [
+          { x: 0, y: h, z: 0 },
+          { x: crystal.size, y: -h/3, z: 0 },
+          { x: -crystal.size/2, y: -h/3, z: crystal.size * Math.sqrt(3)/2 },
+          { x: -crystal.size/2, y: -h/3, z: -crystal.size * Math.sqrt(3)/2 }
+        ];
+        break;
+      case 'cube':
+        const s = crystal.size;
+        crystal.vertices = [
+          { x: s, y: s, z: s }, { x: s, y: s, z: -s }, { x: s, y: -s, z: s }, { x: s, y: -s, z: -s },
+          { x: -s, y: s, z: s }, { x: -s, y: s, z: -s }, { x: -s, y: -s, z: s }, { x: -s, y: -s, z: -s }
+        ];
+        break;
+    }
+  }
+
+  createCrystalFaces(crystal) {
+    switch (crystal.type) {
+      case 'octahedron':
+        crystal.faces = [
+          [0, 2, 4], [0, 4, 3], [0, 3, 5], [0, 5, 2],
+          [1, 2, 4], [1, 4, 3], [1, 3, 5], [1, 5, 2]
+        ];
+        break;
+      case 'tetrahedron':
+        crystal.faces = [
+          [0, 1, 2], [0, 2, 3], [0, 3, 1], [1, 3, 2]
+        ];
+        break;
+      case 'cube':
+        crystal.faces = [
+          [0, 1, 3, 2], [4, 5, 7, 6], [0, 4, 6, 2], [1, 5, 7, 3], [0, 1, 5, 4], [2, 3, 7, 6]
+        ];
+        break;
+    }
+  }
+
+  createRefractionRay() {
+    const ray = {
+      x: Math.random() * 600,
+      y: Math.random() * 600,
+      angle: Math.random() * Math.PI * 2,
+      speed: Math.random() * 3 + 2,
+      wavelength: Math.random() * 50 + 30,
+      intensity: Math.random() * 0.5 + 0.5,
+      element: null,
+      trail: []
+    };
+
+    ray.element = this.createElement('path', {
+      fill: 'none',
+      stroke: this.getColorByFrequency('high'),
+      'stroke-width': '2',
+      'stroke-opacity': '0.6',
+      filter: 'url(#glow)'
+    });
+
+    this.refractionGroup.appendChild(ray.element);
+    this.refractionRays.push(ray);
+  }
+
+  createDiffractionPattern() {
+    const pattern = {
+      x: Math.random() * 600,
+      y: Math.random() * 600,
+      radius: Math.random() * 80 + 40,
+      frequency: Math.random() * 0.02 + 0.01,
+      amplitude: Math.random() * 20 + 10,
+      phase: Math.random() * Math.PI * 2,
+      element: null
+    };
+
+    pattern.element = this.createElement('path', {
+      fill: 'none',
+      stroke: this.getColorByFrequency('mid'),
+      'stroke-width': '1',
+      'stroke-opacity': '0.4',
+      'stroke-dasharray': '5,5'
+    });
+
+    this.diffractionGroup.appendChild(pattern.element);
+    this.diffractionPatterns.push(pattern);
+  }
+
+  update(audioData) {
+    super.update(audioData);
+    const { bass, mid, high, beat } = audioData;
+    const time = Date.now() * 0.001;
+
+    // Update lattice points with wave-like motion
+    this.latticePoints.forEach((point, index) => {
+      const waveX = Math.sin(time * 0.5 + index * 0.1) * bass * 20;
+      const waveY = Math.cos(time * 0.7 + index * 0.15) * mid * 20;
+      const waveZ = Math.sin(time * 0.3 + index * 0.05) * high * 10;
+
+      point.x = point.originalX + waveX;
+      point.y = point.originalY + waveY;
+      point.z = point.originalZ + waveZ;
+
+      // Update point position
+      point.element.setAttribute('cx', point.x);
+      point.element.setAttribute('cy', point.y);
+      point.element.setAttribute('r', 2 + (bass + mid + high) * 3);
+      point.element.setAttribute('fill-opacity', 0.4 + (bass + mid + high) * 0.4);
+
+      // Update connections
+      point.connections.forEach(connection => {
+        const distance = Math.sqrt(
+          Math.pow(point.x - parseFloat(connection.getAttribute('x2')), 2) + 
+          Math.pow(point.y - parseFloat(connection.getAttribute('y2')), 2)
+        );
+        connection.setAttribute('stroke-opacity', Math.max(0.1, (100 - distance) / 100 * 0.3));
+      });
+    });
+
+    // Update crystals with complex transformations
+    this.crystals.forEach((crystal, index) => {
+      // Update crystal position with audio-reactive movement
+      crystal.x += Math.sin(time * 0.3 + index) * bass * 2;
+      crystal.y += Math.cos(time * 0.5 + index) * mid * 2;
+      crystal.z += Math.sin(time * 0.7 + index) * high * 1;
+
+      // Update rotation
+      crystal.rotation.x += (0.01 + bass * 0.02) * (1 + index * 0.1);
+      crystal.rotation.y += (0.015 + mid * 0.025) * (1 + index * 0.1);
+      crystal.rotation.z += (0.02 + high * 0.03) * (1 + index * 0.1);
+
+      // Apply 3D transformations
+      const transform = this.calculate3DTransform(crystal);
+      crystal.element.setAttribute('transform', transform);
+
+      // Update crystal faces with dynamic colors
+      this.updateCrystalFaces(crystal, audioData);
+
+      // Update glow effect
+      crystal.glowElement.setAttribute('r', crystal.size * (1.5 + (bass + mid + high) * 0.5));
+      crystal.glowElement.setAttribute('stroke-opacity', 0.2 + (bass + mid + high) * 0.3);
+      crystal.glowElement.setAttribute('stroke', this.getDynamicColor(audioData));
+
+      // Beat effects
+      if (beat) {
+        crystal.element.style.transform = transform + ' scale(1.2)';
+        setTimeout(() => {
+          crystal.element.style.transform = transform;
+        }, 100);
+      }
+    });
+
+    // Update refraction rays
+    this.refractionRays.forEach((ray, index) => {
+      // Move ray
+      ray.x += Math.cos(ray.angle) * ray.speed * (1 + high * 0.5);
+      ray.y += Math.sin(ray.angle) * ray.speed * (1 + mid * 0.3);
+
+      // Check for crystal interactions
+      this.crystals.forEach(crystal => {
+        const distance = Math.sqrt(
+          Math.pow(ray.x - crystal.x, 2) + Math.pow(ray.y - crystal.y, 2)
+        );
+        if (distance < crystal.size * 2) {
+          // Refraction effect
+          ray.angle += Math.sin(time + index) * 0.1;
+          this.createRefractionEffect(ray, crystal);
+        }
+      });
+
+      // Update ray trail
+      ray.trail.push({ x: ray.x, y: ray.y });
+      if (ray.trail.length > 20) {
+        ray.trail.shift();
+      }
+
+      // Update ray path
+      if (ray.trail.length > 1) {
+        let path = `M${ray.trail[0].x},${ray.trail[0].y}`;
+        for (let i = 1; i < ray.trail.length; i++) {
+          path += ` L${ray.trail[i].x},${ray.trail[i].y}`;
+        }
+        ray.element.setAttribute('d', path);
+        ray.element.setAttribute('stroke-opacity', ray.intensity * (0.3 + high * 0.4));
+      }
+
+      // Reset ray if out of bounds
+      if (ray.x < 0 || ray.x > 600 || ray.y < 0 || ray.y > 600) {
+        ray.x = Math.random() * 600;
+        ray.y = Math.random() * 600;
+        ray.angle = Math.random() * Math.PI * 2;
+        ray.trail = [];
+      }
+    });
+
+    // Update diffraction patterns
+    this.diffractionPatterns.forEach((pattern, index) => {
+      pattern.phase += pattern.frequency * (1 + high * 0.5);
+      
+      let path = 'M';
+      for (let angle = 0; angle <= Math.PI * 2; angle += 0.1) {
+        const radius = pattern.radius + Math.sin(angle * 8 + pattern.phase) * pattern.amplitude * (1 + mid * 0.5);
+        const x = pattern.x + Math.cos(angle) * radius;
+        const y = pattern.y + Math.sin(angle) * radius;
+        path += `${x},${y} `;
+      }
+      path += 'Z';
+      
+      pattern.element.setAttribute('d', path);
+      pattern.element.setAttribute('stroke-opacity', 0.2 + mid * 0.4);
+      pattern.element.setAttribute('stroke', this.getColorByFrequency('mid', mid));
+    });
+
+    // Add crystal growth effect on beat
+    if (beat && this.crystals.length < this.crystalCount + 3) {
+      this.createCrystal();
+    }
+  }
+
+  calculate3DTransform(crystal) {
+    const scale = 1 + (bass + mid + high) * 0.3;
+    const translate = `translate(${crystal.x},${crystal.y})`;
+    const rotate = `rotate(${crystal.rotation.z * 180 / Math.PI})`;
+    const scale3D = `scale(${scale})`;
+    
+    return `${translate} ${rotate} ${scale3D}`;
+  }
+
+  updateCrystalFaces(crystal, audioData) {
+    // Clear previous faces
+    const existingFaces = crystal.element.querySelectorAll('.crystal-face');
+    existingFaces.forEach(face => face.remove());
+
+    // Create new faces
+    crystal.faces.forEach((face, faceIndex) => {
+      const faceElement = this.createElement('path', {
+        fill: this.getColorByFrequency(['bass', 'mid', 'high'][faceIndex % 3], 
+          [audioData.bass, audioData.mid, audioData.high][faceIndex % 3]),
+        'fill-opacity': '0.3',
+        'stroke': this.getDynamicColor(audioData),
+        'stroke-width': '1',
+        'stroke-opacity': '0.6',
+        filter: 'url(#glow)',
+        class: 'crystal-face'
+      });
+
+      // Calculate face path
+      let facePath = 'M';
+      face.forEach((vertexIndex, i) => {
+        const vertex = crystal.vertices[vertexIndex];
+        const x = vertex.x * Math.cos(crystal.rotation.z) - vertex.y * Math.sin(crystal.rotation.z);
+        const y = vertex.x * Math.sin(crystal.rotation.z) + vertex.y * Math.cos(crystal.rotation.z);
+        facePath += `${x},${y} `;
+      });
+      facePath += 'Z';
+
+      faceElement.setAttribute('d', facePath);
+      crystal.element.appendChild(faceElement);
+    });
+  }
+
+  createRefractionEffect(ray, crystal) {
+    // Create refraction sparkle
+    const sparkle = this.createElement('circle', {
+      cx: ray.x,
+      cy: ray.y,
+      r: '3',
+      fill: this.getColorByFrequency('high'),
+      'fill-opacity': '0.8',
+      filter: 'url(#glow)'
+    });
+
+    this.refractionGroup.appendChild(sparkle);
+
+    // Animate sparkle
+    let radius = 3;
+    const animateSparkle = () => {
+      radius += 2;
+      sparkle.setAttribute('r', radius);
+      sparkle.setAttribute('fill-opacity', 0.8 * (1 - radius / 20));
+      
+      if (radius < 20) {
+        requestAnimationFrame(animateSparkle);
+      } else {
+        sparkle.remove();
+      }
+    };
+    animateSparkle();
+  }
+}
+
+// 14. NEW: Neural Galaxy Evolution - Cosmic brain network
+class NeuralGalaxyAnimation extends BaseAnimation {
+  constructor(svg, options = {}) {
+    super(svg, { colorMode: 'frequency', ...options });
+    this.neuralNodes = [];
+    this.galaxyClusters = [];
+    this.quantumConnections = [];
+    this.gravityWells = [];
+    this.evolutionStages = [];
+    this.nodeCount = 150;
+    this.clusterCount = 8;
+    this.evolutionProgress = 0;
+  }
+
+  createElements() {
+    this.clear();
+    this.neuralNodes = [];
+    this.galaxyClusters = [];
+    this.quantumConnections = [];
+    this.gravityWells = [];
+    this.evolutionStages = [];
+
+    // Create neural network container
+    this.neuralGroup = this.createElement('g', {
+      id: 'animation-neural-galaxy'
+    });
+    this.addElement(this.neuralGroup);
+
+    // Create galaxy clusters container
+    this.clusterGroup = this.createElement('g', {
+      id: 'animation-galaxy-clusters'
+    });
+    this.addElement(this.clusterGroup);
+
+    // Create quantum connections container
+    this.quantumGroup = this.createElement('g', {
+      id: 'animation-quantum-connections'
+    });
+    this.addElement(this.quantumGroup);
+
+    // Create gravity wells container
+    this.gravityGroup = this.createElement('g', {
+      id: 'animation-gravity-wells'
+    });
+    this.addElement(this.gravityGroup);
+
+    // Create evolution stages
+    this.createEvolutionStages();
+
+    // Create galaxy clusters
+    for (let i = 0; i < this.clusterCount; i++) {
+      this.createGalaxyCluster();
+    }
+
+    // Create neural nodes
+    for (let i = 0; i < this.nodeCount; i++) {
+      this.createNeuralNode();
+    }
+
+    // Create gravity wells
+    for (let i = 0; i < 5; i++) {
+      this.createGravityWell();
+    }
+  }
+
+  createEvolutionStages() {
+    const stages = [
+      { name: 'Primordial', color: '#ff6b6b', complexity: 0.2 },
+      { name: 'Stellar', color: '#4ecdc4', complexity: 0.4 },
+      { name: 'Nebular', color: '#45b7d1', complexity: 0.6 },
+      { name: 'Galactic', color: '#96ceb4', complexity: 0.8 },
+      { name: 'Cosmic', color: '#feca57', complexity: 1.0 }
+    ];
+
+    stages.forEach((stage, index) => {
+      const stageElement = this.createElement('g', {
+        id: `evolution-stage-${index}`,
+        opacity: index === 0 ? '1' : '0'
+      });
+
+      this.evolutionStages.push({
+        ...stage,
+        element: stageElement,
+        active: index === 0
+      });
+
+      this.neuralGroup.appendChild(stageElement);
+    });
+  }
+
+  createGalaxyCluster() {
+    const cluster = {
+      x: Math.random() * 600,
+      y: Math.random() * 600,
+      radius: Math.random() * 80 + 40,
+      rotation: Math.random() * Math.PI * 2,
+      rotationSpeed: (Math.random() - 0.5) * 0.02,
+      stars: [],
+      element: null,
+      spiralArms: []
+    };
+
+    // Create cluster element
+    cluster.element = this.createElement('g', {
+      id: `galaxy-cluster-${this.galaxyClusters.length}`,
+      transform: `translate(${cluster.x},${cluster.y})`
+    });
+
+    // Create spiral arms
+    for (let arm = 0; arm < 4; arm++) {
+      const spiralArm = this.createElement('path', {
+        fill: 'none',
+        stroke: this.getColorByFrequency(['bass', 'mid', 'high'][arm % 3]),
+        'stroke-width': '2',
+        'stroke-opacity': '0.4',
+        filter: 'url(#glow)'
+      });
+      cluster.element.appendChild(spiralArm);
+      cluster.spiralArms.push(spiralArm);
+    }
+
+    // Create stars in cluster
+    for (let i = 0; i < 20; i++) {
+      const star = {
+        angle: Math.random() * Math.PI * 2,
+        distance: Math.random() * cluster.radius,
+        size: Math.random() * 4 + 1,
+        brightness: Math.random() * 0.5 + 0.5,
+        element: null
+      };
+
+      star.element = this.createElement('circle', {
+        cx: Math.cos(star.angle) * star.distance,
+        cy: Math.sin(star.angle) * star.distance,
+        r: star.size,
+        fill: this.getColorByFrequency(['bass', 'mid', 'high'][Math.floor(Math.random() * 3)]),
+        'fill-opacity': star.brightness,
+        filter: 'url(#glow)'
+      });
+
+      cluster.element.appendChild(star.element);
+      cluster.stars.push(star);
+    }
+
+    this.clusterGroup.appendChild(cluster.element);
+    this.galaxyClusters.push(cluster);
+  }
+
+  createNeuralNode() {
+    const node = {
+      x: Math.random() * 600,
+      y: Math.random() * 600,
+      vx: (Math.random() - 0.5) * 2,
+      vy: (Math.random() - 0.5) * 2,
+      size: Math.random() * 6 + 2,
+      activation: 0,
+      connections: [],
+      cluster: Math.floor(Math.random() * this.clusterCount),
+      element: null,
+      glowElement: null,
+      type: ['sensory', 'processing', 'output'][Math.floor(Math.random() * 3)]
+    };
+
+    // Create main node
+    node.element = this.createElement('circle', {
+      cx: node.x,
+      cy: node.y,
+      r: node.size,
+      fill: this.getColorByFrequency(['bass', 'mid', 'high'][Math.floor(Math.random() * 3)]),
+      'fill-opacity': '0.8',
+      filter: 'url(#glow)'
+    });
+
+    // Create glow effect
+    node.glowElement = this.createElement('circle', {
+      cx: node.x,
+      cy: node.y,
+      r: node.size * 2,
+      fill: 'none',
+      stroke: node.element.getAttribute('fill'),
+      'stroke-width': '2',
+      'stroke-opacity': '0.3',
+      filter: 'url(#glow)'
+    });
+
+    this.neuralGroup.appendChild(node.element);
+    this.neuralGroup.appendChild(node.glowElement);
+    this.neuralNodes.push(node);
+  }
+
+  createGravityWell() {
+    const well = {
+      x: Math.random() * 600,
+      y: Math.random() * 600,
+      strength: Math.random() * 0.5 + 0.5,
+      radius: Math.random() * 100 + 50,
+      element: null,
+      rippleElements: []
+    };
+
+    // Create gravity well element
+    well.element = this.createElement('circle', {
+      cx: well.x,
+      cy: well.y,
+      r: well.radius,
+      fill: 'none',
+      stroke: this.getColorByFrequency('bass'),
+      'stroke-width': '2',
+      'stroke-opacity': '0.2',
+      'stroke-dasharray': '10,5'
+    });
+
+    // Create ripple effects
+    for (let i = 0; i < 3; i++) {
+      const ripple = this.createElement('circle', {
+        cx: well.x,
+        cy: well.y,
+        r: well.radius * (0.3 + i * 0.2),
+        fill: 'none',
+        stroke: this.getColorByFrequency('mid'),
+        'stroke-width': '1',
+        'stroke-opacity': '0.1',
+        'stroke-dasharray': '5,5'
+      });
+      well.rippleElements.push(ripple);
+      this.gravityGroup.appendChild(ripple);
+    }
+
+    this.gravityGroup.appendChild(well.element);
+    this.gravityWells.push(well);
+  }
+
+  update(audioData) {
+    super.update(audioData);
+    const { bass, mid, high, beat } = audioData;
+    const time = Date.now() * 0.001;
+
+    // Update evolution progress
+    this.evolutionProgress += (bass + mid + high) * 0.001;
+    if (this.evolutionProgress > 1) {
+      this.evolutionProgress = 0;
+      this.evolveToNextStage();
+    }
+
+    // Update galaxy clusters
+    this.galaxyClusters.forEach((cluster, index) => {
+      // Update rotation
+      cluster.rotation += cluster.rotationSpeed * (1 + high * 0.5);
+      cluster.element.setAttribute('transform', `translate(${cluster.x},${cluster.y}) rotate(${cluster.rotation * 180 / Math.PI})`);
+
+      // Update spiral arms
+      cluster.spiralArms.forEach((arm, armIndex) => {
+        let path = 'M';
+        for (let angle = 0; angle <= Math.PI * 2; angle += 0.1) {
+          const spiralRadius = cluster.radius * (0.2 + angle / (Math.PI * 2) * 0.8);
+          const spiralAngle = angle * 3 + armIndex * Math.PI / 2;
+          const x = Math.cos(spiralAngle) * spiralRadius;
+          const y = Math.sin(spiralAngle) * spiralRadius;
+          path += `${x},${y} `;
+        }
+        arm.setAttribute('d', path);
+        arm.setAttribute('stroke-opacity', 0.3 + mid * 0.4);
+        arm.setAttribute('stroke', this.getColorByFrequency(['bass', 'mid', 'high'][armIndex % 3]));
+      });
+
+      // Update stars
+      cluster.stars.forEach(star => {
+        star.angle += 0.01 * (1 + bass * 0.5);
+        const x = Math.cos(star.angle) * star.distance;
+        const y = Math.sin(star.angle) * star.distance;
+        
+        star.element.setAttribute('cx', x);
+        star.element.setAttribute('cy', y);
+        star.element.setAttribute('r', star.size * (1 + (bass + mid + high) * 0.3));
+        star.element.setAttribute('fill-opacity', star.brightness * (0.5 + (bass + mid + high) * 0.5));
+      });
+    });
+
+    // Update neural nodes with gravity and evolution
+    this.neuralNodes.forEach((node, index) => {
+      // Apply gravity from wells
+      this.gravityWells.forEach(well => {
+        const dx = well.x - node.x;
+        const dy = well.y - node.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance < well.radius && distance > 0) {
+          const gravityForce = well.strength * (1 - distance / well.radius) * 0.1;
+          node.vx += (dx / distance) * gravityForce;
+          node.vy += (dy / distance) * gravityForce;
+        }
+      });
+
+      // Apply cluster attraction
+      const cluster = this.galaxyClusters[node.cluster];
+      const clusterDx = cluster.x - node.x;
+      const clusterDy = cluster.y - node.y;
+      const clusterDistance = Math.sqrt(clusterDx * clusterDx + clusterDy * clusterDy);
+      
+      if (clusterDistance > cluster.radius) {
+        const attractionForce = 0.05;
+        node.vx += (clusterDx / clusterDistance) * attractionForce;
+        node.vy += (clusterDy / clusterDistance) * attractionForce;
+      }
+
+      // Update position
+      node.x += node.vx * (1 + bass * 0.3);
+      node.y += node.vy * (1 + mid * 0.2);
+
+      // Boundary handling with quantum tunneling
+      if (node.x < 0 || node.x > 600) {
+        if (Math.random() < 0.1) { // Quantum tunneling
+          node.x = node.x < 0 ? 600 : 0;
+        } else {
+          node.vx *= -0.8;
+          node.x = Math.max(0, Math.min(600, node.x));
+        }
+      }
+      if (node.y < 0 || node.y > 600) {
+        if (Math.random() < 0.1) { // Quantum tunneling
+          node.y = node.y < 0 ? 600 : 0;
+        } else {
+          node.vy *= -0.8;
+          node.y = Math.max(0, Math.min(600, node.y));
+        }
+      }
+
+      // Update activation based on audio
+      node.activation = Math.max(0, Math.min(1, 
+        node.activation * 0.95 + 
+        [bass, mid, high][index % 3] * 0.1
+      ));
+
+      // Update visual elements
+      const color = this.getDynamicColor(audioData);
+      const size = node.size * (1 + node.activation * 0.5);
+      
+      node.element.setAttribute('cx', node.x);
+      node.element.setAttribute('cy', node.y);
+      node.element.setAttribute('r', size);
+      node.element.setAttribute('fill', color);
+      node.element.setAttribute('fill-opacity', 0.6 + node.activation * 0.4);
+
+      node.glowElement.setAttribute('cx', node.x);
+      node.glowElement.setAttribute('cy', node.y);
+      node.glowElement.setAttribute('r', size * 2);
+      node.glowElement.setAttribute('stroke', color);
+      node.glowElement.setAttribute('stroke-opacity', 0.2 + node.activation * 0.3);
+
+      // Create quantum connections
+      this.neuralNodes.forEach((otherNode, otherIndex) => {
+        if (index !== otherIndex) {
+          const distance = Math.sqrt(
+            Math.pow(node.x - otherNode.x, 2) + 
+            Math.pow(node.y - otherNode.y, 2)
+          );
+          
+          if (distance < 80 && distance > 0) {
+            const connectionStrength = (80 - distance) / 80 * node.activation * otherNode.activation;
+            
+            if (connectionStrength > 0.1) {
+              this.createQuantumConnection(node, otherNode, connectionStrength);
+            }
+          }
+        }
+      });
+
+      // Beat effects
+      if (beat && node.activation > 0.5) {
+        node.element.style.transform = 'scale(1.5)';
+        setTimeout(() => {
+          node.element.style.transform = 'scale(1)';
+        }, 100);
+      }
+    });
+
+    // Update gravity wells
+    this.gravityWells.forEach((well, index) => {
+      well.element.setAttribute('stroke-opacity', 0.1 + bass * 0.3);
+      well.element.setAttribute('r', well.radius * (1 + Math.sin(time + index) * 0.1));
+
+      well.rippleElements.forEach((ripple, rippleIndex) => {
+        const rippleRadius = well.radius * (0.3 + rippleIndex * 0.2) * (1 + Math.sin(time * 2 + rippleIndex) * 0.2);
+        ripple.setAttribute('r', rippleRadius);
+        ripple.setAttribute('stroke-opacity', 0.05 + mid * 0.2);
+        ripple.setAttribute('stroke-dashoffset', time * 10 + rippleIndex * 5);
+      });
+    });
+
+    // Clean up old quantum connections
+    this.quantumConnections.forEach((connection, index) => {
+      connection.life -= 0.02;
+      connection.element.setAttribute('stroke-opacity', connection.life);
+      
+      if (connection.life <= 0) {
+        connection.element.remove();
+        this.quantumConnections.splice(index, 1);
+      }
+    });
+
+    // Add new neural nodes on evolution
+    if (this.evolutionProgress > 0.8 && this.neuralNodes.length < this.nodeCount + 10) {
+      this.createNeuralNode();
+    }
+  }
+
+  createQuantumConnection(fromNode, toNode, strength) {
+    // Check if connection already exists
+    const existingConnection = this.quantumConnections.find(c => 
+      (c.from === fromNode && c.to === toNode) || 
+      (c.from === toNode && c.to === fromNode)
+    );
+
+    if (existingConnection) {
+      existingConnection.life = Math.min(1, existingConnection.life + 0.1);
+      existingConnection.element.setAttribute('stroke-width', 1 + strength * 3);
+      return;
+    }
+
+    const connection = {
+      from: fromNode,
+      to: toNode,
+      strength: strength,
+      life: 1,
+      element: null
+    };
+
+    connection.element = this.createElement('line', {
+      x1: fromNode.x,
+      y1: fromNode.y,
+      x2: toNode.x,
+      y2: toNode.y,
+      stroke: this.getColorByFrequency('high'),
+      'stroke-width': 1 + strength * 3,
+      'stroke-opacity': strength,
+      'stroke-dasharray': '3,3',
+      filter: 'url(#glow)'
+    });
+
+    this.quantumGroup.appendChild(connection.element);
+    this.quantumConnections.push(connection);
+  }
+
+  evolveToNextStage() {
+    // Find current active stage
+    const currentStageIndex = this.evolutionStages.findIndex(stage => stage.active);
+    const nextStageIndex = (currentStageIndex + 1) % this.evolutionStages.length;
+
+    // Deactivate current stage
+    this.evolutionStages[currentStageIndex].active = false;
+    this.evolutionStages[currentStageIndex].element.setAttribute('opacity', '0');
+
+    // Activate next stage
+    this.evolutionStages[nextStageIndex].active = true;
+    this.evolutionStages[nextStageIndex].element.setAttribute('opacity', '1');
+
+    // Create evolution effect
+    this.createEvolutionEffect(this.evolutionStages[nextStageIndex]);
+  }
+
+  createEvolutionEffect(stage) {
+    // Create evolution burst
+    const burst = this.createElement('circle', {
+      cx: '300',
+      cy: '300',
+      r: '0',
+      fill: 'none',
+      stroke: stage.color,
+      'stroke-width': '5',
+      'stroke-opacity': '0.8',
+      filter: 'url(#glow)'
+    });
+
+    this.neuralGroup.appendChild(burst);
+
+    // Animate evolution burst
+    let radius = 0;
+    const animateBurst = () => {
+      radius += 10;
+      burst.setAttribute('r', radius);
+      burst.setAttribute('stroke-opacity', 0.8 * (1 - radius / 300));
+      
+      if (radius < 300) {
+        requestAnimationFrame(animateBurst);
+      } else {
+        burst.remove();
+      }
+    };
+    animateBurst();
+
+    // Update complexity based on stage
+    this.nodeCount = Math.floor(150 * stage.complexity);
+    this.clusterCount = Math.floor(8 * stage.complexity);
+  }
+}
+
+// Export all animation classes
+window.BlobAnimation = BlobAnimation;
+window.ParticleAnimation = ParticleAnimation;
+window.WaveAnimation = WaveAnimation;
+window.GeometricAnimation = GeometricAnimation;
+window.BarsAnimation = BarsAnimation;
+window.CircularAnimation = CircularAnimation;
+window.MatrixAnimation = MatrixAnimation;
+window.FireworksAnimation = FireworksAnimation;
+window.DNAAnimation = DNAAnimation;
+window.FractalAnimation = FractalAnimation;
 window.NeuralNetworkAnimation = NeuralNetworkAnimation;
 window.QuantumParticlesAnimation = QuantumParticlesAnimation;
+window.CrystalLatticeAnimation = CrystalLatticeAnimation;
+window.NeuralGalaxyAnimation = NeuralGalaxyAnimation;

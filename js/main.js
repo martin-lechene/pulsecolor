@@ -2,7 +2,7 @@
  * PulseColor - Audio-Reactive Visuals
  * Version: 3.0.0 | Enhanced Edition
  * 
- * 12+ Different Animations with Advanced Effects:
+ * 14+ Different Animations with Advanced Effects:
  * 1. Enhanced Blob Morphing (3D, Liquid Effects, Orbital Particles)
  * 2. Enhanced Particle System (Gravity, Trails, Connections)
  * 3. Enhanced Wave Forms (3D, Multiple Layers, Reflections)
@@ -15,6 +15,8 @@
  * 10. Fractal Trees
  * 11. NEW: Neural Network (AI-inspired, Learning)
  * 12. NEW: Quantum Particles (Wave-Particle Duality)
+ * 13. NEW: Crystal Lattice Symphony (3D Crystals, Refraction, Diffraction)
+ * 14. NEW: Neural Galaxy Evolution (Cosmic Brain Network, Evolution Stages)
  */
 
 class PulseColor {
@@ -93,7 +95,9 @@ class PulseColor {
       { id: 'dna', name: 'DNA Helix', icon: '🧬' },
       { id: 'fractal', name: 'Fractal', icon: '🌳' },
       { id: 'neural', name: 'Neural Network', icon: '🧠' },
-      { id: 'quantum', name: 'Quantum Particles', icon: '⚛️' }
+      { id: 'quantum', name: 'Quantum Particles', icon: '⚛️' },
+      { id: 'crystal', name: 'Crystal Lattice', icon: '💎' },
+      { id: 'galaxy', name: 'Neural Galaxy', icon: '🌌' }
     ];
 
     this.animationSelector.innerHTML = animations.map(anim => `
@@ -125,7 +129,9 @@ class PulseColor {
       dna: new DNAAnimation(this.svg),
       fractal: new FractalAnimation(this.svg),
       neural: new NeuralNetworkAnimation(this.svg, { enable3D: true, enableGlow: true }),
-      quantum: new QuantumParticlesAnimation(this.svg, { enable3D: true, enableGlow: true })
+      quantum: new QuantumParticlesAnimation(this.svg, { enable3D: true, enableGlow: true }),
+      crystal: new CrystalLatticeAnimation(this.svg, { enable3D: true, enableGlow: true }),
+      galaxy: new NeuralGalaxyAnimation(this.svg, { enable3D: true, enableGlow: true })
     };
   }
 
@@ -340,12 +346,14 @@ class PulseColor {
         break;
       case '1': case '2': case '3': case '4': case '5':
       case '6': case '7': case '8': case '9': case '0':
-      case '-': case '=':
+      case '-': case '=': case '[': case ']':
         const animations = Object.keys(this.animations);
         let index;
         if (event.key === '0') index = 9;
         else if (event.key === '-') index = 10;
         else if (event.key === '=') index = 11;
+        else if (event.key === '[') index = 12;
+        else if (event.key === ']') index = 13;
         else index = parseInt(event.key) - 1;
         
         if (animations[index]) {

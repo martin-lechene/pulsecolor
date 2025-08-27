@@ -128,12 +128,62 @@ beat: ['#ffffff', '#ffd700', '#ff6b6b']
 - High : Comportement ondulatoire et intrication
 - Beat : Collapse des fonctions d'onde
 
+### 13. Crystal Lattice Symphony ⭐ ULTRA-DÉTAILLÉE
+**Concept :** Réseau cristallin 3D avec effets de réfraction et diffraction
+
+**Fonctionnalités :**
+- **512 points de réseau** : Grille 8x8x8 avec mouvement ondulatoire
+- **12 cristaux 3D** : Octaèdres, tétraèdres et cubes avec faces dynamiques
+- **15 rayons de réfraction** : Traînées lumineuses avec interactions cristallines
+- **6 motifs de diffraction** : Ondes concentriques avec harmoniques
+- **Effets de croissance** : Nouveaux cristaux sur les beats
+- **Physique réaliste** : Indice de réfraction et effets de dispersion
+
+**Contrôles :**
+- Bass : Mouvement ondulatoire du réseau et taille des cristaux
+- Mid : Motifs de diffraction et opacité des connexions
+- High : Rayons de réfraction et vitesse de rotation
+- Beat : Croissance de nouveaux cristaux et effets de pulse
+
+**Effets uniques :**
+- **Réfraction cristalline** : Les rayons changent de direction en traversant les cristaux
+- **Diffraction harmonique** : Motifs complexes avec multiples fréquences
+- **Morphing géométrique** : Cristaux qui changent de forme en temps réel
+- **Effets de dispersion** : Séparation des couleurs selon la fréquence
+
+### 14. Neural Galaxy Evolution ⭐ ULTRA-DÉTAILLÉE
+**Concept :** Galaxie de neurones qui évolue comme un cerveau cosmique
+
+**Fonctionnalités :**
+- **150 nœuds neuronaux** : Réseau complexe avec activation dynamique
+- **8 amas galactiques** : Spirales avec étoiles et bras rotatifs
+- **5 puits de gravité** : Champs gravitationnels avec effets de ripple
+- **5 stades d'évolution** : Primordial → Stellar → Nebular → Galactic → Cosmic
+- **Connexions quantiques** : Liens dynamiques entre nœuds
+- **Effet tunnel quantique** : Particules qui traversent les bords
+- **Évolution progressive** : Complexité croissante avec l'audio
+
+**Contrôles :**
+- Bass : Force gravitationnelle et rotation des galaxies
+- Mid : Évolution des stades et effets de ripple
+- High : Connexions quantiques et effet tunnel
+- Beat : Progression d'évolution et nouveaux nœuds
+
+**Effets uniques :**
+- **Évolution cosmique** : Transition automatique entre 5 stades de complexité
+- **Gravité quantique** : Champs gravitationnels avec comportement quantique
+- **Spirales galactiques** : Bras rotatifs avec étoiles animées
+- **Burst d'évolution** : Effets visuels lors des transitions de stade
+- **Réseau adaptatif** : Le nombre de nœuds augmente avec la complexité
+
 ## 🎮 Contrôles
 
 ### Raccourcis clavier
 - **1-0** : Animations 1-10
 - **-** : Neural Network (11)
 - **=** : Quantum Particles (12)
+- **[** : Crystal Lattice (13)
+- **]** : Neural Galaxy (14)
 - **Espace** : Play/Pause
 - **M** : Microphone
 

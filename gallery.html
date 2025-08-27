@@ -449,7 +449,7 @@
         <!-- Header de la galerie -->
         <div class="gallery-header">
             <h1 class="glitch-text" data-text="Galerie d'Animations">Galerie d'Animations</h1>
-            <p class="text-gradient">Découvrez 20 animations complexes et avancées</p>
+            <p class="text-gradient">Découvrez 25 animations complexes et avancées avec synchronisation audio</p>
         </div>
 
         <!-- Navigation de la galerie -->
@@ -1021,6 +1021,206 @@
                 </div>
             </div>
         </section>
+
+        <!-- Section Lyrics -->
+        <section id="lyrics" class="gallery-section section-hidden">
+            <h2>Lyrics Synchronisées</h2>
+            <div class="gallery-grid">
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="lyrics-container">
+                            <div class="audio-sync-indicator inactive"></div>
+                            <div class="lyrics-text" id="lyrics-text">Cliquez sur Play pour voir les lyrics</div>
+                            <div class="lyrics-progress" id="lyrics-progress"></div>
+                        </div>
+                    </div>
+                    <h3 class="animation-title">Lyrics en Temps Réel</h3>
+                    <p class="animation-description">Paroles synchronisées avec la musique</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleLyrics(this)">Activer</button>
+                    </div>
+                </div>
+
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="lyrics-container">
+                            <div class="audio-sync-indicator inactive"></div>
+                            <div class="lyrics-text" id="lyrics-text-2">Paroles avec effets visuels</div>
+                            <div class="lyrics-progress" id="lyrics-progress-2"></div>
+                        </div>
+                    </div>
+                    <h3 class="animation-title">Lyrics avec Effets</h3>
+                    <p class="animation-description">Paroles avec animations avancées</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleLyrics(this)">Activer</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Image Color -->
+        <section id="image-color" class="gallery-section section-hidden">
+            <h2>Images Dynamiques</h2>
+            <div class="gallery-grid">
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="image-color-container">
+                            <div class="audio-sync-indicator inactive"></div>
+                            <img src="https://images.pexels.com/photos/2014422/pexels-photo-2014422.jpeg" alt="Nature" id="dynamic-image-1">
+                            <div class="image-overlay"></div>
+                        </div>
+                    </div>
+                    <h3 class="animation-title">Image Réactive</h3>
+                    <p class="animation-description">Image qui change selon la musique</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleImageColor(this)">Activer</button>
+                    </div>
+                </div>
+
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="image-color-container">
+                            <div class="audio-sync-indicator inactive"></div>
+                            <img src="https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg" alt="City" id="dynamic-image-2">
+                            <div class="image-overlay"></div>
+                        </div>
+                    </div>
+                    <h3 class="animation-title">Filtres Dynamiques</h3>
+                    <p class="animation-description">Filtres qui s'adaptent au rythme</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleImageColor(this)">Activer</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Waveform -->
+        <section id="waveform" class="gallery-section section-hidden">
+            <h2>Waveform Interactif</h2>
+            <div class="gallery-grid">
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="waveform-container">
+                            <div class="audio-sync-indicator inactive"></div>
+                            <canvas class="waveform-canvas" id="waveform-canvas-1"></canvas>
+                        </div>
+                    </div>
+                    <h3 class="animation-title">Waveform en Temps Réel</h3>
+                    <p class="animation-description">Visualisation d'onde sonore interactive</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleWaveform(this)">Activer</button>
+                    </div>
+                </div>
+
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="waveform-container">
+                            <div class="audio-sync-indicator inactive"></div>
+                            <canvas class="waveform-canvas" id="waveform-canvas-2"></canvas>
+                        </div>
+                    </div>
+                    <h3 class="animation-title">Spectrum Analyzer</h3>
+                    <p class="animation-description">Analyseur de spectre audio</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleWaveform(this)">Activer</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Audio Particles -->
+        <section id="audio-particles" class="gallery-section section-hidden">
+            <h2>Particules Audio-Réactives</h2>
+            <div class="gallery-grid">
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="audio-particles-container" id="audio-particles-1">
+                            <div class="audio-sync-indicator inactive"></div>
+                        </div>
+                    </div>
+                    <h3 class="animation-title">Particules Réactives</h3>
+                    <p class="animation-description">Particules qui réagissent au volume</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAudioParticles(this)">Activer</button>
+                    </div>
+                </div>
+
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="audio-particles-container" id="audio-particles-2">
+                            <div class="audio-sync-indicator inactive"></div>
+                        </div>
+                    </div>
+                    <h3 class="animation-title">Explosion Audio</h3>
+                    <p class="animation-description">Explosion de particules selon la fréquence</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAudioParticles(this)">Activer</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Color Palette -->
+        <section id="color-palette" class="gallery-section section-hidden">
+            <h2>Générateur de Palette</h2>
+            <div class="gallery-grid">
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="color-palette-container" id="color-palette-1">
+                            <div class="audio-sync-indicator inactive"></div>
+                            <div class="color-swatch" style="background: #ff6b6b;">
+                                <div class="color-info">#ff6b6b</div>
+                            </div>
+                            <div class="color-swatch" style="background: #4ecdc4;">
+                                <div class="color-info">#4ecdc4</div>
+                            </div>
+                            <div class="color-swatch" style="background: #45b7d1;">
+                                <div class="color-info">#45b7d1</div>
+                            </div>
+                            <div class="color-swatch" style="background: #96ceb4;">
+                                <div class="color-info">#96ceb4</div>
+                            </div>
+                            <div class="color-swatch" style="background: #feca57;">
+                                <div class="color-info">#feca57</div>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 class="animation-title">Palette Harmonique</h3>
+                    <p class="animation-description">Palette qui change selon la musique</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleColorPalette(this)">Activer</button>
+                    </div>
+                </div>
+
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="color-palette-container" id="color-palette-2">
+                            <div class="audio-sync-indicator inactive"></div>
+                            <div class="color-swatch" style="background: #e74c3c;">
+                                <div class="color-info">#e74c3c</div>
+                            </div>
+                            <div class="color-swatch" style="background: #3498db;">
+                                <div class="color-info">#3498db</div>
+                            </div>
+                            <div class="color-swatch" style="background: #2ecc71;">
+                                <div class="color-info">#2ecc71</div>
+                            </div>
+                            <div class="color-swatch" style="background: #f1c40f;">
+                                <div class="color-info">#f1c40f</div>
+                            </div>
+                            <div class="color-swatch" style="background: #9b59b6;">
+                                <div class="color-info">#9b59b6</div>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 class="animation-title">Palette Dynamique</h3>
+                    <p class="animation-description">Couleurs qui pulsent avec le rythme</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleColorPalette(this)">Activer</button>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 
     <!-- Bouton retour en haut -->
@@ -1184,6 +1384,377 @@
                 collapseBtn.textContent = '+';
             }
         }
+
+        // Variables globales pour les animations audio
+        let audioContext = null;
+        let analyser = null;
+        let dataArray = null;
+        let animationId = null;
+        let activeAnimations = new Set();
+
+        // Paroles fictives pour les animations
+        const lyricsData = [
+            {
+                text: "Des lignes de voyage dans le vent",
+                time: 0,
+                duration: 3000
+            },
+            {
+                text: "Des voyages de rêve qui nous emportent",
+                time: 3000,
+                duration: 4000
+            },
+            {
+                text: "Vers des horizons lointains et mystérieux",
+                time: 7000,
+                duration: 3500
+            },
+            {
+                text: "Où la musique guide nos pas",
+                time: 10500,
+                duration: 3000
+            },
+            {
+                text: "Dans cette danse éternelle du temps",
+                time: 13500,
+                duration: 4000
+            }
+        ];
+
+        // Images Pexels pour les animations
+        const pexelsImages = [
+            'https://images.pexels.com/photos/2014422/pexels-photo-2014422.jpeg',
+            'https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg',
+            'https://images.pexels.com/photos/1287145/pexels-photo-1287145.jpeg',
+            'https://images.pexels.com/photos/1563355/pexels-photo-1563355.jpeg',
+            'https://images.pexels.com/photos/1694000/pexels-photo-1694000.jpeg'
+        ];
+
+        // Palettes de couleurs harmoniques
+        const colorPalettes = [
+            ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57'],
+            ['#e74c3c', '#3498db', '#2ecc71', '#f1c40f', '#9b59b6'],
+            ['#ff9ff3', '#54a0ff', '#5f27cd', '#00d2d3', '#ff9f43'],
+            ['#ff3838', '#ff9ff3', '#f368e0', '#0abde3', '#48dbfb'],
+            ['#ff6b6b', '#ee5a24', '#ff9ff3', '#54a0ff', '#5f27cd']
+        ];
+
+        // Initialisation de l'audio context
+        function initAudioContext() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                analyser.fftSize = 256;
+                const bufferLength = analyser.frequencyBinCount;
+                dataArray = new Uint8Array(bufferLength);
+            }
+        }
+
+        // Connexion de l'audio au contexte
+        function connectAudioToContext(audioElement) {
+            if (audioContext && audioElement) {
+                const source = audioContext.createMediaElementSource(audioElement);
+                source.connect(analyser);
+                analyser.connect(audioContext.destination);
+            }
+        }
+
+        // Fonction pour obtenir les données audio
+        function getAudioData() {
+            if (analyser && dataArray) {
+                analyser.getByteFrequencyData(dataArray);
+                return dataArray;
+            }
+            return null;
+        }
+
+        // Animation des lyrics
+        function toggleLyrics(button) {
+            const card = button.closest('.animation-card');
+            const container = card.querySelector('.lyrics-container');
+            const textElement = container.querySelector('.lyrics-text');
+            const progressElement = container.querySelector('.lyrics-progress');
+            const indicator = container.querySelector('.audio-sync-indicator');
+            
+            if (activeAnimations.has('lyrics')) {
+                activeAnimations.delete('lyrics');
+                indicator.classList.add('inactive');
+                button.textContent = 'Activer';
+                return;
+            }
+
+            activeAnimations.add('lyrics');
+            indicator.classList.remove('inactive');
+            button.textContent = 'Désactiver';
+
+            const audio = document.querySelector('audio');
+            if (!audio) return;
+
+            let currentLyricIndex = 0;
+            let startTime = Date.now();
+
+            function updateLyrics() {
+                if (!activeAnimations.has('lyrics')) return;
+
+                const currentTime = audio.currentTime * 1000;
+                const lyric = lyricsData.find((l, index) => {
+                    return currentTime >= l.time && currentTime < l.time + l.duration;
+                });
+
+                if (lyric) {
+                    textElement.textContent = lyric.text;
+                    textElement.classList.add('active');
+                    
+                    const progress = ((currentTime - lyric.time) / lyric.duration) * 100;
+                    progressElement.style.width = progress + '%';
+                } else {
+                    textElement.classList.remove('active');
+                    progressElement.style.width = '0%';
+                }
+
+                animationId = requestAnimationFrame(updateLyrics);
+            }
+
+            updateLyrics();
+        }
+
+        // Animation des images
+        function toggleImageColor(button) {
+            const card = button.closest('.animation-card');
+            const container = card.querySelector('.image-color-container');
+            const img = container.querySelector('img');
+            const overlay = container.querySelector('.image-overlay');
+            const indicator = container.querySelector('.audio-sync-indicator');
+            
+            if (activeAnimations.has('image-color')) {
+                activeAnimations.delete('image-color');
+                indicator.classList.add('inactive');
+                button.textContent = 'Activer';
+                return;
+            }
+
+            activeAnimations.add('image-color');
+            indicator.classList.remove('inactive');
+            button.textContent = 'Désactiver';
+
+            let imageIndex = 0;
+
+            function updateImage() {
+                if (!activeAnimations.has('image-color')) return;
+
+                const audioData = getAudioData();
+                if (audioData) {
+                    const average = audioData.reduce((a, b) => a + b) / audioData.length;
+                    const intensity = average / 255;
+
+                    // Changement de filtre selon l'intensité
+                    const hue = (intensity * 360) % 360;
+                    const saturation = 50 + (intensity * 50);
+                    const brightness = 100 + (intensity * 50);
+                    
+                    img.style.filter = `hue-rotate(${hue}deg) saturate(${saturation}%) brightness(${brightness}%)`;
+                    
+                    // Changement d'image périodique
+                    if (intensity > 0.7 && Math.random() > 0.95) {
+                        imageIndex = (imageIndex + 1) % pexelsImages.length;
+                        img.src = pexelsImages[imageIndex];
+                    }
+                }
+
+                animationId = requestAnimationFrame(updateImage);
+            }
+
+            updateImage();
+        }
+
+        // Animation du waveform
+        function toggleWaveform(button) {
+            const card = button.closest('.animation-card');
+            const container = card.querySelector('.waveform-container');
+            const canvas = container.querySelector('.waveform-canvas');
+            const indicator = container.querySelector('.audio-sync-indicator');
+            
+            if (activeAnimations.has('waveform')) {
+                activeAnimations.delete('waveform');
+                indicator.classList.add('inactive');
+                button.textContent = 'Activer';
+                return;
+            }
+
+            activeAnimations.add('waveform');
+            indicator.classList.remove('inactive');
+            button.textContent = 'Désactiver';
+
+            const ctx = canvas.getContext('2d');
+            canvas.width = container.offsetWidth;
+            canvas.height = container.offsetHeight;
+
+            function drawWaveform() {
+                if (!activeAnimations.has('waveform')) return;
+
+                const audioData = getAudioData();
+                if (audioData) {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    
+                    const barWidth = canvas.width / audioData.length;
+                    const barMaxHeight = canvas.height * 0.8;
+
+                    for (let i = 0; i < audioData.length; i++) {
+                        const barHeight = (audioData[i] / 255) * barMaxHeight;
+                        const x = i * barWidth;
+                        const y = (canvas.height - barHeight) / 2;
+
+                        const hue = (i / audioData.length) * 360;
+                        ctx.fillStyle = `hsl(${hue}, 70%, 60%)`;
+                        ctx.fillRect(x, y, barWidth - 1, barHeight);
+                    }
+                }
+
+                animationId = requestAnimationFrame(drawWaveform);
+            }
+
+            drawWaveform();
+        }
+
+        // Animation des particules audio
+        function toggleAudioParticles(button) {
+            const card = button.closest('.animation-card');
+            const container = card.querySelector('.audio-particles-container');
+            const indicator = container.querySelector('.audio-sync-indicator');
+            
+            if (activeAnimations.has('audio-particles')) {
+                activeAnimations.delete('audio-particles');
+                indicator.classList.add('inactive');
+                button.textContent = 'Activer';
+                // Nettoyer les particules existantes
+                container.querySelectorAll('.audio-particle').forEach(p => p.remove());
+                return;
+            }
+
+            activeAnimations.add('audio-particles');
+            indicator.classList.remove('inactive');
+            button.textContent = 'Désactiver';
+
+            const particles = [];
+
+            function createParticle() {
+                const particle = document.createElement('div');
+                particle.className = 'audio-particle';
+                particle.style.left = Math.random() * container.offsetWidth + 'px';
+                particle.style.top = container.offsetHeight + 'px';
+                container.appendChild(particle);
+
+                return {
+                    element: particle,
+                    x: parseFloat(particle.style.left),
+                    y: container.offsetHeight,
+                    vx: (Math.random() - 0.5) * 2,
+                    vy: -Math.random() * 3 - 1,
+                    life: 1
+                };
+            }
+
+            function updateParticles() {
+                if (!activeAnimations.has('audio-particles')) return;
+
+                const audioData = getAudioData();
+                if (audioData) {
+                    const average = audioData.reduce((a, b) => a + b) / audioData.length;
+                    const intensity = average / 255;
+
+                    // Créer de nouvelles particules selon l'intensité
+                    if (intensity > 0.3 && Math.random() > 0.7) {
+                        particles.push(createParticle());
+                    }
+                }
+
+                // Mettre à jour les particules existantes
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    const particle = particles[i];
+                    particle.y += particle.vy;
+                    particle.x += particle.vx;
+                    particle.life -= 0.02;
+
+                    particle.element.style.left = particle.x + 'px';
+                    particle.element.style.top = particle.y + 'px';
+                    particle.element.style.opacity = particle.life;
+
+                    if (particle.life <= 0) {
+                        particle.element.remove();
+                        particles.splice(i, 1);
+                    }
+                }
+
+                animationId = requestAnimationFrame(updateParticles);
+            }
+
+            updateParticles();
+        }
+
+        // Animation de la palette de couleurs
+        function toggleColorPalette(button) {
+            const card = button.closest('.animation-card');
+            const container = card.querySelector('.color-palette-container');
+            const swatches = container.querySelectorAll('.color-swatch');
+            const indicator = container.querySelector('.audio-sync-indicator');
+            
+            if (activeAnimations.has('color-palette')) {
+                activeAnimations.delete('color-palette');
+                indicator.classList.add('inactive');
+                button.textContent = 'Activer';
+                return;
+            }
+
+            activeAnimations.add('color-palette');
+            indicator.classList.remove('inactive');
+            button.textContent = 'Désactiver';
+
+            let paletteIndex = 0;
+
+            function updatePalette() {
+                if (!activeAnimations.has('color-palette')) return;
+
+                const audioData = getAudioData();
+                if (audioData) {
+                    const average = audioData.reduce((a, b) => a + b) / audioData.length;
+                    const intensity = average / 255;
+
+                    // Changer de palette selon l'intensité
+                    if (intensity > 0.6 && Math.random() > 0.98) {
+                        paletteIndex = (paletteIndex + 1) % colorPalettes.length;
+                        const newPalette = colorPalettes[paletteIndex];
+                        
+                        swatches.forEach((swatch, index) => {
+                            if (newPalette[index]) {
+                                swatch.style.background = newPalette[index];
+                                swatch.querySelector('.color-info').textContent = newPalette[index];
+                            }
+                        });
+                    }
+
+                    // Effet de pulsation
+                    swatches.forEach((swatch, index) => {
+                        const pulseIntensity = intensity * 0.3;
+                        swatch.style.transform = `scale(${1 + pulseIntensity})`;
+                    });
+                }
+
+                animationId = requestAnimationFrame(updatePalette);
+            }
+
+            updatePalette();
+        }
+
+        // Écouteur pour la connexion audio
+        document.addEventListener('DOMContentLoaded', () => {
+            const audio = document.querySelector('audio');
+            if (audio) {
+                audio.addEventListener('play', () => {
+                    initAudioContext();
+                    connectAudioToContext(audio);
+                });
+            }
+        });
     </script>
 </body>
 </html>
