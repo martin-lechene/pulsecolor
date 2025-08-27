@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <!-- SEO Meta Tags -->
+  <title>Changelog — PulseColor</title>
+  <meta name="description" content="Historique des versions et changements de PulseColor. Découvrez les nouvelles fonctionnalités, améliorations et corrections de bugs." />
+  <meta name="keywords" content="pulsecolor, changelog, versions, mises à jour, fonctionnalités" />
+  <meta name="author" content="PulseColor Team" />
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://pulsecolor.dev/changelog" />
+  <meta property="og:title" content="Changelog — PulseColor" />
+  <meta property="og:description" content="Historique des versions et changements de PulseColor" />
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+  <!-- Skip to main content for accessibility -->
+  <a href="#main-content" class="sr-only sr-only-focusable">Passer au contenu principal</a>
+  
+  <div class="wrapper">
+    <!-- NAVIGATION -->
+    <nav class="nav" role="navigation" aria-label="Navigation principale">
+      <a class="logo" href="index.html" aria-label="PulseColor - Accueil">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="hsl(var(--bg-a))"/>
+              <stop offset="100%" stop-color="hsl(var(--bg-b))"/>
+            </linearGradient>
+          </defs>
+          <path d="M12 3c4.97 0 9 4.03 9 9s-4.03 9-9 9S3 16.97 3 12" stroke="url(#g1)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M3 12c0-1 .2-2 .6-2.9" stroke="url(#g1)" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        PulseColor
+      </a>
+      
+      <div class="nav-links">
+        <a class="btn btn-ghost" href="index.html">Accueil</a>
+        <a class="btn btn-ghost" href="gallery.html">Galerie</a>
+        <a class="btn btn-ghost" href="docs/quickstart.html">Documentation</a>
+        <a class="btn btn-primary" href="index.html#demo">Essayer</a>
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main id="main-content">
+      <!-- HERO SECTION -->
+      <header class="hero" role="banner">
+        <div class="hero-content">
+          <div class="badge" aria-label="Changelog">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+            Changelog
+          </div>
+          
+          <h1>Historique des Versions</h1>
+          <p>Découvrez toutes les nouvelles fonctionnalités, améliorations et corrections de bugs de PulseColor. Nous publions régulièrement des mises à jour pour améliorer votre expérience.</p>
+          
+          <div class="cta-row">
+            <a href="#latest" class="btn btn-primary">📋 Voir les dernières</a>
+            <a href="https://github.com/pulsecolor/pulsecolor/releases" class="btn btn-secondary" target="_blank" rel="noopener">GitHub Releases</a>
+          </div>
+        </div>
+      </header>
+
+      <!-- LATEST VERSION SECTION -->
+      <section id="latest" class="section" aria-labelledby="latest-heading">
+        <h2 id="latest-heading">Version 2.0.0 — "Aurora" <span class="version-badge">Latest</span></h2>
+        <div class="version-date">Publié le 15 décembre 2024</div>
+        
+        <div class="changelog-content">
+          <div class="change-category">
+            <h3>🚀 Nouvelles Fonctionnalités</h3>
+            <ul>
+              <li><strong>10 nouvelles animations</strong> - Ajout de particules, ondes, formes géométriques et plus</li>
+              <li><strong>API JavaScript complète</strong> - Interface programmatique pour l'intégration</li>
+              <li><strong>Support des fichiers audio</strong> - Import et lecture de fichiers MP3, WAV, etc.</li>
+              <li><strong>Analyse audio avancée</strong> - FFT, détection de beat, analyse des fréquences</li>
+              <li><strong>Personnalisation des couleurs</strong> - Variables CSS et thèmes prédéfinis</li>
+            </ul>
+          </div>
+          
+          <div class="change-category">
+            <h3>⚡ Améliorations</h3>
+            <ul>
+              <li><strong>Performance optimisée</strong> - Rendu 60fps fluide avec requestAnimationFrame</li>
+              <li><strong>Interface utilisateur</strong> - Design moderne et responsive</li>
+              <li><strong>Accessibilité</strong> - Support complet des lecteurs d'écran et navigation clavier</li>
+              <li><strong>Documentation</strong> - Guides complets et exemples d'intégration</li>
+              <li><strong>PWA</strong> - Support des applications web progressives</li>
+            </ul>
+          </div>
+          
+          <div class="change-category">
+            <h3>🐛 Corrections</h3>
+            <ul>
+              <li>Correction des problèmes de latence audio sur mobile</li>
+              <li>Amélioration de la compatibilité navigateur</li>
+              <li>Résolution des fuites mémoire dans les animations</li>
+              <li>Correction des problèmes de synchronisation audio/vidéo</li>
+            </ul>
+          </div>
+          
+          <div class="change-category">
+            <h3>🔧 Technique</h3>
+            <ul>
+              <li>Migration vers Web Audio API moderne</li>
+              <li>Refactoring complet du code JavaScript</li>
+              <li>Optimisation des assets et compression</li>
+              <li>Ajout de tests automatisés</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- PREVIOUS VERSIONS SECTION -->
+      <section class="section" aria-labelledby="previous-heading">
+        <h2 id="previous-heading">Versions Précédentes</h2>
+        
+        <div class="versions-timeline">
+          <div class="version-item">
+            <div class="version-header">
+              <h3>Version 1.5.0 — "Neon"</h3>
+              <span class="version-date">10 novembre 2024</span>
+            </div>
+            <div class="version-content">
+              <ul>
+                <li>Ajout de 5 nouvelles animations</li>
+                <li>Support du microphone</li>
+                <li>Interface utilisateur améliorée</li>
+                <li>Corrections de bugs mineurs</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="version-item">
+            <div class="version-header">
+              <h3>Version 1.0.0 — "Genesis"</h3>
+              <span class="version-date">1 octobre 2024</span>
+            </div>
+            <div class="version-content">
+              <ul>
+                <li>Première version publique</li>
+                <li>5 animations de base</li>
+                <li>Support audio basique</li>
+                <li>Interface simple</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="version-item">
+            <div class="version-header">
+              <h3>Version 0.9.0 — "Beta"</h3>
+              <span class="version-date">15 septembre 2024</span>
+            </div>
+            <div class="version-content">
+              <ul>
+                <li>Version bêta pour tests</li>
+                <li>3 animations expérimentales</li>
+                <li>Tests de performance</li>
+                <li>Feedback de la communauté</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ROADMAP SECTION -->
+      <section class="section" aria-labelledby="roadmap-heading">
+        <h2 id="roadmap-heading">Roadmap</h2>
+        
+        <div class="roadmap-grid">
+          <div class="roadmap-item">
+            <div class="roadmap-version">v2.1.0</div>
+            <h3>🎨 Thèmes Avancés</h3>
+            <ul>
+              <li>Éditeur de thèmes visuel</li>
+              <li>Import/export de configurations</li>
+              <li>Thèmes communautaires</li>
+              <li>Mode sombre/clair automatique</li>
+            </ul>
+            <div class="roadmap-date">Q1 2025</div>
+          </div>
+          
+          <div class="roadmap-item">
+            <div class="roadmap-version">v2.2.0</div>
+            <h3>🎵 Audio Avancé</h3>
+            <ul>
+              <li>Support des formats audio haute qualité</li>
+              <li>Filtres audio personnalisables</li>
+              <li>Analyse spectrale avancée</li>
+              <li>Synchronisation multi-pistes</li>
+            </ul>
+            <div class="roadmap-date">Q2 2025</div>
+          </div>
+          
+          <div class="roadmap-item">
+            <div class="roadmap-version">v3.0.0</div>
+            <h3>🚀 Performance</h3>
+            <ul>
+              <li>Rendu WebGL pour les animations complexes</li>
+              <li>Support des animations 3D</li>
+              <li>Optimisation mobile avancée</li>
+              <li>API Web Workers</li>
+            </ul>
+            <div class="roadmap-date">Q3 2025</div>
+          </div>
+          
+          <div class="roadmap-item">
+            <div class="roadmap-version">v3.1.0</div>
+            <h3>🌐 Écosystème</h3>
+            <ul>
+              <li>Plugins et extensions</li>
+              <li>Marketplace d'animations</li>
+              <li>API cloud pour le partage</li>
+              <li>Intégrations tierces</li>
+            </ul>
+            <div class="roadmap-date">Q4 2025</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTRIBUTORS SECTION -->
+      <section class="section" aria-labelledby="contributors-heading">
+        <h2 id="contributors-heading">Contributeurs</h2>
+        
+        <div class="contributors-grid">
+          <div class="contributor-card">
+            <div class="contributor-avatar">👨‍💻</div>
+            <h3>Martin Lechêne</h3>
+            <p>Lead Developer & Designer</p>
+            <div class="contributor-stats">
+              <span>Commits: 1,247</span>
+              <span>Issues: 89</span>
+            </div>
+          </div>
+          
+          <div class="contributor-card">
+            <div class="contributor-avatar">🎨</div>
+            <h3>Sarah Chen</h3>
+            <p>UI/UX Designer</p>
+            <div class="contributor-stats">
+              <span>Designs: 45</span>
+              <span>Animations: 12</span>
+            </div>
+          </div>
+          
+          <div class="contributor-card">
+            <div class="contributor-avatar">🔧</div>
+            <h3>Alex Rodriguez</h3>
+            <p>Backend Developer</p>
+            <div class="contributor-stats">
+              <span>Commits: 234</span>
+              <span>Tests: 156</span>
+            </div>
+          </div>
+          
+          <div class="contributor-card">
+            <div class="contributor-avatar">📚</div>
+            <h3>Emma Thompson</h3>
+            <p>Documentation & Community</p>
+            <div class="contributor-stats">
+              <span>Docs: 67</span>
+              <span>Support: 234</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="contributors-cta">
+          <p>Vous voulez contribuer ? Rejoignez notre équipe !</p>
+          <a href="https://github.com/pulsecolor/pulsecolor" class="btn btn-primary" target="_blank" rel="noopener">
+            Contribuer sur GitHub
+          </a>
+        </div>
+      </section>
+
+      <!-- RELEASE NOTES SECTION -->
+      <section class="section" aria-labelledby="release-notes-heading">
+        <h2 id="release-notes-heading">Notes de Version Détaillées</h2>
+        
+        <div class="release-notes">
+          <div class="release-note">
+            <h3>Breaking Changes</h3>
+            <p>La version 2.0.0 introduit des changements majeurs dans l'API. Consultez le <a href="docs/migration.html">guide de migration</a> pour plus de détails.</p>
+          </div>
+          
+          <div class="release-note">
+            <h3>Compatibilité Navigateur</h3>
+            <ul>
+              <li>Chrome 90+ ✅</li>
+              <li>Firefox 88+ ✅</li>
+              <li>Safari 14+ ✅</li>
+              <li>Edge 90+ ✅</li>
+              <li>Mobile Safari 14+ ✅</li>
+            </ul>
+          </div>
+          
+          <div class="release-note">
+            <h3>Performance</h3>
+            <ul>
+              <li>Rendu 60fps sur tous les appareils</li>
+              <li>Latence audio réduite de 50%</li>
+              <li>Taille du bundle réduite de 30%</li>
+              <li>Chargement initial 2x plus rapide</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer role="contentinfo">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="logo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 3c4.97 0 9 4.03 9 9s-4.03 9-9 9S3 16.97 3 12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+            PulseColor
+          </div>
+          <p>Animations audio-réactives open source</p>
+          <p>© <span id="year"></span> PulseColor. Tous droits réservés.</p>
+        </div>
+        
+        <div class="footer-links">
+          <div class="footer-section">
+            <h4>Projet</h4>
+            <a href="index.html">Accueil</a>
+            <a href="gallery.html">Galerie</a>
+            <a href="docs/quickstart.html">Documentation</a>
+          </div>
+          
+          <div class="footer-section">
+            <h4>Développement</h4>
+            <a href="https://github.com/pulsecolor/pulsecolor" target="_blank" rel="noopener">GitHub</a>
+            <a href="changelogs.html">Changelog</a>
+            <a href="https://github.com/pulsecolor/pulsecolor/issues" target="_blank" rel="noopener">Issues</a>
+          </div>
+          
+          <div class="footer-section">
+            <h4>Support</h4>
+            <a href="contact.html">Contact</a>
+            <a href="support.html">Support</a>
+            <a href="https://discord.gg/pulsecolor" target="_blank" rel="noopener">Discord</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>Propulsé par l'amour de la musique et du code open source 🎵</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/animations.js"></script>
+  <script src="js/main.js"></script>
+  
+  <script>
+    // Set current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
