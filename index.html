@@ -462,9 +462,65 @@
     </footer>
   </div>
 
+  <!-- Audio Player -->
+  <div class="audio-player" id="audio-player">
+    <div class="audio-level-indicator"></div>
+    
+    <div class="audio-player-header">
+      <div class="audio-player-title">PulseColor Audio Player</div>
+      <button class="collapse-btn" onclick="toggleAudioPlayer()">−</button>
+    </div>
+    
+    <div class="audio-player-content">
+      <div class="audio-info">
+        <div class="track-info" id="track-info">Aucune piste sélectionnée</div>
+        
+        <div class="audio-progress">
+          <span class="time-display" id="current-time">00:00</span>
+          <input type="range" class="progress-slider" id="progress-slider" min="0" max="100" value="0">
+          <span class="time-display" id="total-time">00:00</span>
+        </div>
+        
+        <div class="audio-controls">
+          <button class="control-btn" id="prev-btn" title="Piste précédente">⏮</button>
+          <button class="control-btn play-btn" id="play-btn" title="Play/Pause">▶</button>
+          <button class="control-btn" id="stop-btn" title="Stop">⏹</button>
+          <button class="control-btn" id="next-btn" title="Piste suivante">⏭</button>
+          
+          <div class="volume-control">
+            <span class="volume-icon">🔊</span>
+            <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="100">
+          </div>
+        </div>
+      </div>
+      
+      <div class="audio-visualizations">
+        <div class="visualization-container">
+          <canvas id="spectrum-canvas" class="spectrum-canvas"></canvas>
+          <div class="visualization-label">Spectrum</div>
+        </div>
+        
+        <div class="visualization-container">
+          <canvas id="vu-canvas" class="vu-canvas"></canvas>
+          <div class="visualization-label">VU Meter</div>
+        </div>
+        
+        <div class="visualization-container">
+          <canvas id="equalizer-canvas" class="equalizer-canvas"></canvas>
+          <div class="visualization-label">Equalizer</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="playlist-container" id="playlist-container">
+      <!-- La playlist sera générée dynamiquement -->
+    </div>
+  </div>
+
   <!-- Scripts -->
   <script src="js/animations.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/audio-player.js"></script>
   
   <!-- Service Worker for PWA -->
   <script>
