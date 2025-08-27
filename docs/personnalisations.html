@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <!-- SEO Meta Tags -->
+  <title>Personnalisations — PulseColor Documentation</title>
+  <meta name="description" content="Guide complet pour personnaliser vos animations PulseColor. Créez vos propres animations, couleurs et effets audio-réactifs." />
+  <meta name="keywords" content="pulsecolor, personnalisation, animations, couleurs, effets, audio-réactif" />
+  <meta name="author" content="PulseColor Team" />
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://pulsecolor.dev/docs/personnalisations" />
+  <meta property="og:title" content="Personnalisations — PulseColor" />
+  <meta property="og:description" content="Guide complet pour personnaliser vos animations PulseColor" />
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../css/main.css" />
+</head>
+<body>
+  <!-- Skip to main content for accessibility -->
+  <a href="#main-content" class="sr-only sr-only-focusable">Passer au contenu principal</a>
+  
+  <div class="wrapper">
+    <!-- NAVIGATION -->
+    <nav class="nav" role="navigation" aria-label="Navigation principale">
+      <a class="logo" href="../index.html" aria-label="PulseColor - Accueil">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="hsl(var(--bg-a))"/>
+              <stop offset="100%" stop-color="hsl(var(--bg-b))"/>
+            </linearGradient>
+          </defs>
+          <path d="M12 3c4.97 0 9 4.03 9 9s-4.03 9-9 9S3 16.97 3 12" stroke="url(#g1)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M3 12c0-1 .2-2 .6-2.9" stroke="url(#g1)" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        PulseColor
+      </a>
+      
+      <div class="nav-links">
+        <a class="btn btn-ghost" href="../index.html">Accueil</a>
+        <a class="btn btn-ghost" href="../gallery.html">Galerie</a>
+        <a class="btn btn-ghost" href="personnalisations.html" aria-current="page">Documentation</a>
+        <a class="btn btn-primary" href="../index.html#demo">Essayer</a>
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main id="main-content">
+      <!-- HERO SECTION -->
+      <header class="hero" role="banner">
+        <div class="hero-content">
+          <div class="badge" aria-label="Documentation">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6z"/>
+            </svg>
+            Documentation
+          </div>
+          
+          <h1>Personnalisations</h1>
+          <p>Créez vos propres animations audio-réactives ! Découvrez comment personnaliser les couleurs, créer de nouveaux effets et adapter PulseColor à votre style unique.</p>
+          
+          <div class="cta-row">
+            <a href="#couleurs" class="btn btn-primary">🎨 Commencer</a>
+            <a href="api-reference.html" class="btn btn-secondary">📚 API Reference</a>
+          </div>
+        </div>
+      </header>
+
+      <!-- DOCUMENTATION NAVIGATION -->
+      <nav class="docs-nav" aria-label="Navigation documentation">
+        <div class="docs-nav-content">
+          <a href="quickstart.html" class="docs-nav-item">🚀 Démarrage Rapide</a>
+          <a href="api-reference.html" class="docs-nav-item">📚 API Reference</a>
+          <a href="personnalisations.html" class="docs-nav-item active">🎨 Personnalisations</a>
+          <a href="../changelogs.html" class="docs-nav-item">📝 Changelogs</a>
+        </div>
+      </nav>
+
+      <!-- COULEURS SECTION -->
+      <section id="couleurs" class="section" aria-labelledby="couleurs-heading">
+        <h2 id="couleurs-heading">Personnalisation des Couleurs</h2>
+        
+        <div class="docs-content">
+          <h3>Variables CSS</h3>
+          <p>PulseColor utilise des variables CSS pour les couleurs. Vous pouvez les personnaliser facilement :</p>
+          
+          <div class="code-block">
+            <div class="code-header">
+              <span>CSS</span>
+              <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+            </div>
+            <pre><code>:root {
+  /* Couleurs principales */
+  --bg-a: 260 95% 60%;    /* Bleu-violet */
+  --bg-b: 200 95% 60%;    /* Bleu */
+  --accent: 270 100% 67%; /* Violet accent */
+  
+  /* Couleurs de texte */
+  --text-primary: 0 0% 95%;
+  --text-secondary: 0 0% 85%;
+  --text-muted: 0 0% 65%;
+}</code></pre>
+          </div>
+
+          <h3>Thèmes Prédéfinis</h3>
+          <div class="themes-grid">
+            <div class="theme-card">
+              <h4>🌅 Sunset</h4>
+              <div class="theme-preview sunset"></div>
+              <div class="code-block">
+                <pre><code>--bg-a: 15 95% 60%;   /* Orange */
+--bg-b: 45 95% 60%;   /* Jaune */</code></pre>
+              </div>
+            </div>
+            
+            <div class="theme-card">
+              <h4>🌊 Ocean</h4>
+              <div class="theme-preview ocean"></div>
+              <div class="code-block">
+                <pre><code>--bg-a: 200 95% 60%;  /* Bleu océan */
+--bg-b: 180 95% 60%;  /* Bleu-vert */</code></pre>
+              </div>
+            </div>
+            
+            <div class="theme-card">
+              <h4>🌸 Spring</h4>
+              <div class="theme-preview spring"></div>
+              <div class="code-block">
+                <pre><code>--bg-a: 330 95% 60%;  /* Rose */
+--bg-b: 120 95% 60%;  /* Vert */</code></pre>
+              </div>
+            </div>
+            
+            <div class="theme-card">
+              <h4>🔥 Fire</h4>
+              <div class="theme-preview fire"></div>
+              <div class="code-block">
+                <pre><code>--bg-a: 0 95% 60%;    /* Rouge */
+--bg-b: 30 95% 60%;   /* Orange */</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ANIMATIONS CUSTOM SECTION -->
+      <section class="section" aria-labelledby="animations-custom-heading">
+        <h2 id="animations-custom-heading">Créer vos Animations</h2>
+        
+        <div class="docs-content">
+          <h3>Structure d'une Animation</h3>
+          <p>Chaque animation PulseColor suit une structure simple :</p>
+          
+          <div class="code-block">
+            <div class="code-header">
+              <span>JavaScript</span>
+              <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+            </div>
+            <pre><code>// Définir une nouvelle animation
+PulseColor.animations.customAnimation = {
+  // Initialisation
+  init: function(canvas, options) {
+    this.canvas = canvas;
+    this.options = options;
+    // Créer les éléments SVG
+  },
+  
+  // Mise à jour à chaque frame
+  update: function(audioData) {
+    // Mettre à jour l'animation avec les données audio
+    const { bass, mid, high, energy } = audioData;
+    
+    // Votre logique d'animation ici
+  },
+  
+  // Nettoyage
+  destroy: function() {
+    // Nettoyer les ressources
+  }
+};</code></pre>
+          </div>
+
+          <h3>Exemple : Animation de Particules</h3>
+          <div class="code-block">
+            <div class="code-header">
+              <span>JavaScript</span>
+              <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+            </div>
+            <pre><code>PulseColor.animations.customParticles = {
+  init: function(canvas, options) {
+    this.canvas = canvas;
+    this.particles = [];
+    
+    // Créer 50 particules
+    for (let i = 0; i < 50; i++) {
+      this.particles.push({
+        x: Math.random() * 600,
+        y: Math.random() * 600,
+        vx: (Math.random() - 0.5) * 2,
+        vy: (Math.random() - 0.5) * 2,
+        size: Math.random() * 5 + 2
+      });
+    }
+  },
+  
+  update: function(audioData) {
+    const { energy } = audioData;
+    
+    // Mettre à jour chaque particule
+    this.particles.forEach(particle => {
+      // Mouvement
+      particle.x += particle.vx;
+      particle.y += particle.vy;
+      
+      // Rebond sur les bords
+      if (particle.x < 0 || particle.x > 600) particle.vx *= -1;
+      if (particle.y < 0 || particle.y > 600) particle.vy *= -1;
+      
+      // Taille réactive à l'énergie
+      particle.size = Math.random() * 5 + 2 + energy * 10;
+    });
+    
+    // Dessiner les particules
+    this.draw();
+  },
+  
+  draw: function() {
+    // Logique de dessin SVG
+  },
+  
+  destroy: function() {
+    this.particles = [];
+  }
+};</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- EFFETS AUDIO SECTION -->
+      <section class="section" aria-labelledby="effets-audio-heading">
+        <h2 id="effets-audio-heading">Effets Audio Avancés</h2>
+        
+        <div class="docs-content">
+          <h3>Analyse des Fréquences</h3>
+          <p>PulseColor fournit des données détaillées sur l'audio :</p>
+          
+          <div class="code-block">
+            <div class="code-header">
+              <span>JavaScript</span>
+              <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+            </div>
+            <pre><code>pulseColor.on('audio', (data) => {
+  // Données de base
+  const { bass, mid, high, energy } = data;
+  
+  // Données avancées
+  const { 
+    frequencies,    // Tableau des 128 fréquences
+    beat,          // Détection de beat (0-1)
+    volume,        // Volume global (0-1)
+    centroid       // Fréquence centrale
+  } = data;
+  
+  // Utiliser ces données pour vos effets
+  if (beat > 0.8) {
+    // Beat fort détecté !
+    createExplosion();
+  }
+});</code></pre>
+          </div>
+
+          <h3>Filtres Audio</h3>
+          <div class="code-block">
+            <div class="code-header">
+              <span>JavaScript</span>
+              <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+            </div>
+            <pre><code>// Appliquer des filtres audio
+pulseColor.setAudioFilters({
+  lowpass: 1000,    // Filtre passe-bas à 1kHz
+  highpass: 200,    // Filtre passe-haut à 200Hz
+  notch: 800,       // Filtre coupe-bande à 800Hz
+  gain: 1.5         // Amplification
+});</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- INTEGRATION SECTION -->
+      <section class="section" aria-labelledby="integration-heading">
+        <h2 id="integration-heading">Intégration Avancée</h2>
+        
+        <div class="docs-content">
+          <h3>Avec React</h3>
+          <div class="code-block">
+            <div class="code-header">
+              <span>React</span>
+              <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+            </div>
+            <pre><code>import { useEffect, useRef } from 'react';
+
+function AudioVisualizer() {
+  const canvasRef = useRef();
+  const pulseColorRef = useRef();
+
+  useEffect(() => {
+    if (canvasRef.current) {
+      pulseColorRef.current = new PulseColor({
+        canvas: canvasRef.current,
+        animation: 'customParticles'
+      });
+      
+      pulseColorRef.current.start();
+    }
+
+    return () => {
+      if (pulseColorRef.current) {
+        pulseColorRef.current.stop();
+      }
+    };
+  }, []);
+
+  return (
+    &lt;svg ref={canvasRef} viewBox="0 0 600 600"&gt;
+      &lt;rect width="600" height="600" fill="url(#bg)" /&gt;
+    &lt;/svg&gt;
+  );
+}</code></pre>
+          </div>
+
+          <h3>Avec Vue.js</h3>
+          <div class="code-block">
+            <div class="code-header">
+              <span>Vue.js</span>
+              <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+            </div>
+            <pre><code>&lt;template&gt;
+  &lt;div class="audio-visualizer"&gt;
+    &lt;svg ref="canvas" viewBox="0 0 600 600"&gt;
+      &lt;rect width="600" height="600" fill="url(#bg)" /&gt;
+    &lt;/svg&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {
+  mounted() {
+    this.pulseColor = new PulseColor({
+      canvas: this.$refs.canvas,
+      animation: 'blob'
+    });
+    this.pulseColor.start();
+  },
+  
+  beforeDestroy() {
+    if (this.pulseColor) {
+      this.pulseColor.stop();
+    }
+  }
+}
+&lt;/script&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- EXAMPLES SECTION -->
+      <section class="section" aria-labelledby="examples-heading">
+        <h2 id="examples-heading">Exemples Créatifs</h2>
+        
+        <div class="examples-grid">
+          <div class="example-card">
+            <h3>🎵 Visualiseur de Musique</h3>
+            <p>Créez un visualiseur de musique personnalisé avec vos couleurs préférées.</p>
+            <div class="code-block">
+              <pre><code>// Thème musical
+const musicTheme = {
+  colors: {
+    primary: 'hsl(280, 95%, 60%)',
+    secondary: 'hsl(200, 95%, 60%)'
+  },
+  animation: 'customBars'
+};</code></pre>
+            </div>
+          </div>
+          
+          <div class="example-card">
+            <h3>🎮 Effets de Jeu</h3>
+            <p>Ajoutez des effets visuels réactifs à vos jeux web.</p>
+            <div class="code-block">
+              <pre><code>// Effet d'explosion
+function createExplosion(x, y) {
+  pulseColor.setAnimation('fireworks');
+  pulseColor.setPosition(x, y);
+}</code></pre>
+            </div>
+          </div>
+          
+          <div class="example-card">
+            <h3>🎨 Art Interactif</h3>
+            <p>Créez des œuvres d'art interactives qui réagissent au son.</p>
+            <div class="code-block">
+              <pre><code>// Art génératif
+const artAnimation = {
+  update: (audioData) => {
+    // Créer des formes basées sur l'audio
+    drawOrganicShapes(audioData);
+  }
+};</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RESOURCES SECTION -->
+      <section class="section" aria-labelledby="resources-heading">
+        <h2 id="resources-heading">Ressources</h2>
+        
+        <div class="resources-grid">
+          <div class="resource-card">
+            <h3>📚 Documentation</h3>
+            <ul>
+              <li><a href="api-reference.html">API Reference complète</a></li>
+              <li><a href="quickstart.html">Guide de démarrage</a></li>
+              <li><a href="https://github.com/pulsecolor/pulsecolor">Code source</a></li>
+            </ul>
+          </div>
+          
+          <div class="resource-card">
+            <h3>🎨 Galerie</h3>
+            <ul>
+              <li><a href="../gallery.html">Exemples créatifs</a></li>
+              <li><a href="https://codepen.io/pulsecolor">CodePen</a></li>
+              <li><a href="https://dribbble.com/pulsecolor">Dribbble</a></li>
+            </ul>
+          </div>
+          
+          <div class="resource-card">
+            <h3>💬 Communauté</h3>
+            <ul>
+              <li><a href="https://discord.gg/pulsecolor">Discord</a></li>
+              <li><a href="https://github.com/pulsecolor/pulsecolor/issues">Issues GitHub</a></li>
+              <li><a href="../support.html">Support</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer role="contentinfo">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="logo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 3c4.97 0 9 4.03 9 9s-4.03 9-9 9S3 16.97 3 12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+            PulseColor
+          </div>
+          <p>Animations audio-réactives open source</p>
+          <p>© <span id="year"></span> PulseColor. Tous droits réservés.</p>
+        </div>
+        
+        <div class="footer-links">
+          <div class="footer-section">
+            <h4>Documentation</h4>
+            <a href="quickstart.html">Démarrage Rapide</a>
+            <a href="api-reference.html">API Reference</a>
+            <a href="personnalisations.html">Personnalisations</a>
+          </div>
+          
+          <div class="footer-section">
+            <h4>Projet</h4>
+            <a href="../index.html">Accueil</a>
+            <a href="../gallery.html">Galerie</a>
+            <a href="../changelogs.html">Changelog</a>
+          </div>
+          
+          <div class="footer-section">
+            <h4>Support</h4>
+            <a href="../contact.html">Contact</a>
+            <a href="../support.html">Support</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>Propulsé par l'amour de la musique et du code open source 🎵</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../js/animations.js"></script>
+  <script src="../js/main.js"></script>
+  
+  <script>
+    // Copy code functionality
+    function copyCode(button) {
+      const codeBlock = button.closest('.code-block');
+      const code = codeBlock.querySelector('code').textContent;
+      
+      navigator.clipboard.writeText(code).then(() => {
+        button.textContent = 'Copié !';
+        setTimeout(() => {
+          button.textContent = 'Copier';
+        }, 2000);
+      });
+    }
+    
+    // Set current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
