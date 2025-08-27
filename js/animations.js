@@ -1,40 +1,238 @@
 /**
- * PulseColor Animations
- * 10 Different Audio-Reactive Visual Effects
+ * PulseColor Animations - Enhanced Version
+ * 10+ Audio-Reactive Visual Effects with Advanced Features
+ * Refactored with modern JavaScript practices
  */
 
-// Base Animation Class
+// Enhanced Base Animation Class with better practices
 class BaseAnimation {
-  constructor(svg) {
+  constructor(svg, options = {}) {
     this.svg = svg;
     this.elements = [];
+    this.options = {
+      enableParticles: true,
+      enableGlow: true,
+      enable3D: true,
+      colorMode: 'frequency', // 'frequency', 'beat', 'static'
+      ...options
+    };
+    
+    // Performance optimization
+    this.frameCount = 0;
+    this.lastUpdate = 0;
+    this.fps = 60;
+    
+    // Audio data cache
+    this.audioCache = {
+      bass: 0,
+      mid: 0,
+      high: 0,
+      beat: false,
+      raw: new Uint8Array(128)
+    };
+    
+    // Color utilities
+    this.colorPalette = {
+      bass: ['#ff006e', '#ff6b6b', '#ff8e53'],
+      mid: ['#4ecdc4', '#45b7d1', '#96ceb4'],
+      high: ['#feca57', '#ff9ff3', '#54a0ff'],
+      beat: ['#ffffff', '#ffd700', '#ff6b6b']
+    };
   }
 
   init() {
+    this.setupFilters();
+    this.setupGradients();
+    this.createElements();
+  }
+
+  setupFilters() {
+    // Create glow filter
+    if (this.options.enableGlow) {
+      const defs = this.createElement('defs');
+      const filter = this.createElement('filter', { id: 'glow' });
+      
+      const feGaussianBlur = this.createElement('feGaussianBlur', {
+        stdDeviation: '3',
+        result: 'coloredBlur'
+      });
+      
+      const feMerge = this.createElement('feMerge');
+      feMerge.appendChild(this.createElement('feMergeNode', { in: 'coloredBlur' }));
+      feMerge.appendChild(this.createElement('feMergeNode', { in: 'SourceGraphic' }));
+      
+      filter.appendChild(feGaussianBlur);
+      filter.appendChild(feMerge);
+      defs.appendChild(filter);
+      this.svg.appendChild(defs);
+    }
+  }
+
+  setupGradients() {
+    // Create radial gradients for 3D effects
+    if (this.options.enable3D) {
+      const defs = this.svg.querySelector('defs') || this.createElement('defs');
+      
+      // Bass gradient
+      const bassGradient = this.createElement('radialGradient', { id: 'bass-gradient' });
+      bassGradient.appendChild(this.createElement('stop', { offset: '0%', 'stop-color': '#ff006e', 'stop-opacity': '1' }));
+      bassGradient.appendChild(this.createElement('stop', { offset: '100%', 'stop-color': '#ff006e', 'stop-opacity': '0' }));
+      defs.appendChild(bassGradient);
+      
+      // Mid gradient
+      const midGradient = this.createElement('radialGradient', { id: 'mid-gradient' });
+      midGradient.appendChild(this.createElement('stop', { offset: '0%', 'stop-color': '#4ecdc4', 'stop-opacity': '1' }));
+      midGradient.appendChild(this.createElement('stop', { offset: '100%', 'stop-color': '#4ecdc4', 'stop-opacity': '0' }));
+      defs.appendChild(midGradient);
+      
+      // High gradient
+      const highGradient = this.createElement('radialGradient', { id: 'high-gradient' });
+      highGradient.appendChild(this.createElement('stop', { offset: '0%', 'stop-color': '#feca57', 'stop-opacity': '1' }));
+      highGradient.appendChild(this.createElement('stop', { offset: '100%', 'stop-color': '#feca57', 'stop-opacity': '0' }));
+      defs.appendChild(highGradient);
+      
+      if (!this.svg.querySelector('defs')) {
+        this.svg.appendChild(defs);
+      }
+    }
+  }
+
+  createElements() {
     // Override in subclasses
   }
 
   update(audioData) {
+    // Performance optimization
+    const now = performance.now();
+    if (now - this.lastUpdate < 1000 / this.fps) return;
+    this.lastUpdate = now;
+    
+    // Cache audio data
+    this.audioCache = { ...audioData };
+    this.frameCount++;
+    
     // Override in subclasses
   }
 
-  createElement(type, attributes) {
-    const element = document.createElementNS('http://www.w3.org/2000/svg', type);
-    Object.entries(attributes).forEach(([key, value]) => {
-      element.setAttribute(key, value);
-    });
-    return element;
+  // Enhanced element creation with better error handling
+  createElement(type, attributes = {}) {
+    try {
+      const element = document.createElementNS('http://www.w3.org/2000/svg', type);
+      Object.entries(attributes).forEach(([key, value]) => {
+        if (value !== null && value !== undefined) {
+          element.setAttribute(key, String(value));
+        }
+      });
+      return element;
+    } catch (error) {
+      console.error(`Error creating SVG element ${type}:`, error);
+      return null;
+    }
   }
 
   addElement(element) {
-    this.svg.appendChild(element);
-    this.elements.push(element);
+    if (element) {
+      this.svg.appendChild(element);
+      this.elements.push(element);
+    }
     return element;
   }
 
+  // Enhanced color utilities
+  getColorByFrequency(frequency, intensity = 1) {
+    const colors = this.colorPalette[frequency] || this.colorPalette.mid;
+    const index = Math.floor(intensity * (colors.length - 1));
+    return colors[Math.min(index, colors.length - 1)];
+  }
+
+  getDynamicColor(audioData) {
+    switch (this.options.colorMode) {
+      case 'frequency':
+        const maxFreq = Math.max(audioData.bass, audioData.mid, audioData.high);
+        if (maxFreq === audioData.bass) return this.getColorByFrequency('bass', audioData.bass);
+        if (maxFreq === audioData.mid) return this.getColorByFrequency('mid', audioData.mid);
+        return this.getColorByFrequency('high', audioData.high);
+      case 'beat':
+        return audioData.beat ? this.getColorByFrequency('beat', 1) : this.getColorByFrequency('mid', 0.5);
+      default:
+        return this.getColorByFrequency('mid', 0.5);
+    }
+  }
+
+  // Enhanced particle system
+  createParticle(x, y, options = {}) {
+    const particle = {
+      x: x || Math.random() * 600,
+      y: y || Math.random() * 600,
+      vx: (Math.random() - 0.5) * 4,
+      vy: (Math.random() - 0.5) * 4,
+      size: Math.random() * 8 + 2,
+      life: 1,
+      maxLife: 1,
+      color: options.color || 'white',
+      element: null,
+      ...options
+    };
+
+    particle.element = this.createElement('circle', {
+      cx: particle.x,
+      cy: particle.y,
+      r: particle.size,
+      fill: particle.color,
+      'fill-opacity': '0.8',
+      filter: this.options.enableGlow ? 'url(#glow)' : null
+    });
+
+    return particle;
+  }
+
+  updateParticle(particle, audioData) {
+    particle.x += particle.vx;
+    particle.y += particle.vy;
+    particle.life -= 0.02;
+
+    if (particle.element) {
+      particle.element.setAttribute('cx', particle.x);
+      particle.element.setAttribute('cy', particle.y);
+      particle.element.setAttribute('fill-opacity', particle.life);
+    }
+
+    return particle.life > 0;
+  }
+
+  // Enhanced 3D effects
+  apply3DEffect(element, depth = 1) {
+    if (!this.options.enable3D) return;
+    
+    const shadow = this.createElement('feDropShadow', {
+      dx: depth * 2,
+      dy: depth * 2,
+      stdDeviation: depth * 3,
+      'flood-color': 'rgba(0,0,0,0.3)'
+    });
+    
+    const filter = this.createElement('filter', { id: `shadow-${Date.now()}` });
+    filter.appendChild(shadow);
+    element.setAttribute('filter', `url(#${filter.id})`);
+  }
+
+  // Enhanced cleanup
   clear() {
-    this.elements.forEach(el => el.remove());
+    this.elements.forEach(el => {
+      if (el && el.parentNode) {
+        el.parentNode.removeChild(el);
+      }
+    });
     this.elements = [];
+  }
+
+  // Performance monitoring
+  getPerformanceStats() {
+    return {
+      frameCount: this.frameCount,
+      fps: this.fps,
+      elementsCount: this.elements.length
+    };
   }
 }
 
@@ -46,7 +244,7 @@ class BlobAnimation extends BaseAnimation {
     this.ring = null;
   }
 
-  init() {
+  createElements() {
     // Create ring
     this.ring = this.createElement('circle', {
       id: 'animation-ring',
@@ -112,7 +310,7 @@ class ParticleAnimation extends BaseAnimation {
     this.maxParticles = 50;
   }
 
-  init() {
+  createElements() {
     this.clear();
     this.particles = [];
     
@@ -126,29 +324,6 @@ class ParticleAnimation extends BaseAnimation {
     for (let i = 0; i < this.maxParticles; i++) {
       this.createParticle();
     }
-  }
-
-  createParticle() {
-    const particle = {
-      x: Math.random() * 600,
-      y: Math.random() * 600,
-      vx: (Math.random() - 0.5) * 4,
-      vy: (Math.random() - 0.5) * 4,
-      size: Math.random() * 8 + 2,
-      life: Math.random(),
-      element: null
-    };
-
-    particle.element = this.createElement('circle', {
-      cx: particle.x,
-      cy: particle.y,
-      r: particle.size,
-      fill: 'white',
-      'fill-opacity': '0.8'
-    });
-
-    this.particleGroup.appendChild(particle.element);
-    this.particles.push(particle);
   }
 
   update(audioData) {
@@ -200,7 +375,7 @@ class WaveAnimation extends BaseAnimation {
     this.waves = [];
   }
 
-  init() {
+  createElements() {
     this.clear();
     this.waves = [];
 
@@ -246,7 +421,7 @@ class GeometricAnimation extends BaseAnimation {
     this.shapes = [];
   }
 
-  init() {
+  createElements() {
     this.clear();
     this.shapes = [];
 
@@ -298,7 +473,7 @@ class BarsAnimation extends BaseAnimation {
     this.barCount = 32;
   }
 
-  init() {
+  createElements() {
     this.clear();
     this.bars = [];
 
@@ -347,7 +522,7 @@ class CircularAnimation extends BaseAnimation {
     this.circles = [];
   }
 
-  init() {
+  createElements() {
     this.clear();
     this.circles = [];
 
@@ -393,7 +568,7 @@ class MatrixAnimation extends BaseAnimation {
     this.characters = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
   }
 
-  init() {
+  createElements() {
     this.clear();
     this.drops = [];
 
@@ -450,7 +625,7 @@ class FireworksAnimation extends BaseAnimation {
     this.particles = [];
   }
 
-  init() {
+  createElements() {
     this.clear();
     this.fireworks = [];
     this.particles = [];
@@ -534,7 +709,7 @@ class DNAAnimation extends BaseAnimation {
     this.strands = [];
   }
 
-  init() {
+  createElements() {
     this.clear();
     this.strands = [];
 
@@ -606,7 +781,7 @@ class FractalAnimation extends BaseAnimation {
     this.trees = [];
   }
 
-  init() {
+  createElements() {
     this.clear();
     this.trees = [];
 
