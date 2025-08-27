@@ -114,7 +114,7 @@
       "name": "GitHub",
       "short_name": "GitHub",
       "description": "Voir le code source",
-      "url": "https://github.com/pulsecolor/pulsecolor",
+      "url": "https://github.com/martin-lechene/pulsecolor",
       "icons": [
         {
           "src": "/assets/icons/shortcut-github.png",
@@ -165,6 +165,6 @@
   ],
   "developer": {
     "name": "PulseColor Team",
-    "url": "https://pulsecolor.dev"
+    "url": "https://github.com/martin-lechene/pulsecolor"
   }
 }
