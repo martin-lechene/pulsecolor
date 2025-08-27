@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <!-- SEO Meta Tags -->
+  <title>Support — PulseColor</title>
+  <meta name="description" content="Centre d'aide et de support PulseColor. Trouvez des solutions à vos problèmes, consultez la FAQ et obtenez de l'aide technique." />
+  <meta name="keywords" content="pulsecolor, support, aide, faq, problèmes, technique" />
+  <meta name="author" content="PulseColor Team" />
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://pulsecolor.dev/support" />
+  <meta property="og:title" content="Support — PulseColor" />
+  <meta property="og:description" content="Centre d'aide et de support PulseColor" />
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+  <!-- Skip to main content for accessibility -->
+  <a href="#main-content" class="sr-only sr-only-focusable">Passer au contenu principal</a>
+  
+  <div class="wrapper">
+    <!-- NAVIGATION -->
+    <nav class="nav" role="navigation" aria-label="Navigation principale">
+      <a class="logo" href="index.html" aria-label="PulseColor - Accueil">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="hsl(var(--bg-a))"/>
+              <stop offset="100%" stop-color="hsl(var(--bg-b))"/>
+            </linearGradient>
+          </defs>
+          <path d="M12 3c4.97 0 9 4.03 9 9s-4.03 9-9 9S3 16.97 3 12" stroke="url(#g1)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M3 12c0-1 .2-2 .6-2.9" stroke="url(#g1)" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        PulseColor
+      </a>
+      
+      <div class="nav-links">
+        <a class="btn btn-ghost" href="index.html">Accueil</a>
+        <a class="btn btn-ghost" href="gallery.html">Galerie</a>
+        <a class="btn btn-ghost" href="docs/quickstart.html">Documentation</a>
+        <a class="btn btn-primary" href="index.html#demo">Essayer</a>
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main id="main-content">
+      <!-- HERO SECTION -->
+      <header class="hero" role="banner">
+        <div class="hero-content">
+          <div class="badge" aria-label="Support">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+            Support
+          </div>
+          
+          <h1>Centre d'Aide</h1>
+          <p>Besoin d'aide avec PulseColor ? Trouvez rapidement des solutions à vos problèmes, consultez notre FAQ ou contactez notre équipe de support.</p>
+          
+          <div class="cta-row">
+            <a href="#search" class="btn btn-primary">🔍 Rechercher</a>
+            <a href="contact.html" class="btn btn-secondary">📧 Contact</a>
+          </div>
+        </div>
+      </header>
+
+      <!-- SEARCH SECTION -->
+      <section id="search" class="section" aria-labelledby="search-heading">
+        <h2 id="search-heading">Rechercher de l'aide</h2>
+        
+        <div class="search-container">
+          <div class="search-box">
+            <input type="text" id="search-input" placeholder="Décrivez votre problème..." aria-label="Rechercher dans l'aide">
+            <button type="button" id="search-btn" aria-label="Lancer la recherche">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.35-4.35"/>
+              </svg>
+            </button>
+          </div>
+          
+          <div class="search-suggestions">
+            <span>Suggestions :</span>
+            <button class="suggestion-tag" data-search="microphone ne fonctionne pas">Microphone</button>
+            <button class="suggestion-tag" data-search="animation saccadée">Performance</button>
+            <button class="suggestion-tag" data-search="couleurs ne changent pas">Couleurs</button>
+            <button class="suggestion-tag" data-search="intégration site web">Intégration</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- QUICK HELP SECTION -->
+      <section class="section" aria-labelledby="quick-help-heading">
+        <h2 id="quick-help-heading">Aide Rapide</h2>
+        
+        <div class="quick-help-grid">
+          <div class="help-card">
+            <div class="help-icon">🎵</div>
+            <h3>Problèmes Audio</h3>
+            <p>Microphone, fichiers audio, latence...</p>
+            <a href="#audio-issues" class="btn btn-secondary">Voir les solutions</a>
+          </div>
+          
+          <div class="help-card">
+            <div class="help-icon">🎨</div>
+            <h3>Personnalisation</h3>
+            <p>Couleurs, animations, thèmes...</p>
+            <a href="#customization-issues" class="btn btn-secondary">Voir les solutions</a>
+          </div>
+          
+          <div class="help-card">
+            <div class="help-icon">💻</div>
+            <h3>Intégration</h3>
+            <p>Site web, framework, API...</p>
+            <a href="#integration-issues" class="btn btn-secondary">Voir les solutions</a>
+          </div>
+          
+          <div class="help-card">
+            <div class="help-icon">📱</div>
+            <h3>Mobile</h3>
+            <p>Compatibilité, performance mobile...</p>
+            <a href="#mobile-issues" class="btn btn-secondary">Voir les solutions</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ SECTION -->
+      <section class="section" aria-labelledby="faq-heading">
+        <h2 id="faq-heading">Questions Fréquentes</h2>
+        
+        <div class="faq-categories">
+          <div class="faq-category" id="audio-issues">
+            <h3>🎵 Problèmes Audio</h3>
+            <div class="faq-grid">
+              <details class="faq-item">
+                <summary>Le microphone ne fonctionne pas</summary>
+                <div class="faq-content">
+                  <p><strong>Solutions possibles :</strong></p>
+                  <ol>
+                    <li>Vérifiez que votre navigateur a l'autorisation d'accéder au microphone</li>
+                    <li>Assurez-vous d'être sur HTTPS (requis pour l'accès au micro)</li>
+                    <li>Testez avec un autre navigateur (Chrome, Firefox, Safari)</li>
+                    <li>Vérifiez que votre microphone n'est pas utilisé par une autre application</li>
+                    <li>Redémarrez votre navigateur</li>
+                  </ol>
+                  <p><strong>Code de test :</strong></p>
+                  <pre><code>// Vérifier l'accès au microphone
+navigator.mediaDevices.getUserMedia({ audio: true })
+  .then(stream => console.log('Microphone accessible'))
+  .catch(err => console.error('Erreur microphone:', err));</code></pre>
+                </div>
+              </details>
+              
+              <details class="faq-item">
+                <summary>L'audio est saccadé ou en retard</summary>
+                <div class="faq-content">
+                  <p><strong>Causes possibles :</strong></p>
+                  <ul>
+                    <li>Performance de votre appareil</li>
+                    <li>Autres applications utilisant beaucoup de ressources</li>
+                    <li>Connexion internet lente (pour les fichiers audio en ligne)</li>
+                    <li>Navigateur obsolète</li>
+                  </ul>
+                  <p><strong>Solutions :</strong></p>
+                  <ul>
+                    <li>Fermez les autres onglets et applications</li>
+                    <li>Mettez à jour votre navigateur</li>
+                    <li>Réduisez la sensibilité audio dans les paramètres</li>
+                    <li>Utilisez des fichiers audio locaux plutôt qu'en ligne</li>
+                  </ul>
+                </div>
+              </details>
+              
+              <details class="faq-item">
+                <summary>Les fichiers audio ne se chargent pas</summary>
+                <div class="faq-content">
+                  <p><strong>Formats supportés :</strong></p>
+                  <ul>
+                    <li>MP3 (.mp3)</li>
+                    <li>WAV (.wav)</li>
+                    <li>OGG (.ogg)</li>
+                    <li>M4A (.m4a)</li>
+                    <li>AAC (.aac)</li>
+                  </ul>
+                  <p><strong>Vérifications :</strong></p>
+                  <ul>
+                    <li>Le fichier n'est pas corrompu</li>
+                    <li>La taille du fichier n'est pas trop importante (&lt; 50MB recommandé)</li>
+                    <li>Le format est bien supporté par votre navigateur</li>
+                  </ul>
+                </div>
+              </details>
+            </div>
+          </div>
+          
+          <div class="faq-category" id="customization-issues">
+            <h3>🎨 Personnalisation</h3>
+            <div class="faq-grid">
+              <details class="faq-item">
+                <summary>Les couleurs ne changent pas</summary>
+                <div class="faq-content">
+                  <p><strong>Vérifiez :</strong></p>
+                  <ol>
+                    <li>Que les variables CSS sont bien définies</li>
+                    <li>Que l'animation est active</li>
+                    <li>Que le fichier CSS est bien chargé</li>
+                  </ol>
+                  <p><strong>Exemple de code :</strong></p>
+                  <pre><code>:root {
+  --bg-a: 260 95% 60%;  /* Couleur primaire */
+  --bg-b: 200 95% 60%;  /* Couleur secondaire */
+}</code></pre>
+                </div>
+              </details>
+              
+              <details class="faq-item">
+                <summary>Comment créer ma propre animation ?</summary>
+                <div class="faq-content">
+                  <p>Consultez notre <a href="docs/personnalisations.html">guide de personnalisation</a> pour créer vos propres animations.</p>
+                  <p><strong>Structure de base :</strong></p>
+                  <pre><code>PulseColor.animations.monAnimation = {
+  init: function(canvas, options) {
+    // Initialisation
+  },
+  update: function(audioData) {
+    // Mise à jour avec les données audio
+  },
+  destroy: function() {
+    // Nettoyage
+  }
+};</code></pre>
+                </div>
+              </details>
+            </div>
+          </div>
+          
+          <div class="faq-category" id="integration-issues">
+            <h3>💻 Intégration</h3>
+            <div class="faq-grid">
+              <details class="faq-item">
+                <summary>Comment intégrer PulseColor sur mon site ?</summary>
+                <div class="faq-content">
+                  <p>Suivez notre <a href="docs/quickstart.html">guide de démarrage rapide</a> pour une intégration en 3 étapes.</p>
+                  <p><strong>Étapes principales :</strong></p>
+                  <ol>
+                    <li>Inclure les fichiers CSS et JS</li>
+                    <li>Créer un conteneur SVG</li>
+                    <li>Initialiser PulseColor</li>
+                  </ol>
+                </div>
+              </details>
+              
+              <details class="faq-item">
+                <summary>PulseColor ne fonctionne pas avec mon framework</summary>
+                <div class="faq-content">
+                  <p>PulseColor est compatible avec tous les frameworks modernes :</p>
+                  <ul>
+                    <li><strong>React :</strong> Utilisez useRef et useEffect</li>
+                    <li><strong>Vue.js :</strong> Utilisez $refs et mounted()</li>
+                    <li><strong>Angular :</strong> Utilisez ViewChild et ngAfterViewInit</li>
+                    <li><strong>Svelte :</strong> Utilisez bind:this et onMount</li>
+                  </ul>
+                  <p>Consultez nos <a href="docs/personnalisations.html#integration">exemples d'intégration</a>.</p>
+                </div>
+              </details>
+            </div>
+          </div>
+          
+          <div class="faq-category" id="mobile-issues">
+            <h3>📱 Mobile</h3>
+            <div class="faq-grid">
+              <details class="faq-item">
+                <summary>PulseColor fonctionne-t-il sur mobile ?</summary>
+                <div class="faq-content">
+                  <p><strong>Compatibilité :</strong></p>
+                  <ul>
+                    <li>✅ iOS Safari 14+</li>
+                    <li>✅ Chrome Mobile 90+</li>
+                    <li>✅ Firefox Mobile 88+</li>
+                    <li>✅ Samsung Internet 15+</li>
+                  </ul>
+                  <p><strong>Notes importantes :</strong></p>
+                  <ul>
+                    <li>Sur iOS, l'audio nécessite un geste utilisateur</li>
+                    <li>Les performances peuvent varier selon l'appareil</li>
+                    <li>Utilisez des animations plus simples sur mobile</li>
+                  </ul>
+                </div>
+              </details>
+              
+              <details class="faq-item">
+                <summary>L'animation est lente sur mobile</summary>
+                <div class="faq-content">
+                  <p><strong>Optimisations :</strong></p>
+                  <ul>
+                    <li>Réduisez la complexité des animations</li>
+                    <li>Diminuez la sensibilité audio</li>
+                    <li>Utilisez des animations optimisées mobile</li>
+                    <li>Fermez les autres applications</li>
+                  </ul>
+                </div>
+              </details>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TROUBLESHOOTING SECTION -->
+      <section class="section" aria-labelledby="troubleshooting-heading">
+        <h2 id="troubleshooting-heading">Diagnostic Automatique</h2>
+        
+        <div class="troubleshooting-container">
+          <div class="diagnostic-card">
+            <h3>🔍 Vérification Système</h3>
+            <div id="system-check" class="diagnostic-results">
+              <div class="check-item">
+                <span class="check-label">Navigateur :</span>
+                <span class="check-result" id="browser-check">Vérification...</span>
+              </div>
+              <div class="check-item">
+                <span class="check-label">Web Audio API :</span>
+                <span class="check-result" id="audio-check">Vérification...</span>
+              </div>
+              <div class="check-item">
+                <span class="check-label">Microphone :</span>
+                <span class="check-result" id="mic-check">Vérification...</span>
+              </div>
+              <div class="check-item">
+                <span class="check-label">Performance :</span>
+                <span class="check-result" id="perf-check">Vérification...</span>
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="runDiagnostic()">Lancer le diagnostic</button>
+          </div>
+          
+          <div class="diagnostic-card">
+            <h3>📊 Informations Système</h3>
+            <div class="system-info">
+              <div class="info-item">
+                <strong>Navigateur :</strong>
+                <span id="browser-info">-</span>
+              </div>
+              <div class="info-item">
+                <strong>Version :</strong>
+                <span id="browser-version">-</span>
+              </div>
+              <div class="info-item">
+                <strong>Système :</strong>
+                <span id="os-info">-</span>
+              </div>
+              <div class="info-item">
+                <strong>Résolution :</strong>
+                <span id="resolution-info">-</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT SUPPORT SECTION -->
+      <section class="section" aria-labelledby="contact-support-heading">
+        <h2 id="contact-support-heading">Besoin d'Aide Supplémentaire ?</h2>
+        
+        <div class="support-options">
+          <div class="support-option">
+            <div class="support-icon">💬</div>
+            <h3>Discord Communautaire</h3>
+            <p>Rejoignez notre communauté Discord pour obtenir de l'aide en temps réel</p>
+            <a href="https://discord.gg/pulsecolor" class="btn btn-primary" target="_blank" rel="noopener">Rejoindre Discord</a>
+          </div>
+          
+          <div class="support-option">
+            <div class="support-icon">📧</div>
+            <h3>Support Email</h3>
+            <p>Contactez directement notre équipe de support technique</p>
+            <a href="mailto:support@pulsecolor.dev" class="btn btn-primary">Envoyer un email</a>
+          </div>
+          
+          <div class="support-option">
+            <div class="support-icon">🐛</div>
+            <h3>Signaler un Bug</h3>
+            <p>Créez un rapport de bug détaillé sur GitHub</p>
+            <a href="https://github.com/pulsecolor/pulsecolor/issues/new" class="btn btn-primary" target="_blank" rel="noopener">Créer un Issue</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer role="contentinfo">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="logo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 3c4.97 0 9 4.03 9 9s-4.03 9-9 9S3 16.97 3 12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+            PulseColor
+          </div>
+          <p>Animations audio-réactives open source</p>
+          <p>© <span id="year"></span> PulseColor. Tous droits réservés.</p>
+        </div>
+        
+        <div class="footer-links">
+          <div class="footer-section">
+            <h4>Projet</h4>
+            <a href="index.html">Accueil</a>
+            <a href="gallery.html">Galerie</a>
+            <a href="docs/quickstart.html">Documentation</a>
+          </div>
+          
+          <div class="footer-section">
+            <h4>Support</h4>
+            <a href="support.html">Centre d'aide</a>
+            <a href="contact.html">Contact</a>
+            <a href="https://discord.gg/pulsecolor" target="_blank" rel="noopener">Discord</a>
+          </div>
+          
+          <div class="footer-section">
+            <h4>Développement</h4>
+            <a href="https://github.com/pulsecolor/pulsecolor" target="_blank" rel="noopener">GitHub</a>
+            <a href="changelogs.html">Changelog</a>
+            <a href="https://github.com/pulsecolor/pulsecolor/issues" target="_blank" rel="noopener">Issues</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>Propulsé par l'amour de la musique et du code open source 🎵</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/animations.js"></script>
+  <script src="js/main.js"></script>
+  
+  <script>
+    // Search functionality
+    const searchInput = document.getElementById('search-input');
+    const searchBtn = document.getElementById('search-btn');
+    const suggestionTags = document.querySelectorAll('.suggestion-tag');
+    
+    searchBtn.addEventListener('click', performSearch);
+    searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') performSearch();
+    });
+    
+    suggestionTags.forEach(tag => {
+      tag.addEventListener('click', () => {
+        searchInput.value = tag.dataset.search;
+        performSearch();
+      });
+    });
+    
+    function performSearch() {
+      const query = searchInput.value.toLowerCase();
+      if (!query) return;
+      
+      // Scroll to FAQ section and highlight relevant items
+      document.getElementById('faq-heading').scrollIntoView({ behavior: 'smooth' });
+      
+      // Simple search implementation
+      const faqItems = document.querySelectorAll('.faq-item');
+      faqItems.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (text.includes(query)) {
+          item.style.backgroundColor = 'hsl(var(--accent) / 0.1)';
+          item.open = true;
+        }
+      });
+    }
+    
+    // Diagnostic functionality
+    function runDiagnostic() {
+      const results = {
+        browser: checkBrowser(),
+        audio: checkWebAudio(),
+        mic: checkMicrophone(),
+        perf: checkPerformance()
+      };
+      
+      updateDiagnosticResults(results);
+      updateSystemInfo();
+    }
+    
+    function checkBrowser() {
+      const userAgent = navigator.userAgent;
+      if (userAgent.includes('Chrome')) return { status: '✅', text: 'Chrome' };
+      if (userAgent.includes('Firefox')) return { status: '✅', text: 'Firefox' };
+      if (userAgent.includes('Safari')) return { status: '✅', text: 'Safari' };
+      if (userAgent.includes('Edge')) return { status: '✅', text: 'Edge' };
+      return { status: '⚠️', text: 'Navigateur non testé' };
+    }
+    
+    function checkWebAudio() {
+      if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
+        return { status: '✅', text: 'Supporté' };
+      }
+      return { status: '❌', text: 'Non supporté' };
+    }
+    
+    function checkMicrophone() {
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        return { status: '✅', text: 'Disponible' };
+      }
+      return { status: '❌', text: 'Non disponible' };
+    }
+    
+    function checkPerformance() {
+      const memory = performance.memory;
+      if (memory && memory.usedJSHeapSize < 50 * 1024 * 1024) {
+        return { status: '✅', text: 'Bon' };
+      }
+      return { status: '⚠️', text: 'À surveiller' };
+    }
+    
+    function updateDiagnosticResults(results) {
+      document.getElementById('browser-check').innerHTML = `${results.browser.status} ${results.browser.text}`;
+      document.getElementById('audio-check').innerHTML = `${results.audio.status} ${results.audio.text}`;
+      document.getElementById('mic-check').innerHTML = `${results.mic.status} ${results.mic.text}`;
+      document.getElementById('perf-check').innerHTML = `${results.perf.status} ${results.perf.text}`;
+    }
+    
+    function updateSystemInfo() {
+      document.getElementById('browser-info').textContent = navigator.userAgent.split(' ')[0];
+      document.getElementById('browser-version').textContent = navigator.userAgent.match(/(Chrome|Firefox|Safari|Edge)\/(\d+)/)?.[2] || 'Inconnue';
+      document.getElementById('os-info').textContent = navigator.platform;
+      document.getElementById('resolution-info').textContent = `${screen.width}x${screen.height}`;
+    }
+    
+    // Run initial diagnostic
+    runDiagnostic();
+    
+    // Set current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
