@@ -151,8 +151,6 @@ p {
   position: sticky;
   top: 0;
   z-index: var(--z-sticky);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
 }
 
 .logo {
@@ -288,16 +286,12 @@ p {
   background: hsl(var(--surface) / 0.7);
   border: 1px solid hsl(var(--border));
   box-shadow: 0 30px 80px hsl(var(--accent) / 0.2);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   padding: var(--space-lg);
 }
 
 .demo .bar {
   position: absolute;
   inset: 0;
-  backdrop-filter: blur(calc(40px * var(--glow)));
-  -webkit-backdrop-filter: blur(calc(40px * var(--glow)));
   pointer-events: none;
 }
 
@@ -394,8 +388,6 @@ p {
   background: hsl(var(--surface) / 0.5);
   border: 1px solid hsl(var(--border));
   border-radius: var(--radius-lg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
 }
 
 .stat-card strong {
@@ -424,8 +416,6 @@ p {
   background: hsl(var(--surface) / 0.5);
   border: 1px solid hsl(var(--border));
   border-radius: var(--radius-lg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   transition: transform var(--transition-normal);
 }
 
@@ -499,8 +489,6 @@ p {
   background: hsl(var(--surface) / 0.5);
   border: 1px solid hsl(var(--border));
   border-radius: var(--radius-lg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   transition: transform var(--transition-normal);
 }
 
@@ -536,8 +524,6 @@ p {
   background: hsl(var(--surface) / 0.5);
   border: 1px solid hsl(var(--border));
   border-radius: var(--radius-lg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   transition: transform var(--transition-normal);
 }
 
