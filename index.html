@@ -3,90 +3,76 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PulseColor — Animez vos couleurs & SVG avec la musique</title>
-  <meta name="description" content="Landing page d'un produit qui anime des couleurs, des SVG et des visuels en temps réel en fonction de la musique (micro ou fichier audio)." />
+  
+  <!-- SEO Meta Tags -->
+  <title>PulseColor — Animations Audio-Réactives Open Source</title>
+  <meta name="description" content="PulseColor transforme votre musique en animations spectaculaires en temps réel. 10 animations différentes, open source et 100% gratuit. Parfait pour sites web, événements et créateurs." />
+  <meta name="keywords" content="audio-réactif, animations, musique, visualisation, open source, web audio, SVG, CSS" />
+  <meta name="author" content="PulseColor Team" />
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://pulsecolor.dev/" />
+  <meta property="og:title" content="PulseColor — Animations Audio-Réactives" />
+  <meta property="og:description" content="Transformez votre musique en animations spectaculaires en temps réel. Open source et gratuit." />
+  <meta property="og:image" content="https://pulsecolor.dev/og-image.png" />
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://pulsecolor.dev/" />
+  <meta property="twitter:title" content="PulseColor — Animations Audio-Réactives" />
+  <meta property="twitter:description" content="Transformez votre musique en animations spectaculaires en temps réel. Open source et gratuit." />
+  <meta property="twitter:image" content="https://pulsecolor.dev/og-image.png" />
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  
+  <!-- Preconnect for performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg-a: 260 95% 60%;
-      --bg-b: 200 95% 60%;
-      --glow: 0.35;
-      --blob-rot: 0deg;
-      --blob-scale: 1;
-      --pulse: 1;
-      --accent: 270 100% 67%;
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/main.css" />
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#6366f1" />
+  
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "PulseColor",
+    "description": "Audio-reactive visual animations for web",
+    "url": "https://pulsecolor.dev",
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "EUR"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "PulseColor Team"
     }
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-    body {
-      margin: 0; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
-      color: #0e0e12; background: hsl(240 10% 4%);
-      --grad: radial-gradient(1200px 1200px at 10% 10%, hsl(var(--bg-a) / 0.25), transparent 60%),
-              radial-gradient(1200px 1200px at 90% 90%, hsl(var(--bg-b) / 0.25), transparent 60%),
-              linear-gradient(120deg, hsl(var(--bg-a) / 0.35), hsl(var(--bg-b) / 0.35));
-      background-image: var(--grad);
-      background-attachment: fixed;
-    }
-    .wrapper { max-width: 1200px; margin: 0 auto; padding: 32px; }
-
-    /* Nav */
-    .nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-    .logo { display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:0.2px; color:white; text-decoration:none; }
-    .logo svg { filter: drop-shadow(0 8px 24px hsl(var(--accent)/0.5)); }
-    .nav a.btn { text-decoration:none; color:#0b0b11; background:white; padding:10px 16px; border-radius:14px; font-weight:600; }
-    .nav .ghost { background:transparent; color:white; border:1px solid hsl(0 0% 100% / 0.2); }
-
-    /* Hero */
-    .hero { display:grid; grid-template-columns: 1.2fr 1fr; align-items:center; gap: 32px; padding: 64px 0; }
-    .hero h1 { font-size:clamp(32px, 5vw, 64px); line-height:1.05; margin:0; color:white; }
-    .hero p { color:hsl(0 0% 95% / 0.8); font-size: clamp(16px, 2.2vw, 20px); }
-    .cta-row { display:flex; flex-wrap:wrap; gap:12px; margin-top: 18px; }
-    .btn-primary { background: linear-gradient(120deg, hsl(var(--bg-a)), hsl(var(--bg-b))); color:white; border:0; padding:14px 20px; border-radius:16px; font-weight:800; letter-spacing:0.2px; cursor:pointer; }
-    .btn-secondary { background: hsl(240 10% 10% / 0.6); color:white; border:1px solid hsl(0 0% 100% / 0.18); padding:14px 20px; border-radius:16px; font-weight:700; cursor:pointer; }
-
-    /* Demo Card */
-    .demo { position:relative; border-radius:28px; overflow:hidden; background: hsl(240 10% 6% / 0.7); border:1px solid hsl(0 0% 100% / 0.06); box-shadow: 0 30px 80px hsl(250 80% 50% / 0.2); }
-    .demo .bar { position:absolute; inset:0;  pointer-events:none; }
-    .demo .canvas { aspect-ratio: 1 / 1; display:grid; place-items:center; }
-    .controls { display:flex; gap:10px; flex-wrap:wrap; padding: 18px; background: hsl(240 10% 6% / 0.6); border-top: 1px solid hsl(0 0% 100% / 0.06); }
-    input[type="file"] { display:none; }
-    label.file { border:1px dashed hsl(0 0% 100% / 0.2); color:white; padding:12px 14px; border-radius:14px; cursor:pointer; }
-    .meters { display:flex; gap:8px; align-items: flex-end; margin-left:auto; height: 36px; }
-    .meters span { display:block; width:8px; background:white; border-radius:999px; transform: scaleY(0.2); transform-origin: bottom; opacity:0.85; }
-
-    /* Features */
-    .section { padding: 64px 0; }
-    .section h2 { color:white; font-size: clamp(24px, 4vw, 40px); margin: 0 0 16px; }
-    .kpis { display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; }
-    .kpis .card { background:hsl(240 10% 8% / 0.7); border:1px solid hsl(0 0% 100% / 0.08); border-radius:20px; padding:20px; color:white; }
-
-    .grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:18px; }
-    .feature { background:hsl(240 10% 8% / 0.7); border:1px solid hsl(0 0% 100% / 0.08); border-radius:20px; padding:20px; color:white; }
-
-    /* Pricing */
-    .pricing { display:grid; grid-template-columns: repeat(3, 1fr); gap:18px; }
-    .plan { background: hsl(240 10% 8% / 0.7); border:1px solid hsl(0 0% 100% / 0.1); border-radius:22px; padding:22px; color:white; }
-    .plan.highlight { border-color: hsl(var(--bg-a)); box-shadow: 0 20px 60px hsl(var(--bg-a) / 0.35); }
-    .price { font-size: 44px; font-weight: 800; }
-
-    /* Footer */
-    footer { color: hsl(0 0% 100% / 0.7); border-top:1px solid hsl(0 0% 100% / 0.08); padding: 32px 0; }
-
-    /* Responsive */
-    @media (max-width: 980px) {
-      .hero { grid-template-columns: 1fr; }
-      .kpis, .grid, .pricing { grid-template-columns: 1fr; }
-    }
-  </style>
+  }
+  </script>
 </head>
 <body>
+  <!-- Skip to main content for accessibility -->
+  <a href="#main-content" class="sr-only sr-only-focusable">Passer au contenu principal</a>
+  
   <div class="wrapper">
-    <!-- NAV -->
-    <nav class="nav">
-      <a class="logo" href="#">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- NAVIGATION -->
+    <nav class="nav" role="navigation" aria-label="Navigation principale">
+      <a class="logo" href="#" aria-label="PulseColor - Accueil">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
             <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0%" stop-color="hsl(var(--bg-a))"/>
@@ -98,351 +84,396 @@
         </svg>
         PulseColor
       </a>
-      <div style="display:flex; gap:10px">
-        <a class="btn ghost" href="#pricing">Tarifs</a>
-        <a class="btn" style="background:linear-gradient(120deg, hsl(var(--bg-a)), hsl(var(--bg-b))); color:white" href="#demo">Essayer</a>
+      
+      <div class="nav-links">
+        <a class="btn btn-ghost" href="#features" aria-label="Voir les fonctionnalités">Fonctionnalités</a>
+        <a class="btn btn-ghost" href="#community" aria-label="Voir la communauté">Communauté</a>
+        <a class="btn btn-ghost" href="#docs" aria-label="Voir la documentation">Documentation</a>
+        <a class="btn btn-primary" href="#demo" aria-label="Essayer la démo">Essayer</a>
       </div>
     </nav>
 
-    <!-- HERO -->
-    <header class="hero">
-      <div>
-        <h1>Animez vos couleurs, SVG & visuels… <br> au rythme de la musique.</h1>
-        <p>PulseColor transforme une piste audio ou votre micro en animations spectaculaires : dégradés, blobs SVG, logos, lumières et plus encore. Parfait pour sites, events, streamers et DJs.</p>
-        <div class="cta-row">
-          <button class="btn-primary" onclick="document.getElementById('demo').scrollIntoView({behavior:'smooth'})">Lancer la démo</button>
-          <button class="btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Voir les fonctionnalités</button>
+    <!-- MAIN CONTENT -->
+    <main id="main-content">
+      <!-- HERO SECTION -->
+      <header class="hero" role="banner">
+        <div class="hero-content">
+          <div class="badge" aria-label="Projet open source">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+            Open Source & Gratuit
+          </div>
+          
+          <h1>Animez vos couleurs, SVG & visuels… <br> au rythme de la musique.</h1>
+          <p>PulseColor transforme une piste audio ou votre micro en animations spectaculaires : dégradés, blobs SVG, logos, lumières et plus encore. Parfait pour sites, events, streamers et DJs.</p>
+          
+          <div class="cta-row">
+            <button class="btn btn-primary" onclick="document.getElementById('demo').scrollIntoView({behavior:'smooth'})" aria-label="Lancer la démo interactive">
+              🎵 Lancer la démo
+            </button>
+            <button class="btn btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})" aria-label="Voir les fonctionnalités détaillées">
+              ✨ Voir les fonctionnalités
+            </button>
+          </div>
+          
+          <div class="hero-stats">
+            <div class="stat">
+              <strong>10</strong>
+              <span>Animations</span>
+            </div>
+            <div class="stat">
+              <strong>100%</strong>
+              <span>Gratuit</span>
+            </div>
+            <div class="stat">
+              <strong>Open</strong>
+              <span>Source</span>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="demo" id="demo">
-        <div class="canvas">
-          <!-- Reactive SVG Scene -->
-          <svg id="reactiveSVG" viewBox="0 0 600 600" width="100%" height="100%" style="max-height:520px">
-            <defs>
-              <radialGradient id="bg" cx="50%" cy="50%" r="60%">
-                <stop offset="0%" stop-color="hsl(var(--bg-a))" stop-opacity="0.9" />
-                <stop offset="100%" stop-color="hsl(var(--bg-b))" stop-opacity="0.25" />
-              </radialGradient>
-              <filter id="glow">
-                <feGaussianBlur stdDeviation="8" result="colored" />
-                <feMerge>
-                  <feMergeNode in="colored" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-            </defs>
+        
+        <!-- DEMO SECTION -->
+        <div class="demo" id="demo" role="region" aria-label="Démo interactive">
+          <div class="animation-selector" role="group" aria-label="Sélection d'animation">
+            <!-- Animation buttons will be populated by JavaScript -->
+          </div>
+          
+          <div class="canvas" aria-label="Zone d'animation">
+            <!-- Reactive SVG Scene -->
+            <svg id="reactiveSVG" viewBox="0 0 600 600" width="100%" height="100%" style="max-height:520px" aria-hidden="true">
+              <defs>
+                <radialGradient id="bg" cx="50%" cy="50%" r="60%">
+                  <stop offset="0%" stop-color="hsl(var(--bg-a))" stop-opacity="0.9" />
+                  <stop offset="100%" stop-color="hsl(var(--bg-b))" stop-opacity="0.25" />
+                </radialGradient>
+                <filter id="glow">
+                  <feGaussianBlur stdDeviation="8" result="colored" />
+                  <feMerge>
+                    <feMergeNode in="colored" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
 
-            <rect x="0" y="0" width="600" height="600" fill="url(#bg)" />
-
-            <!-- Pulse ring -->
-            <circle id="ring" cx="300" cy="300" r="120" fill="none" stroke="white" stroke-opacity="0.85" stroke-width="8" />
-
-            <!-- Morphing blob -->
-            <g transform="translate(300,300)">
-              <path id="blob" d="M120,0 C120,66 66,120 0,120 C-66,120 -120,66 -120,0 C-120,-66 -66,-120 0,-120 C66,-120 120,-66 120,0Z" fill="white" fill-opacity="0.92" filter="url(#glow)"/>
-            </g>
-
-            <!-- Bars -->
-            <g id="bars" transform="translate(60,520)"></g>
-          </svg>
+              <rect x="0" y="0" width="600" height="600" fill="url(#bg)" />
+              <!-- Animation elements will be added here by JavaScript -->
+            </svg>
+          </div>
+          
+          <div class="bar" aria-hidden="true"></div>
+          
+          <div class="controls" role="group" aria-label="Contrôles audio">
+            <button class="btn btn-secondary" id="micBtn" aria-label="Activer le microphone">
+              🎤 Micro
+            </button>
+            <label class="btn btn-secondary" for="fileInput" aria-label="Importer un fichier audio">
+              📁 Importer audio
+            </label>
+            <input id="fileInput" type="file" accept="audio/*" class="sr-only" aria-describedby="file-help" />
+            <div id="file-help" class="sr-only">Sélectionnez un fichier audio (MP3, WAV, etc.)</div>
+            
+            <button class="btn btn-primary" id="playPause" disabled aria-label="Lecture/Pause">
+              ▶︎ Lecture
+            </button>
+            
+            <div class="meters" aria-label="Niveaux audio">
+              <span id="m-bass" style="height: 30%" aria-label="Basses"></span>
+              <span id="m-mid" style="height: 20%" aria-label="Médiums"></span>
+              <span id="m-high" style="height: 10%" aria-label="Aigus"></span>
+            </div>
+          </div>
+          
+          <div class="demo-info">
+            <p>Raccourcis clavier : <kbd>Espace</kbd> Lecture/Pause, <kbd>M</kbd> Micro, <kbd>1-0</kbd> Animations</p>
+          </div>
         </div>
-        <div class="bar"></div>
-        <div class="controls">
-          <button class="btn-secondary" id="micBtn">🎤 Micro</button>
-          <label class="file" for="fileInput">📁 Importer audio</label>
-          <input id="fileInput" type="file" accept="audio/*" />
-          <button class="btn-primary" id="playPause" disabled>▶︎ Lecture</button>
-          <div class="meters" aria-hidden="true">
-            <span id="m-bass" style="height: 30%"></span>
-            <span id="m-mid" style="height: 20%"></span>
-            <span id="m-high" style="height: 10%"></span>
+      </header>
+
+      <!-- STATS SECTION -->
+      <section class="section" aria-labelledby="stats-heading">
+        <h2 id="stats-heading" class="sr-only">Statistiques</h2>
+        <div class="stats-grid">
+          <div class="stat-card" aria-label="Projets animés">
+            <strong>+120</strong>
+            <span>Projets animés</span>
+          </div>
+          <div class="stat-card" aria-label="Latence moyenne">
+            <strong><span id="msAvg">3.6</span> ms</strong>
+            <span>Latence moyenne</span>
+          </div>
+          <div class="stat-card" aria-label="Classement">
+            <strong>#1</strong>
+            <span>Audio-réactif web</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURES SECTION -->
+      <section id="features" class="section" aria-labelledby="features-heading">
+        <h2 id="features-heading">Fonctionnalités clés</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🎧</div>
+            <h3>Analyse temps réel</h3>
+            <p>Basée sur l'API Web Audio : FFT, bandes (basses/médiums/aigus), détection de beat simple.</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">🎨</div>
+            <h3>Couleurs dynamiques</h3>
+            <p>Dégradés HSL, lueurs et intensité réactives à l'énergie du signal.</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">🧩</div>
+            <h3>SVG & Logos</h3>
+            <p>Morphing et stroke au rythme : idéal pour logos, blobs, formes géométriques.</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">🧪</div>
+            <h3>Intégration facile</h3>
+            <p>Script léger, fonctionne avec micro ou fichier audio. Aucun backend requis.</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Performances</h3>
+            <p>Animé par <code>requestAnimationFrame</code> + CSS variables pour un rendu fluide.</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h3>Respect vie privée</h3>
+            <p>Accès micro local uniquement, rien n'est envoyé côté serveur.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ANIMATIONS SECTION -->
+      <section class="section" aria-labelledby="animations-heading">
+        <h2 id="animations-heading">10 Animations Uniques</h2>
+        <div class="animations-grid">
+          <div class="animation-preview">
+            <div class="animation-icon">🫧</div>
+            <h3>Blob Morphing</h3>
+            <p>Formes organiques qui se déforment au rythme de la musique</p>
+          </div>
+          
+          <div class="animation-preview">
+            <div class="animation-icon">✨</div>
+            <h3>Système de Particules</h3>
+            <p>Particules réactives qui dansent avec l'audio</p>
+          </div>
+          
+          <div class="animation-preview">
+            <div class="animation-icon">🌊</div>
+            <h3>Ondes Sonores</h3>
+            <p>Vagues fluides qui épousent les fréquences</p>
+          </div>
+          
+          <div class="animation-preview">
+            <div class="animation-icon">🔷</div>
+            <h3>Formes Géométriques</h3>
+            <p>Shapes qui s'animent et se transforment</p>
+          </div>
+          
+          <div class="animation-preview">
+            <div class="animation-icon">📊</div>
+            <h3>Barres Audio</h3>
+            <p>Visualisation classique des fréquences</p>
+          </div>
+          
+          <div class="animation-preview">
+            <div class="animation-icon">⭕</div>
+            <h3>Ondes Circulaires</h3>
+            <p>Cercles qui s'étendent depuis le centre</p>
+          </div>
+          
+          <div class="animation-preview">
+            <div class="animation-icon">💻</div>
+            <h3>Matrix Rain</h3>
+            <p>Caractères qui tombent style Matrix</p>
+          </div>
+          
+          <div class="animation-preview">
+            <div class="animation-icon">🎆</div>
+            <h3>Feux d'Artifice</h3>
+            <p>Explosions colorées synchronisées</p>
+          </div>
+          
+          <div class="animation-preview">
+            <div class="animation-icon">🧬</div>
+            <h3>Hélice ADN</h3>
+            <p>Double hélice qui tourne et vibre</p>
+          </div>
+          
+          <div class="animation-preview">
+            <div class="animation-icon">🌳</div>
+            <h3>Arbres Fractals</h3>
+            <p>Structures fractales qui poussent</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- COMMUNITY SECTION -->
+      <section id="community" class="section" aria-labelledby="community-heading">
+        <h2 id="community-heading">Rejoignez la Communauté</h2>
+        <div class="community-grid">
+          <div class="community-card">
+            <div class="community-icon">🌟</div>
+            <h3>Open Source</h3>
+            <p>Code source disponible sur GitHub. Contribuez, améliorez, partagez !</p>
+            <a href="https://github.com/pulsecolor/pulsecolor" class="btn btn-secondary" target="_blank" rel="noopener">
+              Voir sur GitHub
+            </a>
+          </div>
+          
+          <div class="community-card">
+            <div class="community-icon">🎨</div>
+            <h3>Galerie</h3>
+            <p>Découvrez les créations de la communauté et partagez les vôtres</p>
+            <a href="#gallery" class="btn btn-secondary">
+              Voir la galerie
+            </a>
+          </div>
+          
+          <div class="community-card">
+            <div class="community-icon">💬</div>
+            <h3>Discussions</h3>
+            <p>Rejoignez les discussions, posez vos questions, partagez vos idées</p>
+            <a href="https://discord.gg/pulsecolor" class="btn btn-secondary" target="_blank" rel="noopener">
+              Rejoindre Discord
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- DOCUMENTATION SECTION -->
+      <section id="docs" class="section" aria-labelledby="docs-heading">
+        <h2 id="docs-heading">Documentation & Intégration</h2>
+        <div class="docs-grid">
+          <div class="doc-card">
+            <h3>🚀 Démarrage Rapide</h3>
+            <p>Intégrez PulseColor en 3 étapes simples</p>
+            <a href="/docs/quickstart" class="btn btn-secondary">Lire le guide</a>
+          </div>
+          
+          <div class="doc-card">
+            <h3>📚 API Reference</h3>
+            <p>Documentation complète de l'API JavaScript</p>
+            <a href="/docs/api" class="btn btn-secondary">Voir l'API</a>
+          </div>
+          
+          <div class="doc-card">
+            <h3>🎯 Exemples</h3>
+            <p>Exemples d'intégration et cas d'usage</p>
+            <a href="/docs/examples" class="btn btn-secondary">Voir les exemples</a>
+          </div>
+          
+          <div class="doc-card">
+            <h3>🔧 Personnalisation</h3>
+            <p>Créez vos propres animations</p>
+            <a href="/docs/customization" class="btn btn-secondary">Personnaliser</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ SECTION -->
+      <section class="section" aria-labelledby="faq-heading">
+        <h2 id="faq-heading">Questions Fréquentes</h2>
+        <div class="faq-grid">
+          <details class="faq-item">
+            <summary>Le micro fonctionne-t-il sur mobile ?</summary>
+            <p>Oui, sur la plupart des navigateurs modernes (iOS nécessite un geste utilisateur pour démarrer l'audio).</p>
+          </details>
+          
+          <details class="faq-item">
+            <summary>Puis-je l'intégrer sur un site existant ?</summary>
+            <p>Totalement. Copiez le script démo et ciblez vos propres SVG/CSS.</p>
+          </details>
+          
+          <details class="faq-item">
+            <summary>Quels fichiers audio sont pris en charge ?</summary>
+            <p>Tous les formats lus par le navigateur (mp3, wav, m4a, ogg…).</p>
+          </details>
+          
+          <details class="faq-item">
+            <summary>PulseColor est-il vraiment gratuit ?</summary>
+            <p>Oui, 100% gratuit et open source. Seuls les services de support et personnalisation sont payants.</p>
+          </details>
+          
+          <details class="faq-item">
+            <summary>Comment contribuer au projet ?</summary>
+            <p>Via GitHub : rapports de bugs, suggestions, pull requests, documentation, etc.</p>
+          </details>
+          
+          <details class="faq-item">
+            <summary>Puis-je utiliser PulseColor commercialement ?</summary>
+            <p>Oui, sous licence MIT. Vous pouvez l'utiliser librement dans vos projets.</p>
+          </details>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer role="contentinfo">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="logo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 3c4.97 0 9 4.03 9 9s-4.03 9-9 9S3 16.97 3 12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+            PulseColor
+          </div>
+          <p>Animations audio-réactives open source</p>
+          <p>© <span id="year"></span> PulseColor. Tous droits réservés.</p>
+        </div>
+        
+        <div class="footer-links">
+          <div class="footer-section">
+            <h4>Projet</h4>
+            <a href="https://github.com/pulsecolor/pulsecolor" target="_blank" rel="noopener">GitHub</a>
+            <a href="/docs">Documentation</a>
+            <a href="/changelog">Changelog</a>
+          </div>
+          
+          <div class="footer-section">
+            <h4>Communauté</h4>
+            <a href="https://discord.gg/pulsecolor" target="_blank" rel="noopener">Discord</a>
+            <a href="https://twitter.com/pulsecolor" target="_blank" rel="noopener">Twitter</a>
+            <a href="/gallery">Galerie</a>
+          </div>
+          
+          <div class="footer-section">
+            <h4>Support</h4>
+            <a href="/contact">Contact</a>
+            <a href="/support">Support</a>
+            <a href="/custom">Personnalisation</a>
           </div>
         </div>
       </div>
-    </header>
-
-    <!-- KPIs / Social proof -->
-    <section class="section">
-      <div class="kpis">
-        <div class="card"><strong style="font-size:28px">+120</strong><br/>Projets animés</div>
-        <div class="card"><strong style="font-size:28px"><span id="msAvg">3.6</span> ms</strong><br/>Latence moyenne</div>
-        <div class="card"><strong style="font-size:28px">#1</strong><br/>Audio-reactif web</div>
-      </div>
-    </section>
-
-    <!-- Features -->
-    <section id="features" class="section">
-      <h2>Fonctionnalités clés</h2>
-      <div class="grid">
-        <div class="feature"><strong>🎧 Analyse temps réel</strong><br/>Basée sur l'API Web Audio : FFT, bandes (basses/médiums/aigus), détection de beat simple.</div>
-        <div class="feature"><strong>🎨 Couleurs dynamiques</strong><br/>Dégradés HSL, lueurs et intensité réactives à l'énergie du signal.</div>
-        <div class="feature"><strong>🧩 SVG & Logos</strong><br/>Morphing et stroke au rythme : idéal pour logos, blobs, formes géométriques.</div>
-        <div class="feature"><strong>🧪 Intégration facile</strong><br/>Script léger, fonctionne avec micro ou fichier audio. Aucun backend requis.</div>
-        <div class="feature"><strong>⚡ Performances</strong><br/>Animé par <code>requestAnimationFrame</code> + CSS variables pour un rendu fluide.</div>
-        <div class="feature"><strong>🔒 Respect vie privée</strong><br/>Accès micro local uniquement, rien n'est envoyé côté serveur.</div>
-      </div>
-    </section>
-
-    <!-- Pricing -->
-    <section id="pricing" class="section">
-      <h2>Tarifs</h2>
-      <div class="pricing">
-        <div class="plan">
-          <div style="font-weight:800; opacity:.85">Starter</div>
-          <div class="price">Gratuit</div>
-          <ul>
-            <li>Demo embarquée</li>
-            <li>Guide intégration</li>
-            <li>Usage personnel</li>
-          </ul>
-          <button class="btn-secondary" style="width:100%">Commencer</button>
-        </div>
-        <div class="plan highlight">
-          <div style="font-weight:800; opacity:.85">Pro</div>
-          <div class="price">19€ / mois</div>
-          <ul>
-            <li>SDK audio-réactif</li>
-            <li>Templates logos & blobs</li>
-            <li>Support prioritaire</li>
-          </ul>
-          <button class="btn-primary" style="width:100%">Essai 14 jours</button>
-        </div>
-        <div class="plan">
-          <div style="font-weight:800; opacity:.85">Entreprise</div>
-          <div class="price">Sur mesure</div>
-          <ul>
-            <li>Licence multi-sites</li>
-            <li>Animations custom</li>
-            <li>SLA & intégration</li>
-          </ul>
-          <button class="btn-secondary" style="width:100%">Contacter</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- FAQ -->
-    <section class="section">
-      <h2>FAQ</h2>
-      <div class="grid">
-        <div class="feature"><strong>Le micro fonctionne-t-il sur mobile ?</strong><br/>Oui, sur la plupart des navigateurs modernes (iOS nécessite un geste utilisateur pour démarrer l'audio).</div>
-        <div class="feature"><strong>Puis-je l'intégrer sur un site existant ?</strong><br/>Totalement. Copiez le script démo et ciblez vos propres SVG/CSS.</div>
-        <div class="feature"><strong>Fichiers pris en charge</strong><br/>Tous les formats lus par le navigateur (mp3, wav, m4a, ogg…).</div>
-      </div>
-    </section>
-
-    <footer>
-      <div class="nav">
-        <div style="color:white">© <span id="year"></span> PulseColor</div>
-        <div style="display:flex; gap:12px">
-          <a class="btn ghost" href="#">Documentation</a>
-          <a class="btn ghost" href="#">Contact</a>
-        </div>
+      
+      <div class="footer-bottom">
+        <p>Propulsé par l'amour de la musique et du code open source 🎵</p>
       </div>
     </footer>
   </div>
 
+  <!-- Scripts -->
+  <script src="js/animations.js"></script>
+  <script src="js/main.js"></script>
+  
+  <!-- Service Worker for PWA -->
   <script>
-    const yearEl = document.getElementById('year');
-    yearEl.textContent = new Date().getFullYear();
-
-    // Audio & Visuals
-    const micBtn = document.getElementById('micBtn');
-    const fileInput = document.getElementById('fileInput');
-    const playPause = document.getElementById('playPause');
-
-    const svg = document.getElementById('reactiveSVG');
-    const ring = document.getElementById('ring');
-    const blob = document.getElementById('blob');
-    const barsGroup = document.getElementById('bars');
-
-    const mBass = document.getElementById('m-bass');
-    const mMid = document.getElementById('m-mid');
-    const mHigh = document.getElementById('m-high');
-
-    // Build visual bars
-    const BARS = 32; // lower number for performance
-    for (let i = 0; i < BARS; i++) {
-      const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-      rect.setAttribute('x', String(i * (480 / BARS)));
-      rect.setAttribute('y', '-8');
-      rect.setAttribute('width', String( (480 / BARS) - 4 ));
-      rect.setAttribute('height', '6');
-      rect.setAttribute('rx', '3');
-      rect.setAttribute('fill', 'white');
-      rect.setAttribute('fill-opacity', '0.85');
-      barsGroup.appendChild(rect);
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(registration => console.log('SW registered'))
+          .catch(error => console.log('SW registration failed'));
+      });
     }
-
-    let ctx, analyser, sourceNode, dataArray, audio, rafId;
-    let started = false;
-
-    function setupAudioNodes(streamOrBufferSource) {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      ctx = ctx || new AudioCtx();
-      analyser = ctx.createAnalyser();
-      analyser.fftSize = 2048;
-      analyser.smoothingTimeConstant = 0.8;
-      const gain = ctx.createGain();
-      gain.gain.value = 1.0;
-
-      if (streamOrBufferSource instanceof MediaStream) {
-        sourceNode = ctx.createMediaStreamSource(streamOrBufferSource);
-      } else {
-        sourceNode = streamOrBufferSource; // AudioBufferSourceNode
-      }
-      sourceNode.connect(gain);
-      gain.connect(analyser);
-      analyser.connect(ctx.destination); // for audible playback
-
-      dataArray = new Uint8Array(analyser.frequencyBinCount);
-      visualize();
-    }
-
-    function visualize() {
-      cancelAnimationFrame(rafId);
-      const bars = Array.from(barsGroup.children);
-      const ringBase = 120;
-      const blobBase = 120;
-
-      const lerp = (a, b, t) => a + (b - a) * t;
-      const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
-
-      let beat = 0;
-      let bassAvgPrev = 0;
-
-      const tick = () => {
-        analyser.getByteFrequencyData(dataArray);
-        const N = dataArray.length;
-
-        // Split into bands
-        const bassEnd = Math.floor(N * 0.08);
-        const midEnd = Math.floor(N * 0.4);
-
-        let bassSum = 0, midSum = 0, highSum = 0;
-        for (let i = 0; i < N; i++) {
-          const v = dataArray[i] / 255;
-          if (i < bassEnd) bassSum += v; else if (i < midEnd) midSum += v; else highSum += v;
-        }
-        const bassAvg = bassSum / bassEnd;
-        const midAvg = midSum / (midEnd - bassEnd);
-        const highAvg = highSum / (N - midEnd);
-
-        // Simple beat: rising bass crossing a threshold
-        const threshold = 0.35;
-        const rising = bassAvg > bassAvgPrev && bassAvg > threshold;
-        beat = rising ? lerp(beat, 1, 0.5) : lerp(beat, 0, 0.08);
-        bassAvgPrev = lerp(bassAvgPrev, bassAvg, 0.2);
-
-        // Update meters
-        mBass.style.height = `${clamp(bassAvg * 100, 4, 100)}%`;
-        mMid.style.height = `${clamp(midAvg * 100, 4, 100)}%`;
-        mHigh.style.height = `${clamp(highAvg * 100, 4, 100)}%`;
-
-        // Bars heights
-        for (let i = 0; i < bars.length; i++) {
-          const v = dataArray[i] / 255;
-          const h = Math.max(6, v * 260);
-          bars[i].setAttribute('y', String(-h));
-          bars[i].setAttribute('height', String(h));
-        }
-
-        // Ring stroke + radius pulsing with bass
-        const r = ringBase + bassAvg * 40 + beat * 16;
-        ring.setAttribute('r', String(r));
-        ring.setAttribute('stroke-width', String(6 + midAvg * 12));
-
-        // Blob morph (simple squish using a parametric circle)
-        const points = 60;
-        const kBass = 0.55 + bassAvg * 0.45 + beat * 0.2;
-        const kMid = 0.55 + midAvg * 0.35;
-        const kHigh = 0.5 + highAvg * 0.25;
-        const radius = blobBase * (0.9 + bassAvg * 0.15);
-        const coords = [];
-        for (let i = 0; i < points; i++) {
-          const t = (i / points) * Math.PI * 2;
-          const wobble = Math.sin(t * 3) * kMid + Math.cos(t * 5) * kHigh;
-          const rad = radius * (1 + wobble * 0.15);
-          const x = Math.cos(t) * rad;
-          const y = Math.sin(t) * rad;
-          coords.push(`${x.toFixed(1)},${y.toFixed(1)}`);
-        }
-        const d = `M${coords[0]} C${coords[10]} ${coords[20]} ${coords[30]} ${coords[30]} C${coords[40]} ${coords[50]} ${coords[0]} ${coords[10]} ${coords[0]} Z`;
-        blob.setAttribute('d', d);
-
-        // Background hues via CSS variables
-        const hueA = Math.floor(lerp(200, 320, midAvg + beat * 0.2));
-        const hueB = Math.floor(lerp(160, 260, highAvg));
-        document.documentElement.style.setProperty('--bg-a', `${hueA} 95% ${60 + Math.floor(beat * 20)}%`);
-        document.documentElement.style.setProperty('--bg-b', `${hueB} 95% 60%`);
-        document.documentElement.style.setProperty('--glow', String(0.2 + midAvg * 0.6));
-
-        rafId = requestAnimationFrame(tick);
-      };
-      rafId = requestAnimationFrame(tick);
-    }
-
-    async function startMic() {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        setupAudioNodes(stream);
-        started = true;
-        playPause.disabled = true; // mic streams are live
-        micBtn.textContent = '🎤 Micro — ON';
-      } catch (e) {
-        alert('Accès micro refusé ou indisponible. Essayez un fichier audio.');
-        console.error(e);
-      }
-    }
-
-    function loadFile(file) {
-      const url = URL.createObjectURL(file);
-      audio = new Audio();
-      audio.src = url;
-      audio.crossOrigin = 'anonymous';
-      audio.addEventListener('canplay', async () => {
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        ctx = ctx || new AudioCtx();
-        const track = ctx.createMediaElementSource(audio);
-        setupAudioNodes(track);
-        playPause.disabled = false;
-      }, { once: true });
-    }
-
-    micBtn.addEventListener('click', () => {
-      if (!started) startMic();
-    });
-
-    fileInput.addEventListener('change', (e) => {
-      const file = e.target.files?.[0];
-      if (file) loadFile(file);
-    });
-
-    playPause.addEventListener('click', async () => {
-      if (!audio) return;
-      if (audio.paused) {
-        await audio.play();
-        playPause.textContent = '⏸︎ Pause';
-      } else {
-        audio.pause();
-        playPause.textContent = '▶︎ Lecture';
-      }
-    });
-
-    // Small perf metric mock
-    const msAvg = document.getElementById('msAvg');
-    let t0 = performance.now(), frames = 0;
-    function perf() {
-      frames++;
-      const t = performance.now();
-      if (t - t0 > 1000) {
-        const fps = frames / ((t - t0) / 1000);
-        const ms = (1000 / fps).toFixed(1);
-        msAvg.textContent = ms;
-        t0 = t; frames = 0;
-      }
-      requestAnimationFrame(perf);
-    }
-    requestAnimationFrame(perf);
   </script>
 </body>
 </html>
