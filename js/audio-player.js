@@ -448,10 +448,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const totalTime = document.getElementById('total-time');
             
             if (currentTime) {
-                currentTime.textContent = this.formatTime(audioVisualizer.audio.currentTime);
+                currentTime.textContent = formatTime(audioVisualizer.audio.currentTime);
             }
             if (totalTime) {
-                totalTime.textContent = this.formatTime(audioVisualizer.audio.duration);
+                totalTime.textContent = formatTime(audioVisualizer.audio.duration);
             }
         }
     }, 100);
