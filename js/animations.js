@@ -236,52 +236,104 @@ class BaseAnimation {
   }
 }
 
-// 1. Blob Morphing Animation
+// 1. Enhanced Blob Morphing Animation with Advanced Effects
 class BlobAnimation extends BaseAnimation {
-  constructor(svg) {
-    super(svg);
+  constructor(svg, options = {}) {
+    super(svg, { colorMode: 'frequency', ...options });
     this.blob = null;
     this.ring = null;
+    this.innerWaves = [];
+    this.orbitalParticles = [];
+    this.liquidEffect = null;
   }
 
   createElements() {
-    // Create ring
+    // Create enhanced ring with gradient
     this.ring = this.createElement('circle', {
       id: 'animation-ring',
       cx: '300',
       cy: '300',
       r: '120',
       fill: 'none',
-      stroke: 'white',
+      stroke: 'url(#bass-gradient)',
       'stroke-opacity': '0.85',
-      'stroke-width': '8'
+      'stroke-width': '8',
+      'stroke-dasharray': '10,5',
+      'stroke-dashoffset': '0'
     });
     this.addElement(this.ring);
 
-    // Create blob
+    // Create liquid effect layer
+    this.liquidEffect = this.createElement('path', {
+      id: 'animation-liquid',
+      fill: 'url(#mid-gradient)',
+      'fill-opacity': '0.3',
+      filter: 'url(#glow)'
+    });
+    this.addElement(this.liquidEffect);
+
+    // Create enhanced blob with dynamic colors
     this.blob = this.createElement('path', {
       id: 'animation-blob',
       d: 'M120,0 C120,66 66,120 0,120 C-66,120 -120,66 -120,0 C-120,-66 -66,-120 0,-120 C66,-120 120,-66 120,0Z',
-      fill: 'white',
+      fill: 'url(#bass-gradient)',
       'fill-opacity': '0.92',
       filter: 'url(#glow)',
       transform: 'translate(300,300)'
     });
     this.addElement(this.blob);
+
+    // Create inner wave effects
+    for (let i = 0; i < 3; i++) {
+      const wave = this.createElement('path', {
+        id: `animation-inner-wave-${i}`,
+        fill: 'none',
+        stroke: this.getColorByFrequency(['bass', 'mid', 'high'][i]),
+        'stroke-width': '2',
+        'stroke-opacity': '0.4',
+        filter: 'url(#glow)'
+      });
+      this.addElement(wave);
+      this.innerWaves.push(wave);
+    }
+
+    // Create orbital particles
+    for (let i = 0; i < 8; i++) {
+      const particle = this.createParticle(300, 300, {
+        color: this.getColorByFrequency('high'),
+        size: Math.random() * 4 + 2,
+        orbital: true,
+        angle: (i / 8) * Math.PI * 2,
+        radius: 80 + Math.random() * 40
+      });
+      this.orbitalParticles.push(particle);
+      this.addElement(particle.element);
+    }
+
+    // Apply 3D effects
+    this.apply3DEffect(this.blob, 2);
+    this.apply3DEffect(this.ring, 1);
   }
 
   update(audioData) {
+    super.update(audioData);
     const { bass, mid, high, beat } = audioData;
+    const time = Date.now() * 0.001;
     const ringBase = 120;
     const blobBase = 120;
 
-    // Ring animation
+    // Enhanced ring animation with rotation
     const r = ringBase + bass * 40 + (beat ? 16 : 0);
     this.ring.setAttribute('r', String(r));
     this.ring.setAttribute('stroke-width', String(6 + mid * 12));
+    this.ring.setAttribute('stroke-dashoffset', String(time * 20));
+    
+    // Dynamic ring color
+    const ringColor = this.getDynamicColor(audioData);
+    this.ring.setAttribute('stroke', ringColor);
 
-    // Blob morphing
-    const points = 60;
+    // Enhanced blob morphing with liquid physics
+    const points = 80; // More points for smoother morphing
     const kBass = 0.55 + bass * 0.45 + (beat ? 0.2 : 0);
     const kMid = 0.55 + mid * 0.35;
     const kHigh = 0.5 + high * 0.25;
@@ -290,29 +342,125 @@ class BlobAnimation extends BaseAnimation {
     const coords = [];
     for (let i = 0; i < points; i++) {
       const t = (i / points) * Math.PI * 2;
-      const wobble = Math.sin(t * 3) * kMid + Math.cos(t * 5) * kHigh;
+      
+      // Complex wobble with multiple frequencies
+      const wobble1 = Math.sin(t * 3 + time) * kMid;
+      const wobble2 = Math.cos(t * 5 + time * 0.7) * kHigh;
+      const wobble3 = Math.sin(t * 7 + time * 0.5) * kBass * 0.3;
+      const wobble = wobble1 + wobble2 + wobble3;
+      
       const rad = radius * (1 + wobble * 0.15);
       const x = Math.cos(t) * rad;
       const y = Math.sin(t) * rad;
       coords.push(`${x.toFixed(1)},${y.toFixed(1)}`);
     }
     
-    const d = `M${coords[0]} C${coords[10]} ${coords[20]} ${coords[30]} ${coords[30]} C${coords[40]} ${coords[50]} ${coords[0]} ${coords[10]} ${coords[0]} Z`;
+    // Smooth path with more control points
+    let d = `M${coords[0]}`;
+    for (let i = 1; i < coords.length; i += 3) {
+      const p1 = coords[i] || coords[0];
+      const p2 = coords[i + 1] || coords[1];
+      const p3 = coords[i + 2] || coords[2];
+      d += ` C${p1} ${p2} ${p3}`;
+    }
+    d += ' Z';
+    
     this.blob.setAttribute('d', d);
+    
+    // Dynamic blob color
+    const blobColor = this.getDynamicColor(audioData);
+    this.blob.setAttribute('fill', blobColor);
+
+    // Update liquid effect
+    const liquidCoords = [];
+    for (let i = 0; i < points; i++) {
+      const t = (i / points) * Math.PI * 2;
+      const liquidWobble = Math.sin(t * 2 + time * 0.5) * mid * 0.1;
+      const rad = radius * (0.7 + liquidWobble);
+      const x = Math.cos(t) * rad;
+      const y = Math.sin(t) * rad;
+      liquidCoords.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+    }
+    
+    let liquidD = `M${liquidCoords[0]}`;
+    for (let i = 1; i < liquidCoords.length; i += 3) {
+      const p1 = liquidCoords[i] || liquidCoords[0];
+      const p2 = liquidCoords[i + 1] || liquidCoords[1];
+      const p3 = liquidCoords[i + 2] || liquidCoords[2];
+      liquidD += ` C${p1} ${p2} ${p3}`;
+    }
+    liquidD += ' Z';
+    
+    this.liquidEffect.setAttribute('d', liquidD);
+    this.liquidEffect.setAttribute('transform', 'translate(300,300)');
+
+    // Update inner waves
+    this.innerWaves.forEach((wave, index) => {
+      const waveCoords = [];
+      const waveRadius = radius * (0.3 + index * 0.2);
+      
+      for (let i = 0; i < 50; i++) {
+        const t = (i / 50) * Math.PI * 2;
+        const waveWobble = Math.sin(t * (index + 2) + time * (index + 1)) * [bass, mid, high][index] * 0.1;
+        const rad = waveRadius * (1 + waveWobble);
+        const x = Math.cos(t) * rad;
+        const y = Math.sin(t) * rad;
+        waveCoords.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+      }
+      
+      let waveD = `M${waveCoords[0]}`;
+      for (let i = 1; i < waveCoords.length; i++) {
+        waveD += ` L${waveCoords[i]}`;
+      }
+      waveD += ' Z';
+      
+      wave.setAttribute('d', waveD);
+      wave.setAttribute('transform', 'translate(300,300)');
+      wave.setAttribute('stroke-opacity', 0.2 + [bass, mid, high][index] * 0.6);
+    });
+
+    // Update orbital particles
+    this.orbitalParticles.forEach((particle, index) => {
+      particle.angle += (0.02 + high * 0.01) * (1 + index * 0.1);
+      particle.radius += Math.sin(time + index) * 2;
+      
+      particle.x = 300 + Math.cos(particle.angle) * particle.radius;
+      particle.y = 300 + Math.sin(particle.angle) * particle.radius;
+      
+      if (particle.element) {
+        particle.element.setAttribute('cx', particle.x);
+        particle.element.setAttribute('cy', particle.y);
+        particle.element.setAttribute('r', particle.size * (1 + beat * 0.5));
+        particle.element.setAttribute('fill-opacity', 0.6 + (bass + mid + high) * 0.4);
+      }
+    });
+
+    // Add beat pulse effect
+    if (beat) {
+      this.blob.style.transform = 'translate(300,300) scale(1.1)';
+      setTimeout(() => {
+        this.blob.style.transform = 'translate(300,300) scale(1)';
+      }, 100);
+    }
   }
 }
 
-// 2. Particle System Animation
+// 2. Enhanced Particle System Animation with Advanced Effects
 class ParticleAnimation extends BaseAnimation {
-  constructor(svg) {
-    super(svg);
+  constructor(svg, options = {}) {
+    super(svg, { colorMode: 'frequency', ...options });
     this.particles = [];
-    this.maxParticles = 50;
+    this.maxParticles = 80;
+    this.gravityCenter = { x: 300, y: 300 };
+    this.connectionLines = [];
+    this.trailEffects = [];
   }
 
   createElements() {
     this.clear();
     this.particles = [];
+    this.connectionLines = [];
+    this.trailEffects = [];
     
     // Create particle container
     this.particleGroup = this.createElement('g', {
@@ -320,50 +468,211 @@ class ParticleAnimation extends BaseAnimation {
     });
     this.addElement(this.particleGroup);
 
-    // Initialize particles
+    // Create connection lines container
+    this.connectionGroup = this.createElement('g', {
+      id: 'animation-connections'
+    });
+    this.addElement(this.connectionGroup);
+
+    // Create trail effects container
+    this.trailGroup = this.createElement('g', {
+      id: 'animation-trails'
+    });
+    this.addElement(this.trailGroup);
+
+    // Initialize particles with enhanced properties
     for (let i = 0; i < this.maxParticles; i++) {
-      this.createParticle();
+      this.createEnhancedParticle();
     }
+
+    // Create gravity center indicator
+    this.gravityIndicator = this.createElement('circle', {
+      cx: this.gravityCenter.x,
+      cy: this.gravityCenter.y,
+      r: '5',
+      fill: 'url(#bass-gradient)',
+      'fill-opacity': '0.6',
+      filter: 'url(#glow)'
+    });
+    this.addElement(this.gravityIndicator);
+  }
+
+  createEnhancedParticle() {
+    const particle = {
+      x: Math.random() * 600,
+      y: Math.random() * 600,
+      vx: (Math.random() - 0.5) * 6,
+      vy: (Math.random() - 0.5) * 6,
+      size: Math.random() * 12 + 3,
+      life: Math.random(),
+      maxLife: 1,
+      color: this.getColorByFrequency(['bass', 'mid', 'high'][Math.floor(Math.random() * 3)]),
+      trail: [],
+      maxTrailLength: 10,
+      element: null,
+      trailElement: null
+    };
+
+    // Create main particle
+    particle.element = this.createElement('circle', {
+      cx: particle.x,
+      cy: particle.y,
+      r: particle.size,
+      fill: particle.color,
+      'fill-opacity': '0.9',
+      filter: 'url(#glow)'
+    });
+
+    // Create trail element
+    particle.trailElement = this.createElement('path', {
+      fill: 'none',
+      stroke: particle.color,
+      'stroke-width': '2',
+      'stroke-opacity': '0.3',
+      filter: 'url(#glow)'
+    });
+
+    this.particleGroup.appendChild(particle.element);
+    this.trailGroup.appendChild(particle.trailElement);
+    this.particles.push(particle);
   }
 
   update(audioData) {
+    super.update(audioData);
     const { bass, mid, high, beat } = audioData;
+    const time = Date.now() * 0.001;
     
+    // Update gravity center based on audio
+    this.gravityCenter.x = 300 + Math.sin(time * 0.5) * bass * 50;
+    this.gravityCenter.y = 300 + Math.cos(time * 0.7) * mid * 50;
+    
+    if (this.gravityIndicator) {
+      this.gravityIndicator.setAttribute('cx', this.gravityCenter.x);
+      this.gravityIndicator.setAttribute('cy', this.gravityCenter.y);
+      this.gravityIndicator.setAttribute('r', 5 + bass * 10);
+    }
+
+    // Clear previous connections
+    this.connectionLines.forEach(line => line.remove());
+    this.connectionLines = [];
+
     this.particles.forEach((particle, index) => {
-      // Update position
-      particle.x += particle.vx * (1 + bass * 0.5);
-      particle.y += particle.vy * (1 + mid * 0.3);
+      // Apply gravity towards center
+      const dx = this.gravityCenter.x - particle.x;
+      const dy = this.gravityCenter.y - particle.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      
+      if (distance > 0) {
+        const gravityForce = bass * 0.1;
+        particle.vx += (dx / distance) * gravityForce;
+        particle.vy += (dy / distance) * gravityForce;
+      }
+
+      // Update position with audio-reactive speed
+      particle.x += particle.vx * (1 + bass * 0.3);
+      particle.y += particle.vy * (1 + mid * 0.2);
       particle.life += 0.01;
 
-      // Bounce off edges
-      if (particle.x < 0 || particle.x > 600) particle.vx *= -1;
-      if (particle.y < 0 || particle.y > 600) particle.vy *= -1;
+      // Enhanced boundary handling with bounce
+      if (particle.x < 0 || particle.x > 600) {
+        particle.vx *= -0.8;
+        particle.x = Math.max(0, Math.min(600, particle.x));
+      }
+      if (particle.y < 0 || particle.y > 600) {
+        particle.vy *= -0.8;
+        particle.y = Math.max(0, Math.min(600, particle.y));
+      }
 
-      // Update size based on audio
-      const newSize = particle.size * (1 + high * 0.5);
+      // Update trail
+      particle.trail.push({ x: particle.x, y: particle.y });
+      if (particle.trail.length > particle.maxTrailLength) {
+        particle.trail.shift();
+      }
+
+      // Update trail path
+      if (particle.trail.length > 1) {
+        let trailPath = `M${particle.trail[0].x},${particle.trail[0].y}`;
+        for (let i = 1; i < particle.trail.length; i++) {
+          trailPath += ` L${particle.trail[i].x},${particle.trail[i].y}`;
+        }
+        particle.trailElement.setAttribute('d', trailPath);
+        particle.trailElement.setAttribute('stroke-opacity', 0.3 * (1 - particle.life * 0.5));
+      }
+
+      // Update size based on audio with pulsing effect
+      const pulseSize = 1 + Math.sin(time * 5 + index) * 0.2;
+      const newSize = particle.size * (1 + high * 0.5) * pulseSize;
       particle.element.setAttribute('r', newSize);
 
-      // Update opacity
-      const opacity = 0.8 * (1 - particle.life * 0.5);
+      // Update opacity with fade effect
+      const opacity = 0.9 * (1 - particle.life * 0.3);
       particle.element.setAttribute('fill-opacity', opacity);
 
       // Update position
       particle.element.setAttribute('cx', particle.x);
       particle.element.setAttribute('cy', particle.y);
 
+      // Dynamic color based on audio
+      const dynamicColor = this.getDynamicColor(audioData);
+      particle.element.setAttribute('fill', dynamicColor);
+      particle.trailElement.setAttribute('stroke', dynamicColor);
+
+      // Create connections between nearby particles
+      this.particles.forEach((otherParticle, otherIndex) => {
+        if (index !== otherIndex) {
+          const distance = Math.sqrt(
+            Math.pow(particle.x - otherParticle.x, 2) + 
+            Math.pow(particle.y - otherParticle.y, 2)
+          );
+          
+          if (distance < 100 && distance > 0) {
+            const connectionOpacity = (100 - distance) / 100 * 0.3;
+            const connection = this.createElement('line', {
+              x1: particle.x,
+              y1: particle.y,
+              x2: otherParticle.x,
+              y2: otherParticle.y,
+              stroke: this.getColorByFrequency('mid'),
+              'stroke-width': '1',
+              'stroke-opacity': connectionOpacity
+            });
+            this.connectionGroup.appendChild(connection);
+            this.connectionLines.push(connection);
+          }
+        }
+      });
+
       // Reset particle if it's too old
       if (particle.life > 1) {
         particle.x = Math.random() * 600;
         particle.y = Math.random() * 600;
         particle.life = 0;
-        particle.vx = (Math.random() - 0.5) * 4;
-        particle.vy = (Math.random() - 0.5) * 4;
+        particle.vx = (Math.random() - 0.5) * 6;
+        particle.vy = (Math.random() - 0.5) * 6;
+        particle.trail = [];
+        particle.color = this.getColorByFrequency(['bass', 'mid', 'high'][Math.floor(Math.random() * 3)]);
       }
     });
 
-    // Add new particles on beat
+    // Add new particles on beat with enhanced spawning
     if (beat && this.particles.length < this.maxParticles) {
-      this.createParticle();
+      for (let i = 0; i < 3; i++) {
+        this.createEnhancedParticle();
+      }
+    }
+
+    // Vortex effect on high frequencies
+    if (high > 0.7) {
+      this.particles.forEach(particle => {
+        const dx = particle.x - 300;
+        const dy = particle.y - 300;
+        const angle = Math.atan2(dy, dx);
+        const newAngle = angle + high * 0.1;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        particle.x = 300 + Math.cos(newAngle) * distance;
+        particle.y = 300 + Math.sin(newAngle) * distance;
+      });
     }
   }
 }
