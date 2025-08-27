@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide de Migration - PulseColor</title>
+    <meta name="description" content="Guide complet pour migrer vers PulseColor v2.0.0 - Visualiseur audio interactif">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Guide de Migration - PulseColor">
+    <meta property="og:description" content="Guide complet pour migrer vers PulseColor v2.0.0">
+    <meta property="og:image" content="../og-image.png">
+    <meta property="og:url" content="https://pulsecolor.dev/docs/migration">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Guide de Migration - PulseColor">
+    <meta name="twitter:description" content="Guide complet pour migrer vers PulseColor v2.0.0">
+    <meta name="twitter:image" content="../og-image.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="icon" type="image/png" href="../favicon.png">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../css/main.css">
+    <style>
+        .migration-guide {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .version-block {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 1px solid #2d3748;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .breaking-change {
+            background: linear-gradient(135deg, #7c2d12 0%, #991b1b 100%);
+            border-left: 4px solid #ef4444;
+        }
+        
+        .new-feature {
+            background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+            border-left: 4px solid #10b981;
+        }
+        
+        .improvement {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .code-block {
+            background: #1a1a2e;
+            border: 1px solid #2d3748;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+        
+        .code-block pre {
+            margin: 0;
+            color: #e2e8f0;
+        }
+        
+        .migration-steps {
+            background: linear-gradient(135deg, #312e81 0%, #3730a3 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+        
+        .step-number {
+            background: #6366f1;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <a href="../index.html" class="nav-logo">
+                    <span class="logo-text">PulseColor</span>
+                </a>
+                <div class="nav-links">
+                    <a href="../index.html">Accueil</a>
+                    <a href="../gallery.html">Galerie</a>
+                    <a href="quickstart.html">Documentation</a>
+                    <a href="../contact.html">Contact</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="migration-guide">
+            <h1>Guide de Migration - PulseColor v2.0.0</h1>
+            
+            <div class="version-block">
+                <h2>🚀 Nouvelle Version Majeure</h2>
+                <p>PulseColor v2.0.0 apporte des améliorations significatives en termes de performance, de fonctionnalités et d'expérience utilisateur. Ce guide vous accompagne dans la migration de votre projet.</p>
+            </div>
+
+            <div class="migration-steps">
+                <h2>📋 Étapes de Migration</h2>
+                
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div>
+                        <h3>Sauvegardez votre projet</h3>
+                        <p>Créez une sauvegarde complète de votre projet actuel avant de commencer la migration.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div>
+                        <h3>Mettez à jour les dépendances</h3>
+                        <p>Téléchargez la nouvelle version de PulseColor et remplacez les anciens fichiers.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div>
+                        <h3>Adaptez votre code</h3>
+                        <p>Suivez les changements breaking ci-dessous pour adapter votre intégration.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div>
+                        <h3>Testez votre application</h3>
+                        <p>Vérifiez que toutes les fonctionnalités fonctionnent correctement avec la nouvelle version.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h2>🔄 Changements Breaking</h2>
+            
+            <div class="version-block breaking-change">
+                <h3>API AudioContext</h3>
+                <p><strong>Avant v2.0.0 :</strong></p>
+                <div class="code-block">
+                    <pre><code>const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const analyser = audioContext.createAnalyser();</code></pre>
+                </div>
+                <p><strong>Après v2.0.0 :</strong></p>
+                <div class="code-block">
+                    <pre><code>// Utilisation de l'API Web Audio moderne
+const audioContext = new AudioContext();
+const analyser = audioContext.createAnalyser();
+analyser.fftSize = 2048; // Nouvelle taille par défaut</code></pre>
+                </div>
+            </div>
+
+            <div class="version-block breaking-change">
+                <h3>Configuration des Animations</h3>
+                <p><strong>Avant v2.0.0 :</strong></p>
+                <div class="code-block">
+                    <pre><code>PulseColor.init({
+    canvas: 'canvas',
+    audio: audioElement,
+    animation: 'wave'
+});</code></pre>
+                </div>
+                <p><strong>Après v2.0.0 :</strong></p>
+                <div class="code-block">
+                    <pre><code>PulseColor.init({
+    canvas: 'canvas',
+    audio: audioElement,
+    animation: 'wave',
+    config: {
+        sensitivity: 0.8,
+        smoothing: 0.3,
+        colorMode: 'gradient'
+    }
+});</code></pre>
+                </div>
+            </div>
+
+            <h2>✨ Nouvelles Fonctionnalités</h2>
+            
+            <div class="version-block new-feature">
+                <h3>Mode Gradient Dynamique</h3>
+                <p>Nouveau système de couleurs basé sur les gradients qui s'adaptent automatiquement à la fréquence audio.</p>
+                <div class="code-block">
+                    <pre><code>PulseColor.setColorMode('gradient', {
+    colors: ['#6366f1', '#8b5cf6', '#ec4899'],
+    transition: 'smooth'
+});</code></pre>
+                </div>
+            </div>
+
+            <div class="version-block new-feature">
+                <h3>API d'Événements Améliorée</h3>
+                <p>Nouveaux événements pour un contrôle plus précis des animations.</p>
+                <div class="code-block">
+                    <pre><code>PulseColor.on('frequencyChange', (data) => {
+    console.log('Fréquence dominante:', data.dominantFrequency);
+});
+
+PulseColor.on('beatDetected', (data) => {
+    console.log('Beat détecté avec intensité:', data.intensity);
+});</code></pre>
+                </div>
+            </div>
+
+            <div class="version-block new-feature">
+                <h3>Support PWA Complet</h3>
+                <p>Application Progressive Web App avec cache intelligent et installation native.</p>
+                <div class="code-block">
+                    <pre><code>// Service Worker automatiquement installé
+// Manifest PWA inclus
+// Support hors ligne complet</code></pre>
+                </div>
+            </div>
+
+            <h2>⚡ Améliorations de Performance</h2>
+            
+            <div class="version-block improvement">
+                <h3>Optimisation WebGL</h3>
+                <p>Utilisation de WebGL pour les animations complexes, améliorant significativement les performances.</p>
+            </div>
+
+            <div class="version-block improvement">
+                <h3>Analyse Audio Optimisée</h3>
+                <p>Nouvel algorithme d'analyse audio plus précis et plus rapide.</p>
+            </div>
+
+            <div class="version-block improvement">
+                <h3>Gestion Mémoire Améliorée</h3>
+                <p>Meilleure gestion de la mémoire pour éviter les fuites lors de sessions prolongées.</p>
+            </div>
+
+            <h2>🐛 Corrections de Bugs</h2>
+            
+            <div class="version-block">
+                <ul>
+                    <li>Correction du problème de synchronisation audio sur Safari</li>
+                    <li>Résolution des fuites mémoire lors du changement d'animation</li>
+                    <li>Amélioration de la compatibilité mobile</li>
+                    <li>Correction des problèmes de performance sur les appareils bas de gamme</li>
+                </ul>
+            </div>
+
+            <h2>📱 Compatibilité</h2>
+            
+            <div class="version-block">
+                <h3>Navigateurs Supportés</h3>
+                <ul>
+                    <li>Chrome 90+</li>
+                    <li>Firefox 88+</li>
+                    <li>Safari 14+</li>
+                    <li>Edge 90+</li>
+                </ul>
+                
+                <h3>Appareils</h3>
+                <ul>
+                    <li>Desktop (Windows, macOS, Linux)</li>
+                    <li>Mobile (iOS 14+, Android 10+)</li>
+                    <li>Tablettes</li>
+                </ul>
+            </div>
+
+            <h2>🆘 Support</h2>
+            
+            <div class="version-block">
+                <p>Si vous rencontrez des problèmes lors de la migration :</p>
+                <ul>
+                    <li><a href="../docs/api-reference.html">Consultez la documentation API</a></li>
+                    <li><a href="../support.html">Contactez le support</a></li>
+                    <li><a href="https://github.com/martin-lechene/pulsecolor/issues">Signalez un bug sur GitHub</a></li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>PulseColor</h3>
+                <p>Visualiseur audio interactif open source</p>
+            </div>
+            <div class="footer-section">
+                <h4>Documentation</h4>
+                <ul>
+                    <li><a href="quickstart.html">Démarrage rapide</a></li>
+                    <li><a href="api-reference.html">Référence API</a></li>
+                    <li><a href="personnalisations.html">Personnalisations</a></li>
+                    <li><a href="migration.html">Migration</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="../contact.html">Contact</a></li>
+                    <li><a href="../support.html">Support</a></li>
+                    <li><a href="https://github.com/martin-lechene/pulsecolor/issues">Issues</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Projet</h4>
+                <ul>
+                    <li><a href="https://github.com/martin-lechene/pulsecolor">GitHub</a></li>
+                    <li><a href="../changelogs.html">Changelog</a></li>
+                    <li><a href="../LICENSE">Licence</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 PulseColor. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

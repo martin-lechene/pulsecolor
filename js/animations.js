@@ -677,98 +677,448 @@ class ParticleAnimation extends BaseAnimation {
   }
 }
 
-// 3. Wave Forms Animation
+// 3. Enhanced Wave Forms Animation with 3D Effects and Multiple Layers
 class WaveAnimation extends BaseAnimation {
-  constructor(svg) {
-    super(svg);
+  constructor(svg, options = {}) {
+    super(svg, { colorMode: 'frequency', ...options });
     this.waves = [];
+    this.waveCount = 8; // Increased from 3 to 8 for more complexity
+    this.waveLayers = [];
+    this.reflectionWaves = [];
   }
 
   createElements() {
     this.clear();
     this.waves = [];
+    this.waveLayers = [];
+    this.reflectionWaves = [];
 
-    // Create multiple wave layers
-    for (let i = 0; i < 3; i++) {
+    // Create multiple wave layers with different properties
+    for (let i = 0; i < this.waveCount; i++) {
       const wave = this.createElement('path', {
         id: `animation-wave-${i}`,
         fill: 'none',
-        stroke: 'white',
-        'stroke-width': '3',
-        'stroke-opacity': '0.6'
+        stroke: this.getColorByFrequency(['bass', 'mid', 'high'][i % 3]),
+        'stroke-width': String(2 + i * 0.5),
+        'stroke-opacity': '0.6',
+        filter: 'url(#glow)'
       });
       this.addElement(wave);
       this.waves.push(wave);
+      this.waveLayers.push({
+        frequency: ['bass', 'mid', 'high'][i % 3],
+        phase: i * Math.PI / 4,
+        speed: 0.01 + i * 0.002
+      });
     }
+
+    // Create reflection waves for 3D effect
+    for (let i = 0; i < 4; i++) {
+      const reflection = this.createElement('path', {
+        id: `animation-reflection-${i}`,
+        fill: 'none',
+        stroke: this.getColorByFrequency(['bass', 'mid', 'high'][i % 3]),
+        'stroke-width': '1',
+        'stroke-opacity': '0.3',
+        'stroke-dasharray': '5,5'
+      });
+      this.addElement(reflection);
+      this.reflectionWaves.push(reflection);
+    }
+
+    // Create wave surface for 3D effect
+    this.waveSurface = this.createElement('path', {
+      fill: 'url(#mid-gradient)',
+      'fill-opacity': '0.1',
+      filter: 'url(#glow)'
+    });
+    this.addElement(this.waveSurface);
   }
 
   update(audioData) {
+    super.update(audioData);
     const { bass, mid, high } = audioData;
-    const frequencies = [bass, mid, high];
+    const time = Date.now() * 0.001;
+    const frequencies = { bass, mid, high };
 
+    // Update main waves with enhanced physics
     this.waves.forEach((wave, index) => {
-      const frequency = frequencies[index];
-      const amplitude = 50 + frequency * 100;
-      const wavelength = 50 + (1 - frequency) * 100;
+      const layer = this.waveLayers[index];
+      const frequency = frequencies[layer.frequency];
+      const amplitude = 30 + frequency * 120;
+      const wavelength = 40 + (1 - frequency) * 120;
+      const phase = layer.phase + time * layer.speed;
       
+      // Create complex wave path with multiple harmonics
       let path = 'M0,300 ';
-      for (let x = 0; x <= 600; x += 5) {
-        const y = 300 + Math.sin(x / wavelength + Date.now() * 0.01) * amplitude;
+      for (let x = 0; x <= 600; x += 3) { // Higher resolution
+        const wave1 = Math.sin(x / wavelength + phase) * amplitude;
+        const wave2 = Math.sin(x / (wavelength * 0.5) + phase * 1.5) * amplitude * 0.3;
+        const wave3 = Math.sin(x / (wavelength * 0.25) + phase * 2) * amplitude * 0.1;
+        const y = 300 + wave1 + wave2 + wave3;
         path += `L${x},${y} `;
       }
       
       wave.setAttribute('d', path);
-      wave.setAttribute('stroke-opacity', 0.3 + frequency * 0.7);
+      wave.setAttribute('stroke-opacity', 0.2 + frequency * 0.8);
+      
+      // Dynamic color based on frequency
+      const color = this.getColorByFrequency(layer.frequency, frequency);
+      wave.setAttribute('stroke', color);
+      
+      // Dynamic stroke width
+      wave.setAttribute('stroke-width', String(2 + frequency * 4));
     });
+
+    // Update reflection waves
+    this.reflectionWaves.forEach((reflection, index) => {
+      const frequency = frequencies[['bass', 'mid', 'high'][index % 3]];
+      const amplitude = 20 + frequency * 60;
+      const wavelength = 60 + (1 - frequency) * 80;
+      const phase = time * (0.005 + index * 0.002);
+      
+      let path = 'M0,320 ';
+      for (let x = 0; x <= 600; x += 5) {
+        const y = 320 + Math.sin(x / wavelength + phase) * amplitude * 0.5;
+        path += `L${x},${y} `;
+      }
+      
+      reflection.setAttribute('d', path);
+      reflection.setAttribute('stroke-opacity', 0.1 + frequency * 0.4);
+      
+      // Animate dash offset for moving effect
+      reflection.setAttribute('stroke-dashoffset', String(time * 20 + index * 10));
+    });
+
+    // Update wave surface for 3D effect
+    const surfacePath = this.createWaveSurface(audioData, time);
+    this.waveSurface.setAttribute('d', surfacePath);
+    this.waveSurface.setAttribute('fill-opacity', 0.05 + (bass + mid + high) * 0.1);
+
+    // Add ripple effects on beat
+    if (audioData.beat) {
+      this.addRippleEffect(audioData, time);
+    }
+  }
+
+  createWaveSurface(audioData, time) {
+    const { bass, mid, high } = audioData;
+    const amplitude = 50 + (bass + mid + high) * 100;
+    const wavelength = 80;
+    
+    let path = 'M0,600 ';
+    
+    // Create surface from bottom to top wave
+    for (let x = 0; x <= 600; x += 5) {
+      const wave1 = Math.sin(x / wavelength + time * 0.01) * amplitude;
+      const wave2 = Math.sin(x / (wavelength * 0.7) + time * 0.015) * amplitude * 0.5;
+      const y = 300 + wave1 + wave2;
+      path += `L${x},${y} `;
+    }
+    
+    // Close the path to create a fillable area
+    path += 'L600,600 L0,600 Z';
+    
+    return path;
+  }
+
+  addRippleEffect(audioData, time) {
+    const ripple = this.createElement('circle', {
+      cx: '300',
+      cy: '300',
+      r: '0',
+      fill: 'none',
+      stroke: this.getDynamicColor(audioData),
+      'stroke-width': '3',
+      'stroke-opacity': '0.8',
+      filter: 'url(#glow)'
+    });
+    this.addElement(ripple);
+    
+    // Animate ripple expansion
+    let radius = 0;
+    const animateRipple = () => {
+      radius += 5;
+      ripple.setAttribute('r', radius);
+      ripple.setAttribute('stroke-opacity', 0.8 * (1 - radius / 300));
+      
+      if (radius < 300) {
+        requestAnimationFrame(animateRipple);
+      } else {
+        ripple.remove();
+      }
+    };
+    animateRipple();
   }
 }
 
-// 4. Geometric Shapes Animation
+// 4. Enhanced Geometric Shapes Animation with 3D Effects and Morphing
 class GeometricAnimation extends BaseAnimation {
-  constructor(svg) {
-    super(svg);
+  constructor(svg, options = {}) {
+    super(svg, { colorMode: 'frequency', ...options });
     this.shapes = [];
+    this.shapeData = [];
+    this.orbitalParticles = [];
+    this.morphingShapes = [];
   }
 
   createElements() {
     this.clear();
     this.shapes = [];
+    this.shapeData = [];
+    this.orbitalParticles = [];
+    this.morphingShapes = [];
 
-    // Create geometric shapes
+    // Create enhanced geometric shapes with 3D properties
     const shapes = [
-      { type: 'circle', cx: 200, cy: 200, r: 50 },
-      { type: 'rect', x: 350, y: 150, width: 100, height: 100 },
-      { type: 'polygon', points: '450,200 500,150 550,200 500,250' },
-      { type: 'ellipse', cx: 150, cy: 400, rx: 60, ry: 40 }
+      { 
+        type: 'circle', 
+        cx: 200, 
+        cy: 200, 
+        r: 50,
+        morphTarget: { type: 'ellipse', rx: 80, ry: 40 }
+      },
+      { 
+        type: 'rect', 
+        x: 350, 
+        y: 150, 
+        width: 100, 
+        height: 100,
+        morphTarget: { type: 'polygon', points: '400,200 450,150 500,200 450,250' }
+      },
+      { 
+        type: 'polygon', 
+        points: '450,200 500,150 550,200 500,250',
+        morphTarget: { type: 'circle', cx: 500, cy: 200, r: 50 }
+      },
+      { 
+        type: 'ellipse', 
+        cx: 150, 
+        cy: 400, 
+        rx: 60, 
+        ry: 40,
+        morphTarget: { type: 'rect', x: 120, y: 380, width: 60, height: 40 }
+      }
     ];
 
     shapes.forEach((shape, index) => {
+      // Create main shape
       const element = this.createElement(shape.type, {
         id: `animation-shape-${index}`,
-        fill: 'white',
+        fill: this.getColorByFrequency(['bass', 'mid', 'high'][index % 3]),
         'fill-opacity': '0.8',
+        filter: 'url(#glow)',
         ...shape
       });
       this.addElement(element);
       this.shapes.push(element);
+
+      // Store shape data for morphing
+      this.shapeData.push({
+        original: shape,
+        target: shape.morphTarget,
+        morphProgress: 0,
+        rotation: 0,
+        scale: 1,
+        position: { x: shape.cx || shape.x, y: shape.cy || shape.y }
+      });
+
+      // Create orbital particles for each shape
+      for (let i = 0; i < 4; i++) {
+        const particle = this.createParticle(
+          shape.cx || shape.x, 
+          shape.cy || shape.y, 
+          {
+            color: this.getColorByFrequency('high'),
+            size: Math.random() * 3 + 1,
+            orbital: true,
+            angle: (i / 4) * Math.PI * 2,
+            radius: 30 + Math.random() * 20,
+            parentShape: index
+          }
+        );
+        this.orbitalParticles.push(particle);
+        this.addElement(particle.element);
+      }
+
+      // Create morphing shape (invisible, used for calculations)
+      const morphElement = this.createElement(shape.morphTarget.type, {
+        id: `animation-morph-${index}`,
+        fill: 'none',
+        'fill-opacity': '0',
+        ...shape.morphTarget
+      });
+      this.morphingShapes.push(morphElement);
+    });
+
+    // Apply 3D effects
+    this.shapes.forEach(shape => {
+      this.apply3DEffect(shape, 2);
     });
   }
 
   update(audioData) {
+    super.update(audioData);
     const { bass, mid, high, beat } = audioData;
+    const time = Date.now() * 0.001;
     
     this.shapes.forEach((shape, index) => {
-      const scale = 1 + (bass + mid + high) * 0.3;
-      const rotation = (bass + mid + high) * 360;
+      const shapeInfo = this.shapeData[index];
       
-      shape.setAttribute('transform', `scale(${scale}) rotate(${rotation} 300 300)`);
-      shape.setAttribute('fill-opacity', 0.5 + (bass + mid + high) * 0.5);
+      // Update morphing progress
+      shapeInfo.morphProgress += (beat ? 0.1 : 0.02);
+      if (shapeInfo.morphProgress > 1) {
+        shapeInfo.morphProgress = 0;
+        // Swap original and target for continuous morphing
+        const temp = shapeInfo.original;
+        shapeInfo.original = shapeInfo.target;
+        shapeInfo.target = temp;
+      }
+
+      // Calculate morphed properties
+      const morphFactor = Math.sin(shapeInfo.morphProgress * Math.PI);
+      const currentProps = this.interpolateShapeProperties(
+        shapeInfo.original, 
+        shapeInfo.target, 
+        morphFactor
+      );
+
+      // Update shape properties
+      Object.entries(currentProps).forEach(([key, value]) => {
+        if (key !== 'type' && key !== 'morphTarget') {
+          shape.setAttribute(key, value);
+        }
+      });
+
+      // Enhanced transformations
+      const scale = 1 + (bass + mid + high) * 0.4;
+      const rotation = shapeInfo.rotation + (bass + mid + high) * 2;
+      shapeInfo.rotation = rotation;
+
+      // Dynamic position based on audio
+      const centerX = 300;
+      const centerY = 300;
+      const offsetX = Math.sin(time * 0.5 + index) * bass * 30;
+      const offsetY = Math.cos(time * 0.7 + index) * mid * 30;
       
+      const transform = `translate(${centerX + offsetX},${centerY + offsetY}) scale(${scale}) rotate(${rotation})`;
+      shape.setAttribute('transform', transform);
+
+      // Dynamic color and opacity
+      const color = this.getDynamicColor(audioData);
+      shape.setAttribute('fill', color);
+      shape.setAttribute('fill-opacity', 0.6 + (bass + mid + high) * 0.4);
+
+      // Beat effects
       if (beat) {
-        shape.setAttribute('stroke', 'white');
-        shape.setAttribute('stroke-width', '3');
+        shape.setAttribute('stroke', this.getColorByFrequency('beat', 1));
+        shape.setAttribute('stroke-width', '4');
+        shape.setAttribute('stroke-opacity', '0.8');
+        
+        // Pulse effect
+        shape.style.transform = transform + ' scale(1.2)';
+        setTimeout(() => {
+          shape.style.transform = transform;
+        }, 100);
       } else {
-        shape.removeAttribute('stroke');
+        shape.setAttribute('stroke', color);
+        shape.setAttribute('stroke-width', '2');
+        shape.setAttribute('stroke-opacity', '0.4');
+      }
+    });
+
+    // Update orbital particles
+    this.orbitalParticles.forEach((particle, index) => {
+      const parentIndex = Math.floor(index / 4);
+      const shapeInfo = this.shapeData[parentIndex];
+      
+      particle.angle += (0.03 + high * 0.02) * (1 + index * 0.1);
+      particle.radius += Math.sin(time + index) * 2;
+      
+      const centerX = 300 + Math.sin(time * 0.5 + parentIndex) * bass * 30;
+      const centerY = 300 + Math.cos(time * 0.7 + parentIndex) * mid * 30;
+      
+      particle.x = centerX + Math.cos(particle.angle) * particle.radius;
+      particle.y = centerY + Math.sin(particle.angle) * particle.radius;
+      
+      if (particle.element) {
+        particle.element.setAttribute('cx', particle.x);
+        particle.element.setAttribute('cy', particle.y);
+        particle.element.setAttribute('r', particle.size * (1 + beat * 0.5));
+        particle.element.setAttribute('fill-opacity', 0.7 + (bass + mid + high) * 0.3);
+        
+        // Dynamic particle color
+        const particleColor = this.getColorByFrequency(['bass', 'mid', 'high'][index % 3]);
+        particle.element.setAttribute('fill', particleColor);
+      }
+    });
+
+    // Add fractal-like sub-shapes on high frequencies
+    if (high > 0.8) {
+      this.addFractalShapes(audioData, time);
+    }
+  }
+
+  interpolateShapeProperties(original, target, factor) {
+    const result = { ...original };
+    
+    // Interpolate numeric properties
+    ['cx', 'cy', 'x', 'y', 'r', 'rx', 'ry', 'width', 'height'].forEach(prop => {
+      if (original[prop] !== undefined && target[prop] !== undefined) {
+        result[prop] = original[prop] + (target[prop] - original[prop]) * factor;
+      }
+    });
+
+    // Interpolate points for polygons
+    if (original.points && target.points) {
+      const originalPoints = original.points.split(' ').map(Number);
+      const targetPoints = target.points.split(' ').map(Number);
+      const interpolatedPoints = [];
+      
+      for (let i = 0; i < Math.max(originalPoints.length, targetPoints.length); i += 2) {
+        const x1 = originalPoints[i] || 0;
+        const y1 = originalPoints[i + 1] || 0;
+        const x2 = targetPoints[i] || 0;
+        const y2 = targetPoints[i + 1] || 0;
+        
+        interpolatedPoints.push(
+          x1 + (x2 - x1) * factor,
+          y1 + (y2 - y1) * factor
+        );
+      }
+      
+      result.points = interpolatedPoints.join(' ');
+    }
+
+    return result;
+  }
+
+  addFractalShapes(audioData, time) {
+    // Create smaller versions of shapes at different positions
+    this.shapes.forEach((shape, index) => {
+      if (Math.random() < 0.1) { // 10% chance per frame
+        const fractalShape = this.createElement(shape.tagName.toLowerCase(), {
+          fill: this.getDynamicColor(audioData),
+          'fill-opacity': '0.3',
+          filter: 'url(#glow)',
+          transform: `translate(${Math.random() * 600},${Math.random() * 600}) scale(0.3) rotate(${Math.random() * 360})`
+        });
+        
+        // Copy attributes from original shape
+        Array.from(shape.attributes).forEach(attr => {
+          if (!['id', 'transform', 'fill', 'fill-opacity'].includes(attr.name)) {
+            fractalShape.setAttribute(attr.name, attr.value);
+          }
+        });
+        
+        this.addElement(fractalShape);
+        
+        // Remove after animation
+        setTimeout(() => {
+          if (fractalShape.parentNode) {
+            fractalShape.parentNode.removeChild(fractalShape);
+          }
+        }, 1000);
       }
     });
   }
