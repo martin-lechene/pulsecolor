@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PulseColor - Galerie d'Animations</title>
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        /* Styles spécifiques à la galerie */
+        .gallery-header {
+            text-align: center;
+            padding: var(--space-2xl) 0;
+            background: linear-gradient(135deg, hsl(var(--bg-a) / 0.1), hsl(var(--bg-b) / 0.1));
+            border-radius: var(--radius-2xl);
+            margin-bottom: var(--space-2xl);
+        }
+
+        .gallery-nav {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+            margin-bottom: var(--space-xl);
+            padding: var(--space-md);
+            background: hsl(var(--surface) / 0.5);
+            border-radius: var(--radius-lg);
+            border: 1px solid hsl(var(--border));
+        }
+
+        .gallery-nav-btn {
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: var(--radius-md);
+            background: hsl(var(--surface));
+            border: 1px solid hsl(var(--border));
+            color: hsl(var(--text-secondary));
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            font-size: var(--font-size-sm);
+        }
+
+        .gallery-nav-btn.active {
+            background: hsl(var(--accent));
+            color: white;
+            border-color: hsl(var(--accent));
+        }
+
+        .gallery-nav-btn:hover:not(.active) {
+            background: hsl(var(--surface-elevated));
+            border-color: hsl(var(--accent) / 0.5);
+        }
+
+        .gallery-section {
+            margin-bottom: var(--space-2xl);
+            padding: var(--space-lg);
+            background: hsl(var(--surface) / 0.3);
+            border-radius: var(--radius-xl);
+            border: 1px solid hsl(var(--border));
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-lg);
+            margin-top: var(--space-lg);
+        }
+
+        .animation-card {
+            padding: var(--space-lg);
+            background: hsl(var(--surface) / 0.5);
+            border: 1px solid hsl(var(--border));
+            border-radius: var(--radius-lg);
+            text-align: center;
+            transition: all var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .animation-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px hsl(var(--accent) / 0.2);
+        }
+
+        .animation-demo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto var(--space-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: hsl(var(--surface-elevated));
+            border-radius: var(--radius-md);
+            font-size: 2rem;
+            position: relative;
+        }
+
+        .animation-title {
+            font-size: var(--font-size-lg);
+            font-weight: 700;
+            margin-bottom: var(--space-sm);
+            color: hsl(var(--text-primary));
+        }
+
+        .animation-description {
+            font-size: var(--font-size-sm);
+            color: hsl(var(--text-secondary));
+            margin-bottom: var(--space-md);
+        }
+
+        .animation-controls {
+            display: flex;
+            gap: var(--space-xs);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: var(--radius-sm);
+            background: hsl(var(--surface));
+            border: 1px solid hsl(var(--border));
+            color: hsl(var(--text-secondary));
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            font-size: var(--font-size-xs);
+        }
+
+        .control-btn:hover {
+            background: hsl(var(--accent));
+            color: white;
+            border-color: hsl(var(--accent));
+        }
+
+        .particle-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .liquid-demo {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--radius-md);
+            background: hsl(var(--surface-elevated));
+        }
+
+        .text-demo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: hsl(var(--accent));
+        }
+
+        .loading-demo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+        }
+
+        .spinner-svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        .spinner-svg circle {
+            stroke: hsl(var(--accent));
+            stroke-width: 4;
+            fill: none;
+            stroke-dasharray: 150;
+            stroke-dashoffset: 150;
+        }
+
+        .scroll-demo {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .scroll-demo.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s ease-out;
+        }
+
+        .filter-demo {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, hsl(var(--bg-a)), hsl(var(--bg-b)));
+            border-radius: var(--radius-md);
+        }
+
+        .mask-demo {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, hsl(var(--accent)), hsl(var(--bg-a)));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+
+        .perspective-demo {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, hsl(var(--bg-a)), hsl(var(--bg-b)));
+            border-radius: var(--radius-md);
+            transform-style: preserve-3d;
+        }
+
+        .clip-demo {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, hsl(var(--accent)), hsl(var(--bg-a)));
+            border-radius: var(--radius-md);
+        }
+
+        .shadow-demo {
+            width: 100px;
+            height: 100px;
+            background: hsl(var(--accent));
+            border-radius: var(--radius-md);
+        }
+
+        .origin-demo {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, hsl(var(--bg-a)), hsl(var(--bg-b)));
+            border-radius: var(--radius-md);
+        }
+
+        .complex-demo {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, hsl(var(--accent)), hsl(var(--bg-a)), hsl(var(--bg-b)));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: var(--space-lg);
+            right: var(--space-lg);
+            width: 50px;
+            height: 50px;
+            background: hsl(var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            box-shadow: var(--shadow-lg);
+            transition: all var(--transition-normal);
+            z-index: var(--z-fixed);
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .section-hidden {
+            display: none;
+        }
+
+        .section-visible {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Navigation -->
+        <nav class="nav">
+            <a href="index.html" class="logo">
+                <span class="text-gradient">PulseColor</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html" class="btn btn-ghost">Accueil</a>
+                <a href="gallery.html" class="btn btn-primary">Galerie</a>
+            </div>
+        </nav>
+
+        <!-- Header de la galerie -->
+        <div class="gallery-header">
+            <h1 class="glitch-text" data-text="Galerie d'Animations">Galerie d'Animations</h1>
+            <p class="text-gradient">Découvrez 20 animations complexes et avancées</p>
+        </div>
+
+        <!-- Navigation de la galerie -->
+        <div class="gallery-nav">
+            <button class="gallery-nav-btn active" data-section="particles">Particules</button>
+            <button class="gallery-nav-btn" data-section="morphing">Morphing</button>
+            <button class="gallery-nav-btn" data-section="glitch">Glitch</button>
+            <button class="gallery-nav-btn" data-section="liquid">Liquide</button>
+            <button class="gallery-nav-btn" data-section="neon">Néon</button>
+            <button class="gallery-nav-btn" data-section="3d">3D</button>
+            <button class="gallery-nav-btn" data-section="text">Texte</button>
+            <button class="gallery-nav-btn" data-section="loading">Loading</button>
+            <button class="gallery-nav-btn" data-section="hover">Hover</button>
+            <button class="gallery-nav-btn" data-section="scroll">Scroll</button>
+            <button class="gallery-nav-btn" data-section="background">Fond</button>
+            <button class="gallery-nav-btn" data-section="border">Bordure</button>
+            <button class="gallery-nav-btn" data-section="transform">Transform</button>
+            <button class="gallery-nav-btn" data-section="filter">Filtre</button>
+            <button class="gallery-nav-btn" data-section="mask">Masque</button>
+            <button class="gallery-nav-btn" data-section="perspective">Perspective</button>
+            <button class="gallery-nav-btn" data-section="clip">Clip-Path</button>
+            <button class="gallery-nav-btn" data-section="shadow">Ombre</button>
+            <button class="gallery-nav-btn" data-section="origin">Origin</button>
+            <button class="gallery-nav-btn" data-section="complex">Complexe</button>
+        </div>
+
+        <!-- Section Particules -->
+        <section id="particles" class="gallery-section section-visible">
+            <h2>Animations de Particules</h2>
+            <div class="gallery-grid">
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="particle particle-float"></div>
+                        <div class="particle particle-float animation-delay-1"></div>
+                        <div class="particle particle-float animation-delay-2"></div>
+                    </div>
+                    <h3 class="animation-title">Particules Flottantes</h3>
+                    <p class="animation-description">Particules qui flottent vers le haut avec rotation</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="particle particle-explosion"></div>
+                    </div>
+                    <h3 class="animation-title">Explosion de Particules</h3>
+                    <p class="animation-description">Effet d'explosion avec échelle et rotation</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="restartAnimation(this)">Restart</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Morphing -->
+        <section id="morphing" class="gallery-section section-hidden">
+            <h2>Animations de Morphing</h2>
+            <div class="gallery-grid">
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="morph-blob" style="width: 80px; height: 80px;"></div>
+                    </div>
+                    <h3 class="animation-title">Blob Morphing</h3>
+                    <p class="animation-description">Forme organique qui change de manière fluide</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Glitch -->
+        <section id="glitch" class="gallery-section section-hidden">
+            <h2>Animations de Glitch</h2>
+            <div class="gallery-grid">
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="text-demo glitch-text" data-text="GLITCH">GLITCH</div>
+                    </div>
+                    <h3 class="animation-title">Texte Glitch</h3>
+                    <p class="animation-description">Effet de corruption visuelle sur le texte</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Liquide -->
+        <section id="liquid" class="gallery-section section-hidden">
+            <h2>Animations de Liquide</h2>
+            <div class="gallery-grid">
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="liquid-demo">
+                            <div class="liquid-wave"></div>
+                        </div>
+                    </div>
+                    <h3 class="animation-title">Onde Liquide</h3>
+                    <p class="animation-description">Effet d'onde liquide animée</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Néon -->
+        <section id="neon" class="gallery-section section-hidden">
+            <h2>Animations de Néon</h2>
+            <div class="gallery-grid">
+                <div class="animation-card">
+                    <div class="animation-demo neon-pulse">
+                        <div class="text-demo">NÉON</div>
+                    </div>
+                    <h3 class="animation-title">Pulsation Néon</h3>
+                    <p class="animation-description">Effet de pulsation lumineuse</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+
+                <div class="animation-card">
+                    <div class="animation-demo neon-flicker">
+                        <div class="text-demo">FLICKER</div>
+                    </div>
+                    <h3 class="animation-title">Scintillement Néon</h3>
+                    <p class="animation-description">Effet de scintillement rapide</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3D -->
+        <section id="3d" class="gallery-section section-hidden">
+            <h2>Animations 3D</h2>
+            <div class="gallery-grid">
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="rotate-3d" style="width: 80px; height: 80px; background: linear-gradient(45deg, hsl(var(--bg-a)), hsl(var(--bg-b))); border-radius: var(--radius-md);"></div>
+                    </div>
+                    <h3 class="animation-title">Rotation 3D</h3>
+                    <p class="animation-description">Rotation complexe en 3D avec perspective</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="flip-card" style="width: 80px; height: 80px; background: linear-gradient(45deg, hsl(var(--accent)), hsl(var(--bg-a))); border-radius: var(--radius-md);"></div>
+                    </div>
+                    <h3 class="animation-title">Flip Card</h3>
+                    <p class="animation-description">Retournement de carte en 3D</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="restartAnimation(this)">Restart</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Texte -->
+        <section id="text" class="gallery-section section-hidden">
+            <h2>Animations de Texte</h2>
+            <div class="gallery-grid">
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="text-demo typing-text" style="width: 0; overflow: hidden;">TYPING</div>
+                    </div>
+                    <h3 class="animation-title">Machine à Écrire</h3>
+                    <p class="animation-description">Effet de frappe avec curseur clignotant</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="restartAnimation(this)">Restart</button>
+                    </div>
+                </div>
+
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="text-demo text-wave">WAVE</div>
+                    </div>
+                    <h3 class="animation-title">Texte en Vague</h3>
+                    <p class="animation-description">Mouvement ondulant du texte</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Loading -->
+        <section id="loading" class="gallery-section section-hidden">
+            <h2>Animations de Loading</h2>
+            <div class="gallery-grid">
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="spinner"></div>
+                    </div>
+                    <h3 class="animation-title">Spinner Classique</h3>
+                    <p class="animation-description">Spinner rotatif avec bordure</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <svg class="spinner-svg" viewBox="0 0 50 50">
+                            <circle cx="25" cy="25" r="20"></circle>
+                        </svg>
+                    </div>
+                    <h3 class="animation-title">Spinner SVG</h3>
+                    <p class="animation-description">Spinner SVG avec animation de trait</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="pulse-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                    <h3 class="animation-title">Points Pulsants</h3>
+                    <p class="animation-description">Points qui pulsent en séquence</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Hover -->
+        <section id="hover" class="gallery-section section-hidden">
+            <h2>Animations de Hover</h2>
+            <div class="gallery-grid">
+                <div class="animation-card">
+                    <div class="animation-demo hover-lift">
+                        <div class="text-demo">LIFT</div>
+                    </div>
+                    <h3 class="animation-title">Élévation</h3>
+                    <p class="animation-description">Survolez pour voir l'effet d'élévation</p>
+                </div>
+
+                <div class="animation-card">
+                    <div class="animation-demo hover-glow">
+                        <div class="text-demo">GLOW</div>
+                    </div>
+                    <h3 class="animation-title">Lueur</h3>
+                    <p class="animation-description">Survolez pour voir l'effet de lueur</p>
+                </div>
+
+                <div class="animation-card">
+                    <div class="animation-demo hover-shake">
+                        <div class="text-demo">SHAKE</div>
+                    </div>
+                    <h3 class="animation-title">Tremblement</h3>
+                    <p class="animation-description">Survolez pour voir l'effet de tremblement</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Scroll -->
+        <section id="scroll" class="gallery-section section-hidden">
+            <h2>Animations de Scroll</h2>
+            <div class="gallery-grid">
+                <div class="animation-card">
+                    <div class="animation-demo scroll-fade-in">
+                        <div class="text-demo">FADE IN</div>
+                    </div>
+                    <h3 class="animation-title">Apparition en Fondu</h3>
+                    <p class="animation-description">Animation déclenchée au scroll</p>
+                </div>
+
+                <div class="animation-card">
+                    <div class="animation-demo scroll-slide-left">
+                        <div class="text-demo">SLIDE LEFT</div>
+                    </div>
+                    <h3 class="animation-title">Glissement Gauche</h3>
+                    <p class="animation-description">Animation de glissement vers la gauche</p>
+                </div>
+
+                <div class="animation-card">
+                    <div class="animation-demo scroll-slide-right">
+                        <div class="text-demo">SLIDE RIGHT</div>
+                    </div>
+                    <h3 class="animation-title">Glissement Droite</h3>
+                    <p class="animation-description">Animation de glissement vers la droite</p>
+                </div>
+
+                <div class="animation-card">
+                    <div class="animation-demo scroll-scale-in">
+                        <div class="text-demo">SCALE IN</div>
+                    </div>
+                    <h3 class="animation-title">Apparition par Échelle</h3>
+                    <p class="animation-description">Animation d'échelle au scroll</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Fond -->
+        <section id="background" class="gallery-section section-hidden">
+            <h2>Animations de Fond</h2>
+            <div class="gallery-grid">
+                <div class="animation-card">
+                    <div class="animation-demo gradient-shift" style="width: 100%; height: 100px; border-radius: var(--radius-md);"></div>
+                    <h3 class="animation-title">Dégradé Dynamique</h3>
+                    <p class="animation-description">Dégradé qui se déplace en continu</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+
+                <div class="animation-card">
+                    <div class="animation-demo background-pulse" style="width: 100%; height: 100px; background: linear-gradient(45deg, hsl(var(--bg-a)), hsl(var(--bg-b))); border-radius: var(--radius-md);"></div>
+                    <h3 class="animation-title">Pulsation de Fond</h3>
+                    <p class="animation-description">Pulsation de l'opacité du fond</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Bordure -->
+        <section id="border" class="gallery-section section-hidden">
+            <h2>Animations de Bordure</h2>
+            <div class="gallery-grid">
+                <div class="animation-card">
+                    <div class="animation-demo border-dance" style="width: 100px; height: 100px; background: hsl(var(--surface-elevated)); border-radius: var(--radius-md);"></div>
+                    <h3 class="animation-title">Bordure Dansante</h3>
+                    <p class="animation-description">Bordure qui change de couleur</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+
+                <div class="animation-card">
+                    <div class="animation-demo border-glow" style="width: 100px; height: 100px; background: hsl(var(--surface-elevated)); border-radius: var(--radius-md); border: 2px solid hsl(var(--accent));"></div>
+                    <h3 class="animation-title">Bordure Lumineuse</h3>
+                    <p class="animation-description">Bordure avec effet de lueur</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Transform -->
+        <section id="transform" class="gallery-section section-hidden">
+            <h2>Animations de Transformation</h2>
+            <div class="gallery-grid">
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="morph-shape" style="width: 80px; height: 80px; background: linear-gradient(45deg, hsl(var(--accent)), hsl(var(--bg-a)));"></div>
+                    </div>
+                    <h3 class="animation-title">Morphing de Forme</h3>
+                    <p class="animation-description">Changement de forme avec clip-path</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="skew-bounce" style="width: 80px; height: 80px; background: linear-gradient(45deg, hsl(var(--bg-a)), hsl(var(--bg-b))); border-radius: var(--radius-md);"></div>
+                    </div>
+                    <h3 class="animation-title">Inclinaison et Rebond</h3>
+                    <p class="animation-description">Inclinaison avec effet de rebond</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Filtre -->
+        <section id="filter" class="gallery-section section-hidden">
+            <h2>Animations de Filtre</h2>
+            <div class="gallery-grid">
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="filter-shift filter-demo"></div>
+                    </div>
+                    <h3 class="animation-title">Changement de Filtre</h3>
+                    <p class="animation-description">Changement de teinte et luminosité</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="blur-pulse filter-demo"></div>
+                    </div>
+                    <h3 class="animation-title">Pulsation de Flou</h3>
+                    <p class="animation-description">Pulsation de l'effet de flou</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Masque -->
+        <section id="mask" class="gallery-section section-hidden">
+            <h2>Animations de Masque</h2>
+            <div class="gallery-grid">
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="mask-reveal mask-demo">REVEAL</div>
+                    </div>
+                    <h3 class="animation-title">Révélation par Masque</h3>
+                    <p class="animation-description">Révélation progressive avec masque</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="mask-slide mask-demo">SLIDE</div>
+                    </div>
+                    <h3 class="animation-title">Glissement de Masque</h3>
+                    <p class="animation-description">Glissement du masque</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Perspective -->
+        <section id="perspective" class="gallery-section section-hidden">
+            <h2>Animations de Perspective</h2>
+            <div class="gallery-grid">
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="perspective-rotate perspective-demo"></div>
+                    </div>
+                    <h3 class="animation-title">Rotation avec Perspective</h3>
+                    <p class="animation-description">Rotation 3D avec perspective</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="perspective-zoom perspective-demo"></div>
+                    </div>
+                    <h3 class="animation-title">Zoom avec Perspective</h3>
+                    <p class="animation-description">Zoom 3D avec perspective</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Clip-Path -->
+        <section id="clip" class="gallery-section section-hidden">
+            <h2>Animations de Clip-Path</h2>
+            <div class="gallery-grid">
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="clip-reveal clip-demo"></div>
+                    </div>
+                    <h3 class="animation-title">Révélation par Découpage</h3>
+                    <p class="animation-description">Révélation avec clip-path</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="restartAnimation(this)">Restart</button>
+                    </div>
+                </div>
+
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="clip-circle clip-demo"></div>
+                    </div>
+                    <h3 class="animation-title">Apparition Circulaire</h3>
+                    <p class="animation-description">Apparition en forme de cercle</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="restartAnimation(this)">Restart</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Ombre -->
+        <section id="shadow" class="gallery-section section-hidden">
+            <h2>Animations d'Ombre</h2>
+            <div class="gallery-grid">
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="shadow-pulse shadow-demo"></div>
+                    </div>
+                    <h3 class="animation-title">Pulsation d'Ombre</h3>
+                    <p class="animation-description">Pulsation de l'ombre</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="shadow-float shadow-demo"></div>
+                    </div>
+                    <h3 class="animation-title">Ombre Flottante</h3>
+                    <p class="animation-description">Ombre qui flotte</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Origin -->
+        <section id="origin" class="gallery-section section-hidden">
+            <h2>Animations d'Origine</h2>
+            <div class="gallery-grid">
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="origin-rotate origin-demo"></div>
+                    </div>
+                    <h3 class="animation-title">Rotation d'Origine</h3>
+                    <p class="animation-description">Rotation avec origine variable</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="origin-scale origin-demo"></div>
+                    </div>
+                    <h3 class="animation-title">Échelle d'Origine</h3>
+                    <p class="animation-description">Échelle avec origine variable</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Complexe -->
+        <section id="complex" class="gallery-section section-hidden">
+            <h2>Animations Complexes</h2>
+            <div class="gallery-grid">
+                <div class="animation-card">
+                    <div class="animation-demo">
+                        <div class="complex-animation complex-demo">COMPLEX</div>
+                    </div>
+                    <h3 class="animation-title">Animation Complexe</h3>
+                    <p class="animation-description">Combinaison de multiples effets</p>
+                    <div class="animation-controls">
+                        <button class="control-btn" onclick="toggleAnimation(this)">Pause/Play</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Bouton retour en haut -->
+    <a href="#" class="back-to-top" onclick="scrollToTop()">↑</a>
+
+    <script>
+        // Navigation de la galerie
+        const navButtons = document.querySelectorAll('.gallery-nav-btn');
+        const sections = document.querySelectorAll('.gallery-section');
+
+        navButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetSection = button.getAttribute('data-section');
+                
+                // Mise à jour des boutons
+                navButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                // Affichage des sections
+                sections.forEach(section => {
+                    section.classList.remove('section-visible');
+                    section.classList.add('section-hidden');
+                });
+                
+                document.getElementById(targetSection).classList.remove('section-hidden');
+                document.getElementById(targetSection).classList.add('section-visible');
+            });
+        });
+
+        // Contrôles d'animation
+        function toggleAnimation(button) {
+            const card = button.closest('.animation-card');
+            const animatedElement = card.querySelector('.animation-demo > *');
+            
+            if (animatedElement.style.animationPlayState === 'paused') {
+                animatedElement.style.animationPlayState = 'running';
+                button.textContent = 'Pause';
+            } else {
+                animatedElement.style.animationPlayState = 'paused';
+                button.textContent = 'Play';
+            }
+        }
+
+        function restartAnimation(button) {
+            const card = button.closest('.animation-card');
+            const animatedElement = card.querySelector('.animation-demo > *');
+            
+            animatedElement.style.animation = 'none';
+            animatedElement.offsetHeight; // Force reflow
+            animatedElement.style.animation = null;
+        }
+
+        // Animations de scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-demo').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Retour en haut
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Affichage/masquage du bouton retour en haut
+        window.addEventListener('scroll', () => {
+            const backToTop = document.querySelector('.back-to-top');
+            if (window.scrollY > 300) {
+                backToTop.style.display = 'flex';
+            } else {
+                backToTop.style.display = 'none';
+            }
+        });
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            // Masquer le bouton retour en haut au chargement
+            document.querySelector('.back-to-top').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
