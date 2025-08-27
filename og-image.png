@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <!-- Gradient de fond -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f0f23;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Gradient pour le logo -->
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="25%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ec4899;stop-opacity:1" />
+      <stop offset="75%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#10b981;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Filtre de flou pour les particules -->
+    <filter id="blur">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3"/>
+    </filter>
+    
+    <!-- Animation pour les particules -->
+    <animateTransform
+      xlink:href="#particles"
+      attributeName="transform"
+      type="translate"
+      values="0,0; 50,-30; 0,0"
+      dur="8s"
+      repeatCount="indefinite"
+    />
+  </defs>
+  
+  <!-- Fond -->
+  <rect width="1200" height="630" fill="url(#bgGradient)"/>
+  
+  <!-- Particules animées en arrière-plan -->
+  <g id="particles" filter="url(#blur)">
+    <circle cx="200" cy="150" r="2" fill="#6366f1" opacity="0.6">
+      <animate attributeName="opacity" values="0.6;0.2;0.6" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="400" cy="300" r="1.5" fill="#8b5cf6" opacity="0.5">
+      <animate attributeName="opacity" values="0.5;0.1;0.5" dur="4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="600" cy="200" r="2.5" fill="#ec4899" opacity="0.4">
+      <animate attributeName="opacity" values="0.4;0.1;0.4" dur="5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="800" cy="400" r="1" fill="#f59e0b" opacity="0.7">
+      <animate attributeName="opacity" values="0.7;0.2;0.7" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1000" cy="250" r="2" fill="#10b981" opacity="0.6">
+      <animate attributeName="opacity" values="0.6;0.1;0.6" dur="3.5s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- Logo principal -->
+  <g transform="translate(600,315)">
+    <!-- Cercle de fond du logo -->
+    <circle cx="0" cy="0" r="80" fill="url(#logoGradient)" stroke="#ffffff" stroke-width="4"/>
+    
+    <!-- Lettre P stylisée -->
+    <path d="M-30 -40h40c11 0 20 9 20 20s-9 20-20 20h-20v20h-20V-40z M-10 0h20c5.5 0 10-4.5 10-10s-4.5-10-10-10h-20V0z" 
+          fill="#ffffff" opacity="0.9"/>
+    
+    <!-- Effet de pulsation -->
+    <circle cx="0" cy="0" r="90" fill="none" stroke="url(#logoGradient)" stroke-width="2" opacity="0.3">
+      <animate attributeName="r" values="90;110;90" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.3;0.1;0.3" dur="2s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- Titre principal -->
+  <text x="600" y="480" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="#ffffff">
+    PulseColor
+  </text>
+  
+  <!-- Sous-titre -->
+  <text x="600" y="520" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#a1a1aa">
+    Visualiseur Audio Interactif
+  </text>
+  
+  <!-- Tagline -->
+  <text x="600" y="580" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#6366f1">
+    Transformez votre musique en animations spectaculaires
+  </text>
+  
+  <!-- Éléments décoratifs -->
+  <g transform="translate(100,500)">
+    <rect x="0" y="0" width="4" height="20" fill="#6366f1" opacity="0.8">
+      <animate attributeName="height" values="20;40;20" dur="1.5s" repeatCount="indefinite"/>
+    </rect>
+    <rect x="8" y="0" width="4" height="30" fill="#8b5cf6" opacity="0.8">
+      <animate attributeName="height" values="30;50;30" dur="1.8s" repeatCount="indefinite"/>
+    </rect>
+    <rect x="16" y="0" width="4" height="25" fill="#ec4899" opacity="0.8">
+      <animate attributeName="height" values="25;45;25" dur="1.2s" repeatCount="indefinite"/>
+    </rect>
+  </g>
+  
+  <g transform="translate(1100,500)">
+    <rect x="0" y="0" width="4" height="35" fill="#f59e0b" opacity="0.8">
+      <animate attributeName="height" values="35;55;35" dur="1.6s" repeatCount="indefinite"/>
+    </rect>
+    <rect x="8" y="0" width="4" height="28" fill="#10b981" opacity="0.8">
+      <animate attributeName="height" values="28;48;28" dur="1.4s" repeatCount="indefinite"/>
+    </rect>
+    <rect x="16" y="0" width="4" height="32" fill="#6366f1" opacity="0.8">
+      <animate attributeName="height" values="32;52;32" dur="1.7s" repeatCount="indefinite"/>
+    </rect>
+  </g>
+</svg>
