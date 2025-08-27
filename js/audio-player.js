@@ -149,6 +149,9 @@ class AudioVisualizer {
         this.audio.play();
         this.isPlaying = true;
         this.updatePlayButton();
+        
+        // Déclencher l'événement personnalisé pour la liaison audio-animations
+        this.dispatchEvent('play');
     }
 
     pause() {
@@ -156,6 +159,9 @@ class AudioVisualizer {
             this.audio.pause();
             this.isPlaying = false;
             this.updatePlayButton();
+            
+            // Déclencher l'événement personnalisé pour la liaison audio-animations
+            this.dispatchEvent('pause');
         }
     }
 
@@ -165,6 +171,9 @@ class AudioVisualizer {
             this.audio.currentTime = 0;
             this.isPlaying = false;
             this.updatePlayButton();
+            
+            // Déclencher l'événement personnalisé pour la liaison audio-animations
+            this.dispatchEvent('stop');
         }
     }
 
@@ -633,6 +642,38 @@ class AudioVisualizer {
 
     getCurrentTrack() {
         return this.playlist[this.currentTrackIndex];
+    }
+
+    // Méthodes pour les événements personnalisés
+    addEventListener(event, callback) {
+        if (!this.eventListeners) {
+            this.eventListeners = {};
+        }
+        if (!this.eventListeners[event]) {
+            this.eventListeners[event] = [];
+        }
+        this.eventListeners[event].push(callback);
+    }
+
+    removeEventListener(event, callback) {
+        if (this.eventListeners && this.eventListeners[event]) {
+            const index = this.eventListeners[event].indexOf(callback);
+            if (index > -1) {
+                this.eventListeners[event].splice(index, 1);
+            }
+        }
+    }
+
+    dispatchEvent(event, data = {}) {
+        if (this.eventListeners && this.eventListeners[event]) {
+            this.eventListeners[event].forEach(callback => {
+                try {
+                    callback({ type: event, data, source: this });
+                } catch (error) {
+                    console.error(`Erreur dans l'événement ${event}:`, error);
+                }
+            });
+        }
     }
 }
 
