@@ -37,6 +37,7 @@
   
   <!-- Stylesheets -->
   <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/audio-player.css" />
   
   <!-- PWA Manifest -->
   <link rel="manifest" href="/manifest.json" />
@@ -530,6 +531,20 @@
           .then(registration => console.log('SW registered'))
           .catch(error => console.log('SW registration failed'));
       });
+    }
+    
+    // Fonction pour basculer l'affichage du player audio
+    function toggleAudioPlayer() {
+      const player = document.getElementById('audio-player');
+      const collapseBtn = document.querySelector('.collapse-btn');
+      
+      if (player.classList.contains('collapsed')) {
+        player.classList.remove('collapsed');
+        collapseBtn.textContent = '−';
+      } else {
+        player.classList.add('collapsed');
+        collapseBtn.textContent = '+';
+      }
     }
   </script>
 </body>
