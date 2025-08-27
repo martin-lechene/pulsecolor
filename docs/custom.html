@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personnalisations Avancées - PulseColor</title>
+    <meta name="description" content="Guide complet des personnalisations avancées pour PulseColor - Créez vos propres animations et effets">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Personnalisations Avancées - PulseColor">
+    <meta property="og:description" content="Guide complet des personnalisations avancées pour PulseColor">
+    <meta property="og:image" content="../og-image.png">
+    <meta property="og:url" content="https://pulsecolor.dev/docs/custom">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Personnalisations Avancées - PulseColor">
+    <meta name="twitter:description" content="Guide complet des personnalisations avancées pour PulseColor">
+    <meta name="twitter:image" content="../og-image.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="icon" type="image/png" href="../favicon.png">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../css/main.css">
+    <style>
+        .custom-guide {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .code-example {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 1px solid #2d3748;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .code-block {
+            background: #0f0f23;
+            border: 1px solid #2d3748;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+        
+        .code-block pre {
+            margin: 0;
+            color: #e2e8f0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, #312e81 0%, #3730a3 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid #6366f1;
+        }
+        
+        .warning {
+            background: linear-gradient(135deg, #7c2d12 0%, #991b1b 100%);
+            border-left: 4px solid #ef4444;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .tip {
+            background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+            border-left: 4px solid #10b981;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .demo-canvas {
+            width: 100%;
+            height: 300px;
+            background: #0f0f23;
+            border: 2px solid #2d3748;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .color-palette {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .color-swatch {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            border: 2px solid #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <a href="../index.html" class="nav-logo">
+                    <span class="logo-text">PulseColor</span>
+                </a>
+                <div class="nav-links">
+                    <a href="../index.html">Accueil</a>
+                    <a href="../gallery.html">Galerie</a>
+                    <a href="quickstart.html">Documentation</a>
+                    <a href="../contact.html">Contact</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="custom-guide">
+            <h1>🎨 Personnalisations Avancées</h1>
+            
+            <div class="feature-card">
+                <h2>Créez vos propres animations</h2>
+                <p>PulseColor vous offre une API complète pour créer des animations personnalisées et des effets visuels uniques. Découvrez comment étendre les fonctionnalités de base.</p>
+            </div>
+
+            <h2>🎯 Création d'Animations Personnalisées</h2>
+            
+            <div class="code-example">
+                <h3>Structure de Base d'une Animation</h3>
+                <div class="code-block">
+                    <pre><code>class CustomAnimation {
+    constructor(canvas, config = {}) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.config = {
+            sensitivity: 0.8,
+            smoothing: 0.3,
+            colors: ['#6366f1', '#8b5cf6', '#ec4899'],
+            ...config
+        };
+        this.audioData = null;
+    }
+    
+    // Méthode appelée à chaque frame
+    render(audioData) {
+        this.audioData = audioData;
+        this.update();
+        this.draw();
+    }
+    
+    update() {
+        // Logique de mise à jour
+    }
+    
+    draw() {
+        // Logique de dessin
+    }
+}</code></pre>
+                </div>
+            </div>
+
+            <h2>🌈 Système de Couleurs Avancé</h2>
+            
+            <div class="color-palette">
+                <div class="color-swatch" style="background: linear-gradient(45deg, #6366f1, #8b5cf6)">Gradient 1</div>
+                <div class="color-swatch" style="background: linear-gradient(45deg, #ec4899, #f59e0b)">Gradient 2</div>
+                <div class="color-swatch" style="background: linear-gradient(45deg, #10b981, #3b82f6)">Gradient 3</div>
+                <div class="color-swatch" style="background: linear-gradient(45deg, #f97316, #eab308)">Gradient 4</div>
+            </div>
+
+            <div class="code-example">
+                <h3>Gradients Dynamiques</h3>
+                <div class="code-block">
+                    <pre><code>// Création d'un gradient basé sur la fréquence audio
+createFrequencyGradient(audioData) {
+    const dominantFreq = this.getDominantFrequency(audioData);
+    const intensity = this.getAverageIntensity(audioData);
+    
+    const gradient = this.ctx.createLinearGradient(0, 0, this.canvas.width, 0);
+    
+    // Couleurs basées sur la fréquence dominante
+    if (dominantFreq < 200) { // Basses
+        gradient.addColorStop(0, '#6366f1');
+        gradient.addColorStop(1, '#8b5cf6');
+    } else if (dominantFreq < 2000) { // Médias
+        gradient.addColorStop(0, '#ec4899');
+        gradient.addColorStop(1, '#f59e0b');
+    } else { // Aigus
+        gradient.addColorStop(0, '#10b981');
+        gradient.addColorStop(1, '#3b82f6');
+    }
+    
+    return gradient;
+}</code></pre>
+                </div>
+            </div>
+
+            <h2>🎵 Analyse Audio Avancée</h2>
+            
+            <div class="code-example">
+                <h3>Détection de Beat</h3>
+                <div class="code-block">
+                    <pre><code>class BeatDetector {
+    constructor() {
+        this.threshold = 0.3;
+        this.decay = 0.95;
+        this.lastBeat = 0;
+        this.beatHistory = [];
+    }
+    
+    detectBeat(audioData) {
+        const intensity = this.getIntensity(audioData);
+        const now = Date.now();
+        
+        // Détection de beat basée sur l'intensité
+        if (intensity > this.threshold && 
+            (now - this.lastBeat) > 100) {
+            this.lastBeat = now;
+            this.beatHistory.push(intensity);
+            
+            // Garder seulement les 10 derniers beats
+            if (this.beatHistory.length > 10) {
+                this.beatHistory.shift();
+            }
+            
+            return {
+                detected: true,
+                intensity: intensity,
+                bpm: this.calculateBPM()
+            };
+        }
+        
+        return { detected: false };
+    }
+    
+    calculateBPM() {
+        if (this.beatHistory.length < 2) return 0;
+        
+        const intervals = [];
+        for (let i = 1; i < this.beatHistory.length; i++) {
+            intervals.push(this.beatHistory[i] - this.beatHistory[i-1]);
+        }
+        
+        const avgInterval = intervals.reduce((a, b) => a + b) / intervals.length;
+        return Math.round(60000 / avgInterval);
+    }
+}</code></pre>
+                </div>
+            </div>
+
+            <h2>🎭 Effets Visuels Personnalisés</h2>
+            
+            <div class="code-example">
+                <h3>Particules Réactives</h3>
+                <div class="code-block">
+                    <pre><code>class ParticleSystem {
+    constructor(canvas) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.particles = [];
+        this.maxParticles = 100;
+    }
+    
+    createParticle(x, y, velocity, color) {
+        return {
+            x: x,
+            y: y,
+            vx: velocity.x,
+            vy: velocity.y,
+            life: 1.0,
+            decay: 0.02,
+            color: color,
+            size: Math.random() * 3 + 1
+        };
+    }
+    
+    update(audioData) {
+        const intensity = this.getAverageIntensity(audioData);
+        
+        // Créer de nouvelles particules basées sur l'intensité
+        if (this.particles.length < this.maxParticles && intensity > 0.5) {
+            const particle = this.createParticle(
+                Math.random() * this.canvas.width,
+                this.canvas.height,
+                { x: (Math.random() - 0.5) * 4, y: -Math.random() * 8 },
+                this.getColorFromIntensity(intensity)
+            );
+            this.particles.push(particle);
+        }
+        
+        // Mettre à jour les particules existantes
+        this.particles = this.particles.filter(particle => {
+            particle.x += particle.vx;
+            particle.y += particle.vy;
+            particle.life -= particle.decay;
+            
+            return particle.life > 0;
+        });
+    }
+    
+    draw() {
+        this.particles.forEach(particle => {
+            this.ctx.save();
+            this.ctx.globalAlpha = particle.life;
+            this.ctx.fillStyle = particle.color;
+            this.ctx.beginPath();
+            this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+            this.ctx.fill();
+            this.ctx.restore();
+        });
+    }
+}</code></pre>
+                </div>
+            </div>
+
+            <h2>🎛️ Contrôles Interactifs</h2>
+            
+            <div class="code-example">
+                <h3>Interface de Contrôle</h3>
+                <div class="code-block">
+                    <pre><code>class AnimationController {
+    constructor() {
+        this.controls = {
+            sensitivity: 0.8,
+            smoothing: 0.3,
+            colorMode: 'gradient',
+            animationSpeed: 1.0,
+            particleCount: 100
+        };
+        
+        this.createUI();
+    }
+    
+    createUI() {
+        const container = document.createElement('div');
+        container.className = 'animation-controls';
+        container.innerHTML = `
+            <div class="control-group">
+                <label>Sensibilité: <span id="sensitivity-value">0.8</span></label>
+                <input type="range" id="sensitivity" min="0" max="1" step="0.1" value="0.8">
+            </div>
+            <div class="control-group">
+                <label>Lissage: <span id="smoothing-value">0.3</span></label>
+                <input type="range" id="smoothing" min="0" max="1" step="0.1" value="0.3">
+            </div>
+            <div class="control-group">
+                <label>Mode Couleur:</label>
+                <select id="color-mode">
+                    <option value="gradient">Gradient</option>
+                    <option value="solid">Solide</option>
+                    <option value="rainbow">Arc-en-ciel</option>
+                </select>
+            </div>
+        `;
+        
+        document.body.appendChild(container);
+        this.bindEvents();
+    }
+    
+    bindEvents() {
+        document.getElementById('sensitivity').addEventListener('input', (e) => {
+            this.controls.sensitivity = parseFloat(e.target.value);
+            document.getElementById('sensitivity-value').textContent = e.target.value;
+        });
+        
+        document.getElementById('smoothing').addEventListener('input', (e) => {
+            this.controls.smoothing = parseFloat(e.target.value);
+            document.getElementById('smoothing-value').textContent = e.target.value;
+        });
+        
+        document.getElementById('color-mode').addEventListener('change', (e) => {
+            this.controls.colorMode = e.target.value;
+        });
+    }
+}</code></pre>
+                </div>
+            </div>
+
+            <h2>📱 Optimisations Mobile</h2>
+            
+            <div class="tip">
+                <h3>💡 Conseils pour Mobile</h3>
+                <ul>
+                    <li>Réduisez le nombre de particules sur mobile (max 50)</li>
+                    <li>Utilisez des animations plus simples pour économiser la batterie</li>
+                    <li>Désactivez les effets complexes sur les appareils bas de gamme</li>
+                    <li>Optimisez la fréquence de rafraîchissement selon les performances</li>
+                </ul>
+            </div>
+
+            <div class="code-example">
+                <h3>Détection de Performance</h3>
+                <div class="code-block">
+                    <pre><code>class PerformanceOptimizer {
+    constructor() {
+        this.isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        this.isLowEnd = this.detectLowEndDevice();
+        this.fps = 60;
+        this.lastFrameTime = 0;
+    }
+    
+    detectLowEndDevice() {
+        // Détection basique d'appareil bas de gamme
+        const cores = navigator.hardwareConcurrency || 4;
+        const memory = navigator.deviceMemory || 4;
+        
+        return cores < 4 || memory < 4;
+    }
+    
+    optimizeSettings() {
+        if (this.isMobile || this.isLowEnd) {
+            return {
+                maxParticles: 30,
+                animationComplexity: 'low',
+                fps: 30,
+                effects: ['basic', 'wave'],
+                disableShaders: true
+            };
+        }
+        
+        return {
+            maxParticles: 100,
+            animationComplexity: 'high',
+            fps: 60,
+            effects: ['basic', 'wave', 'particles', 'shaders'],
+            disableShaders: false
+        };
+    }
+    
+    adjustQuality(frameTime) {
+        const targetFrameTime = 1000 / this.fps;
+        
+        if (frameTime > targetFrameTime * 1.5) {
+            // Réduire la qualité si les performances baissent
+            this.reduceQuality();
+        }
+    }
+}</code></pre>
+                </div>
+            </div>
+
+            <h2>🔧 Intégration avec d'autres Bibliothèques</h2>
+            
+            <div class="code-example">
+                <h3>Intégration Three.js</h3>
+                <div class="code-block">
+                    <pre><code>// Exemple d'intégration avec Three.js
+class ThreeJSVisualizer {
+    constructor(canvas) {
+        this.scene = new THREE.Scene();
+        this.camera = new THREE.PerspectiveCamera(75, canvas.width / canvas.height, 0.1, 1000);
+        this.renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+        
+        this.geometry = new THREE.SphereGeometry(1, 32, 32);
+        this.material = new THREE.MeshBasicMaterial({ color: 0x6366f1 });
+        this.sphere = new THREE.Mesh(this.geometry, this.material);
+        
+        this.scene.add(this.sphere);
+        this.camera.position.z = 5;
+    }
+    
+    render(audioData) {
+        const intensity = this.getAverageIntensity(audioData);
+        
+        // Animer la sphère basée sur l'audio
+        this.sphere.scale.setScalar(1 + intensity * 2);
+        this.sphere.rotation.x += intensity * 0.1;
+        this.sphere.rotation.y += intensity * 0.1;
+        
+        this.renderer.render(this.scene, this.camera);
+    }
+}</code></pre>
+                </div>
+            </div>
+
+            <div class="warning">
+                <h3>⚠️ Points d'Attention</h3>
+                <ul>
+                    <li>Toujours tester vos animations sur différents appareils</li>
+                    <li>Éviter les boucles infinies et les fuites mémoire</li>
+                    <li>Optimiser les performances pour les sessions prolongées</li>
+                    <li>Gérer les erreurs audio et les cas d'échec</li>
+                </ul>
+            </div>
+
+            <h2>📚 Ressources Supplémentaires</h2>
+            
+            <div class="feature-card">
+                <h3>Documentation API Complète</h3>
+                <p>Consultez la <a href="api-reference.html">référence API</a> pour tous les détails techniques et les méthodes disponibles.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3>Exemples et Démonstrations</h3>
+                <p>Visitez la <a href="../gallery.html">galerie</a> pour voir des exemples d'animations personnalisées et vous inspirer.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3>Communauté et Support</h3>
+                <p>Rejoignez la communauté sur <a href="https://github.com/martin-lechene/pulsecolor">GitHub</a> pour partager vos créations et obtenir de l'aide.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>PulseColor</h3>
+                <p>Visualiseur audio interactif open source</p>
+            </div>
+            <div class="footer-section">
+                <h4>Documentation</h4>
+                <ul>
+                    <li><a href="quickstart.html">Démarrage rapide</a></li>
+                    <li><a href="api-reference.html">Référence API</a></li>
+                    <li><a href="personnalisations.html">Personnalisations</a></li>
+                    <li><a href="migration.html">Migration</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="../contact.html">Contact</a></li>
+                    <li><a href="../support.html">Support</a></li>
+                    <li><a href="https://github.com/martin-lechene/pulsecolor/issues">Issues</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Projet</h4>
+                <ul>
+                    <li><a href="https://github.com/martin-lechene/pulsecolor">GitHub</a></li>
+                    <li><a href="../changelogs.html">Changelog</a></li>
+                    <li><a href="../LICENSE">Licence</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 PulseColor. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>
+

@@ -518,10 +518,24 @@
     </div>
   </div>
 
+  <!-- Overlay plein écran pour les visualisations -->
+  <div class="fullscreen-overlay" id="fullscreen-overlay">
+    <button class="fullscreen-close" onclick="closeFullscreen()">✕</button>
+    <canvas id="fullscreen-canvas" class="fullscreen-canvas"></canvas>
+    <div class="fullscreen-info">
+      <span id="fullscreen-title">Visualisation</span>
+      <span id="fullscreen-instructions">Appuyez sur Échap pour fermer</span>
+    </div>
+  </div>
+
+  <!-- Messages d'état -->
+  <div class="status-message" id="status-message"></div>
+
   <!-- Scripts -->
   <script src="js/animations.js"></script>
   <script src="js/main.js"></script>
   <script src="js/audio-player.js"></script>
+  <script src="js/audio-player-ux.js"></script>
   <script src="js/card-audio-linker.js"></script>
   <script src="js/test-card-linker.js"></script>
   

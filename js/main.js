@@ -1,18 +1,20 @@
 /**
  * PulseColor - Audio-Reactive Visuals
- * Version: 2.0.0 | Open Source
+ * Version: 3.0.0 | Enhanced Edition
  * 
- * 10 Different Animations:
- * 1. Blob Morphing
- * 2. Particle System
- * 3. Wave Forms
- * 4. Geometric Shapes
- * 5. Audio Bars
+ * 12+ Different Animations with Advanced Effects:
+ * 1. Enhanced Blob Morphing (3D, Liquid Effects, Orbital Particles)
+ * 2. Enhanced Particle System (Gravity, Trails, Connections)
+ * 3. Enhanced Wave Forms (3D, Multiple Layers, Reflections)
+ * 4. Enhanced Geometric Shapes (Morphing, 3D, Fractals)
+ * 5. Enhanced Audio Spectrum (3D, Dynamic Modes, Particles)
  * 6. Circular Waves
  * 7. Matrix Rain
  * 8. Fireworks
  * 9. DNA Helix
  * 10. Fractal Trees
+ * 11. NEW: Neural Network (AI-inspired, Learning)
+ * 12. NEW: Quantum Particles (Wave-Particle Duality)
  */
 
 class PulseColor {
@@ -80,16 +82,18 @@ class PulseColor {
 
   setupAnimationSelector() {
     const animations = [
-      { id: 'blob', name: 'Blob Morph', icon: '🫧' },
-      { id: 'particles', name: 'Particles', icon: '✨' },
-      { id: 'waves', name: 'Waves', icon: '🌊' },
-      { id: 'geometric', name: 'Geometric', icon: '🔷' },
-      { id: 'bars', name: 'Audio Bars', icon: '📊' },
+      { id: 'blob', name: 'Enhanced Blob', icon: '🫧' },
+      { id: 'particles', name: 'Enhanced Particles', icon: '✨' },
+      { id: 'waves', name: 'Enhanced Waves', icon: '🌊' },
+      { id: 'geometric', name: 'Enhanced Geometric', icon: '🔷' },
+      { id: 'bars', name: 'Enhanced Spectrum', icon: '📊' },
       { id: 'circular', name: 'Circular', icon: '⭕' },
       { id: 'matrix', name: 'Matrix', icon: '💻' },
       { id: 'fireworks', name: 'Fireworks', icon: '🎆' },
       { id: 'dna', name: 'DNA Helix', icon: '🧬' },
-      { id: 'fractal', name: 'Fractal', icon: '🌳' }
+      { id: 'fractal', name: 'Fractal', icon: '🌳' },
+      { id: 'neural', name: 'Neural Network', icon: '🧠' },
+      { id: 'quantum', name: 'Quantum Particles', icon: '⚛️' }
     ];
 
     this.animationSelector.innerHTML = animations.map(anim => `
@@ -108,18 +112,20 @@ class PulseColor {
   }
 
   setupAnimations() {
-    // Initialize all animation systems
+    // Initialize all animation systems with enhanced options
     this.animations = {
-      blob: new BlobAnimation(this.svg),
-      particles: new ParticleAnimation(this.svg),
-      waves: new WaveAnimation(this.svg),
-      geometric: new GeometricAnimation(this.svg),
-      bars: new BarsAnimation(this.svg),
+      blob: new BlobAnimation(this.svg, { enable3D: true, enableGlow: true }),
+      particles: new ParticleAnimation(this.svg, { enable3D: true, enableGlow: true }),
+      waves: new WaveAnimation(this.svg, { enable3D: true, enableGlow: true }),
+      geometric: new GeometricAnimation(this.svg, { enable3D: true, enableGlow: true }),
+      bars: new BarsAnimation(this.svg, { enable3D: true, enableGlow: true }),
       circular: new CircularAnimation(this.svg),
       matrix: new MatrixAnimation(this.svg),
       fireworks: new FireworksAnimation(this.svg),
       dna: new DNAAnimation(this.svg),
-      fractal: new FractalAnimation(this.svg)
+      fractal: new FractalAnimation(this.svg),
+      neural: new NeuralNetworkAnimation(this.svg, { enable3D: true, enableGlow: true }),
+      quantum: new QuantumParticlesAnimation(this.svg, { enable3D: true, enableGlow: true })
     };
   }
 
@@ -334,8 +340,14 @@ class PulseColor {
         break;
       case '1': case '2': case '3': case '4': case '5':
       case '6': case '7': case '8': case '9': case '0':
+      case '-': case '=':
         const animations = Object.keys(this.animations);
-        const index = event.key === '0' ? 9 : parseInt(event.key) - 1;
+        let index;
+        if (event.key === '0') index = 9;
+        else if (event.key === '-') index = 10;
+        else if (event.key === '=') index = 11;
+        else index = parseInt(event.key) - 1;
+        
         if (animations[index]) {
           this.switchAnimation(animations[index]);
         }

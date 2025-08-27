@@ -86,13 +86,44 @@ class AudioVisualizer {
             const trackName = track.split('/').pop().replace('.mp3', '');
             const trackElement = document.createElement('div');
             trackElement.className = `playlist-track ${index === this.currentTrackIndex ? 'active' : ''}`;
+            trackElement.draggable = true; // Rendre les pistes glissables
             trackElement.innerHTML = `
                 <span class="track-name">${trackName}</span>
                 <span class="track-duration">--:--</span>
+                <div class="track-actions">
+                    <button class="track-action-btn" data-tooltip="Supprimer de la playlist">🗑️</button>
+                    <button class="track-action-btn" data-tooltip="Ajouter aux favoris">⭐</button>
+                </div>
             `;
+            
+            // Gestionnaire de clic simple
             trackElement.addEventListener('click', () => this.loadTrack(index));
+            
+            // Gestionnaires pour les actions
+            const deleteBtn = trackElement.querySelector('.track-action-btn');
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.removeTrackFromPlaylist(index);
+                });
+            }
+            
             playlistContainer.appendChild(trackElement);
         });
+    }
+
+    removeTrackFromPlaylist(index) {
+        if (index >= 0 && index < this.playlist.length) {
+            this.playlist.splice(index, 1);
+            
+            // Ajuster l'index actuel si nécessaire
+            if (this.currentTrackIndex >= index) {
+                this.currentTrackIndex = Math.max(0, this.currentTrackIndex - 1);
+            }
+            
+            this.updatePlaylistUI();
+            this.dispatchEvent('playlist-updated');
+        }
     }
 
     async loadTrack(index) {

@@ -1124,52 +1124,238 @@ class GeometricAnimation extends BaseAnimation {
   }
 }
 
-// 5. Audio Bars Animation
+// 5. Enhanced Audio Spectrum 3D Animation with Advanced Effects
 class BarsAnimation extends BaseAnimation {
-  constructor(svg) {
-    super(svg);
+  constructor(svg, options = {}) {
+    super(svg, { colorMode: 'frequency', ...options });
     this.bars = [];
-    this.barCount = 32;
+    this.barCount = 64; // Increased for more detail
+    this.barLayers = [];
+    this.reflectionBars = [];
+    this.particleEffects = [];
+    this.spectrumMode = 'linear'; // 'linear', 'circular', 'spiral'
   }
 
   createElements() {
     this.clear();
     this.bars = [];
+    this.barLayers = [];
+    this.reflectionBars = [];
+    this.particleEffects = [];
 
-    // Create bar container
+    // Create main bar container
     this.barGroup = this.createElement('g', {
       id: 'animation-bars',
       transform: 'translate(60,520)'
     });
     this.addElement(this.barGroup);
 
-    // Create bars
+    // Create reflection container
+    this.reflectionGroup = this.createElement('g', {
+      id: 'animation-reflections',
+      transform: 'translate(60,580)'
+    });
+    this.addElement(this.reflectionGroup);
+
+    // Create particle effects container
+    this.particleGroup = this.createElement('g', {
+      id: 'animation-spectrum-particles'
+    });
+    this.addElement(this.particleGroup);
+
+    // Create enhanced bars with multiple layers
     for (let i = 0; i < this.barCount; i++) {
+      // Main bar
       const bar = this.createElement('rect', {
         x: String(i * (480 / this.barCount)),
         y: '-8',
-        width: String((480 / this.barCount) - 4),
+        width: String((480 / this.barCount) - 2),
         height: '6',
         rx: '3',
-        fill: 'white',
-        'fill-opacity': '0.85'
+        fill: this.getColorByFrequency(['bass', 'mid', 'high'][i % 3]),
+        'fill-opacity': '0.85',
+        filter: 'url(#glow)'
       });
       this.barGroup.appendChild(bar);
       this.bars.push(bar);
+
+      // Reflection bar
+      const reflection = this.createElement('rect', {
+        x: String(i * (480 / this.barCount)),
+        y: '8',
+        width: String((480 / this.barCount) - 2),
+        height: '6',
+        rx: '3',
+        fill: this.getColorByFrequency(['bass', 'mid', 'high'][i % 3]),
+        'fill-opacity': '0.3',
+        filter: 'url(#glow)'
+      });
+      this.reflectionGroup.appendChild(reflection);
+      this.reflectionBars.push(reflection);
+
+      // Store bar data
+      this.barLayers.push({
+        index: i,
+        frequency: ['bass', 'mid', 'high'][i % 3],
+        phase: i * 0.1,
+        amplitude: 1,
+        resonance: 0
+      });
     }
+
+    // Apply 3D effects
+    this.bars.forEach(bar => {
+      this.apply3DEffect(bar, 1);
+    });
   }
 
   update(audioData) {
-    const { raw } = audioData;
+    super.update(audioData);
+    const { raw, bass, mid, high, beat } = audioData;
+    const time = Date.now() * 0.001;
     
     this.bars.forEach((bar, index) => {
-      const frequencyIndex = Math.floor((index / this.barCount) * raw.length);
-      const value = raw[frequencyIndex] / 255;
-      const height = Math.max(6, value * 260);
+      const barInfo = this.barLayers[index];
+      const reflection = this.reflectionBars[index];
       
-      bar.setAttribute('y', String(-height));
-      bar.setAttribute('height', String(height));
-      bar.setAttribute('fill-opacity', 0.3 + value * 0.7);
+      // Get frequency data with enhanced processing
+      const frequencyIndex = Math.floor((index / this.barCount) * raw.length);
+      const rawValue = raw[frequencyIndex] / 255;
+      
+      // Apply frequency-specific processing
+      let processedValue = rawValue;
+      if (barInfo.frequency === 'bass') {
+        processedValue *= (1 + bass * 0.5);
+      } else if (barInfo.frequency === 'mid') {
+        processedValue *= (1 + mid * 0.3);
+      } else {
+        processedValue *= (1 + high * 0.2);
+      }
+
+      // Add resonance effect
+      barInfo.resonance += processedValue * 0.1;
+      barInfo.resonance *= 0.95; // Decay
+      processedValue += barInfo.resonance;
+
+      // Calculate height with enhanced dynamics
+      const baseHeight = Math.max(6, processedValue * 260);
+      const pulseHeight = baseHeight * (1 + Math.sin(time * 5 + barInfo.phase) * 0.1);
+      const beatHeight = beat ? baseHeight * 1.2 : baseHeight;
+      const finalHeight = Math.max(6, pulseHeight + beatHeight - baseHeight);
+
+      // Update main bar
+      bar.setAttribute('y', String(-finalHeight));
+      bar.setAttribute('height', String(finalHeight));
+      bar.setAttribute('fill-opacity', 0.4 + processedValue * 0.6);
+
+      // Update reflection bar
+      const reflectionHeight = finalHeight * 0.3;
+      reflection.setAttribute('y', String(reflectionHeight));
+      reflection.setAttribute('height', String(reflectionHeight));
+      reflection.setAttribute('fill-opacity', 0.2 + processedValue * 0.3);
+
+      // Dynamic colors based on frequency and intensity
+      const color = this.getColorByFrequency(barInfo.frequency, processedValue);
+      bar.setAttribute('fill', color);
+      reflection.setAttribute('fill', color);
+
+      // Dynamic stroke for beat detection
+      if (beat && processedValue > 0.5) {
+        bar.setAttribute('stroke', this.getColorByFrequency('beat', 1));
+        bar.setAttribute('stroke-width', '2');
+        bar.setAttribute('stroke-opacity', '0.8');
+      } else {
+        bar.setAttribute('stroke', color);
+        bar.setAttribute('stroke-width', '1');
+        bar.setAttribute('stroke-opacity', '0.4');
+      }
+
+      // Add particle effects for high-intensity bars
+      if (processedValue > 0.8 && Math.random() < 0.1) {
+        this.addSpectrumParticle(index, processedValue, color);
+      }
+    });
+
+    // Update spectrum mode based on audio
+    this.updateSpectrumMode(audioData);
+  }
+
+  addSpectrumParticle(barIndex, intensity, color) {
+    const barX = barIndex * (480 / this.barCount) + 60;
+    const barY = 520 - intensity * 260;
+    
+    const particle = this.createParticle(barX, barY, {
+      color: color,
+      size: Math.random() * 4 + 2,
+      vx: (Math.random() - 0.5) * 8,
+      vy: -Math.random() * 4 - 2,
+      life: 1,
+      maxLife: 1
+    });
+
+    this.particleGroup.appendChild(particle.element);
+    this.particleEffects.push(particle);
+
+    // Remove particle after animation
+    setTimeout(() => {
+      if (particle.element && particle.element.parentNode) {
+        particle.element.parentNode.removeChild(particle.element);
+      }
+      const index = this.particleEffects.indexOf(particle);
+      if (index > -1) {
+        this.particleEffects.splice(index, 1);
+      }
+    }, 2000);
+  }
+
+  updateSpectrumMode(audioData) {
+    const { bass, mid, high } = audioData;
+    
+    // Switch modes based on dominant frequency
+    if (bass > 0.7 && this.spectrumMode !== 'circular') {
+      this.spectrumMode = 'circular';
+      this.transformToCircular();
+    } else if (high > 0.7 && this.spectrumMode !== 'spiral') {
+      this.spectrumMode = 'spiral';
+      this.transformToSpiral();
+    } else if (mid > 0.7 && this.spectrumMode !== 'linear') {
+      this.spectrumMode = 'linear';
+      this.transformToLinear();
+    }
+  }
+
+  transformToCircular() {
+    const centerX = 300;
+    const centerY = 300;
+    const radius = 150;
+    
+    this.bars.forEach((bar, index) => {
+      const angle = (index / this.barCount) * Math.PI * 2;
+      const x = centerX + Math.cos(angle) * radius;
+      const y = centerY + Math.sin(angle) * radius;
+      
+      bar.setAttribute('transform', `translate(${x},${y}) rotate(${angle * 180 / Math.PI})`);
+    });
+  }
+
+  transformToSpiral() {
+    const centerX = 300;
+    const centerY = 300;
+    
+    this.bars.forEach((bar, index) => {
+      const angle = (index / this.barCount) * Math.PI * 8;
+      const radius = 50 + index * 2;
+      const x = centerX + Math.cos(angle) * radius;
+      const y = centerY + Math.sin(angle) * radius;
+      
+      bar.setAttribute('transform', `translate(${x},${y}) rotate(${angle * 180 / Math.PI})`);
+    });
+  }
+
+  transformToLinear() {
+    this.bars.forEach((bar, index) => {
+      const x = index * (480 / this.barCount) + 60;
+      bar.setAttribute('transform', `translate(${x},520)`);
     });
   }
 }
@@ -1494,6 +1680,241 @@ class FractalAnimation extends BaseAnimation {
   }
 }
 
+// 11. NEW: Neural Network Animation with AI-inspired Visuals
+class NeuralNetworkAnimation extends BaseAnimation {
+  constructor(svg, options = {}) {
+    super(svg, { colorMode: 'frequency', ...options });
+    this.nodes = [];
+    this.connections = [];
+    this.nodeCount = 25;
+    this.activationLevels = [];
+    this.learningRate = 0.01;
+  }
+
+  createElements() {
+    this.clear();
+    this.nodes = [];
+    this.connections = [];
+    this.activationLevels = [];
+
+    // Create nodes container
+    this.nodeGroup = this.createElement('g', {
+      id: 'animation-nodes'
+    });
+    this.addElement(this.nodeGroup);
+
+    // Create connections container
+    this.connectionGroup = this.createElement('g', {
+      id: 'animation-neural-connections'
+    });
+    this.addElement(this.connectionGroup);
+
+    // Create input layer
+    for (let i = 0; i < 8; i++) {
+      this.createNode(100, 100 + i * 60, 'input');
+    }
+
+    // Create hidden layer
+    for (let i = 0; i < 9; i++) {
+      this.createNode(300, 80 + i * 50, 'hidden');
+    }
+
+    // Create output layer
+    for (let i = 0; i < 8; i++) {
+      this.createNode(500, 100 + i * 60, 'output');
+    }
+
+    // Create connections between layers
+    this.createConnections();
+  }
+
+  createNode(x, y, type) {
+    const node = {
+      x: x,
+      y: y,
+      type: type,
+      activation: 0,
+      bias: Math.random() - 0.5,
+      element: null,
+      glowElement: null
+    };
+
+    // Create main node
+    node.element = this.createElement('circle', {
+      cx: x,
+      cy: y,
+      r: '8',
+      fill: this.getColorByFrequency(['bass', 'mid', 'high'][Math.floor(Math.random() * 3)]),
+      'fill-opacity': '0.8',
+      filter: 'url(#glow)'
+    });
+
+    // Create glow effect
+    node.glowElement = this.createElement('circle', {
+      cx: x,
+      cy: y,
+      r: '12',
+      fill: 'none',
+      stroke: node.element.getAttribute('fill'),
+      'stroke-width': '2',
+      'stroke-opacity': '0.3',
+      filter: 'url(#glow)'
+    });
+
+    this.nodeGroup.appendChild(node.element);
+    this.nodeGroup.appendChild(node.glowElement);
+    this.nodes.push(node);
+    this.activationLevels.push(0);
+  }
+
+  createConnections() {
+    // Connect input to hidden
+    for (let i = 0; i < 8; i++) {
+      for (let j = 0; j < 9; j++) {
+        this.createConnection(this.nodes[i], this.nodes[8 + j]);
+      }
+    }
+
+    // Connect hidden to output
+    for (let i = 0; i < 9; i++) {
+      for (let j = 0; j < 8; j++) {
+        this.createConnection(this.nodes[8 + i], this.nodes[17 + j]);
+      }
+    }
+  }
+
+  createConnection(fromNode, toNode) {
+    const connection = {
+      from: fromNode,
+      to: toNode,
+      weight: Math.random() - 0.5,
+      element: null
+    };
+
+    connection.element = this.createElement('line', {
+      x1: fromNode.x,
+      y1: fromNode.y,
+      x2: toNode.x,
+      y2: toNode.y,
+      stroke: this.getColorByFrequency('mid'),
+      'stroke-width': '1',
+      'stroke-opacity': '0.3'
+    });
+
+    this.connectionGroup.appendChild(connection.element);
+    this.connections.push(connection);
+  }
+
+  update(audioData) {
+    super.update(audioData);
+    const { bass, mid, high, beat } = audioData;
+    const time = Date.now() * 0.001;
+
+    // Update input layer based on audio
+    for (let i = 0; i < 8; i++) {
+      const inputNode = this.nodes[i];
+      const frequency = [bass, mid, high][i % 3];
+      inputNode.activation = frequency;
+      this.activationLevels[i] = frequency;
+    }
+
+    // Propagate through network
+    this.propagateNetwork(audioData);
+
+    // Update visual elements
+    this.nodes.forEach((node, index) => {
+      const activation = this.activationLevels[index];
+      const color = this.getColorByFrequency(['bass', 'mid', 'high'][index % 3], activation);
+      
+      // Update node size and color
+      const size = 6 + activation * 8;
+      node.element.setAttribute('r', size);
+      node.element.setAttribute('fill', color);
+      node.element.setAttribute('fill-opacity', 0.6 + activation * 0.4);
+
+      // Update glow effect
+      node.glowElement.setAttribute('r', size + 4);
+      node.glowElement.setAttribute('stroke', color);
+      node.glowElement.setAttribute('stroke-opacity', 0.3 + activation * 0.4);
+
+      // Add pulse effect on beat
+      if (beat && activation > 0.5) {
+        node.element.style.transform = 'scale(1.3)';
+        setTimeout(() => {
+          node.element.style.transform = 'scale(1)';
+        }, 100);
+      }
+    });
+
+    // Update connections
+    this.connections.forEach(connection => {
+      const fromActivation = this.activationLevels[this.nodes.indexOf(connection.from)];
+      const toActivation = this.activationLevels[this.nodes.indexOf(connection.to)];
+      const connectionStrength = fromActivation * toActivation * connection.weight;
+
+      connection.element.setAttribute('stroke-opacity', 0.1 + Math.abs(connectionStrength) * 0.6);
+      connection.element.setAttribute('stroke-width', 1 + Math.abs(connectionStrength) * 3);
+
+      // Dynamic connection color
+      if (connectionStrength > 0) {
+        connection.element.setAttribute('stroke', this.getColorByFrequency('high', connectionStrength));
+      } else {
+        connection.element.setAttribute('stroke', this.getColorByFrequency('bass', Math.abs(connectionStrength)));
+      }
+    });
+
+    // Add learning effect
+    if (beat) {
+      this.adaptWeights(audioData);
+    }
+  }
+
+  propagateNetwork(audioData) {
+    // Simple forward propagation
+    for (let i = 8; i < 17; i++) { // Hidden layer
+      let sum = this.nodes[i].bias;
+      for (let j = 0; j < 8; j++) { // Input connections
+        const connection = this.connections.find(c => 
+          c.from === this.nodes[j] && c.to === this.nodes[i]
+        );
+        if (connection) {
+          sum += this.activationLevels[j] * connection.weight;
+        }
+      }
+      this.activationLevels[i] = this.activationFunction(sum);
+    }
+
+    for (let i = 17; i < 25; i++) { // Output layer
+      let sum = this.nodes[i].bias;
+      for (let j = 8; j < 17; j++) { // Hidden connections
+        const connection = this.connections.find(c => 
+          c.from === this.nodes[j] && c.to === this.nodes[i]
+        );
+        if (connection) {
+          sum += this.activationLevels[j] * connection.weight;
+        }
+      }
+      this.activationLevels[i] = this.activationFunction(sum);
+    }
+  }
+
+  activationFunction(x) {
+    return 1 / (1 + Math.exp(-x)); // Sigmoid
+  }
+
+  adaptWeights(audioData) {
+    // Simple weight adaptation based on audio
+    this.connections.forEach(connection => {
+      const fromActivation = this.activationLevels[this.nodes.indexOf(connection.from)];
+      const toActivation = this.activationLevels[this.nodes.indexOf(connection.to)];
+      
+      // Hebbian learning rule
+      connection.weight += this.learningRate * fromActivation * toActivation;
+      connection.weight = Math.max(-1, Math.min(1, connection.weight)); // Clamp weights
+    });
+  }
+}
+
 // Export all animation classes
 window.BlobAnimation = BlobAnimation;
 window.ParticleAnimation = ParticleAnimation;
@@ -1505,3 +1926,325 @@ window.MatrixAnimation = MatrixAnimation;
 window.FireworksAnimation = FireworksAnimation;
 window.DNAAnimation = DNAAnimation;
 window.FractalAnimation = FractalAnimation;
+// 12. NEW: Quantum Particles Animation with Wave-Particle Duality
+class QuantumParticlesAnimation extends BaseAnimation {
+  constructor(svg, options = {}) {
+    super(svg, { colorMode: 'frequency', ...options });
+    this.particles = [];
+    this.waveFunctions = [];
+    this.quantumStates = [];
+    this.measurementPoints = [];
+    this.uncertaintyPrinciple = true;
+  }
+
+  createElements() {
+    this.clear();
+    this.particles = [];
+    this.waveFunctions = [];
+    this.quantumStates = [];
+    this.measurementPoints = [];
+
+    // Create quantum particles container
+    this.quantumGroup = this.createElement('g', {
+      id: 'animation-quantum'
+    });
+    this.addElement(this.quantumGroup);
+
+    // Create wave function container
+    this.waveGroup = this.createElement('g', {
+      id: 'animation-wave-functions'
+    });
+    this.addElement(this.waveGroup);
+
+    // Create measurement points
+    this.measurementGroup = this.createElement('g', {
+      id: 'animation-measurements'
+    });
+    this.addElement(this.measurementGroup);
+
+    // Create quantum particles
+    for (let i = 0; i < 15; i++) {
+      this.createQuantumParticle();
+    }
+
+    // Create wave functions
+    for (let i = 0; i < 5; i++) {
+      this.createWaveFunction();
+    }
+
+    // Create measurement points
+    for (let i = 0; i < 8; i++) {
+      this.createMeasurementPoint();
+    }
+  }
+
+  createQuantumParticle() {
+    const particle = {
+      x: Math.random() * 600,
+      y: Math.random() * 600,
+      vx: (Math.random() - 0.5) * 4,
+      vy: (Math.random() - 0.5) * 4,
+      size: Math.random() * 6 + 3,
+      phase: Math.random() * Math.PI * 2,
+      frequency: Math.random() * 0.02 + 0.01,
+      amplitude: Math.random() * 0.5 + 0.5,
+      element: null,
+      waveElement: null,
+      isCollapsed: false
+    };
+
+    // Create particle element
+    particle.element = this.createElement('circle', {
+      cx: particle.x,
+      cy: particle.y,
+      r: particle.size,
+      fill: this.getColorByFrequency(['bass', 'mid', 'high'][Math.floor(Math.random() * 3)]),
+      'fill-opacity': '0.8',
+      filter: 'url(#glow)'
+    });
+
+    // Create wave function element
+    particle.waveElement = this.createElement('path', {
+      fill: 'none',
+      stroke: particle.element.getAttribute('fill'),
+      'stroke-width': '2',
+      'stroke-opacity': '0.4',
+      filter: 'url(#glow)'
+    });
+
+    this.quantumGroup.appendChild(particle.element);
+    this.waveGroup.appendChild(particle.waveElement);
+    this.particles.push(particle);
+  }
+
+  createWaveFunction() {
+    const wave = {
+      x: Math.random() * 600,
+      y: Math.random() * 600,
+      frequency: Math.random() * 0.01 + 0.005,
+      amplitude: Math.random() * 50 + 30,
+      phase: Math.random() * Math.PI * 2,
+      element: null
+    };
+
+    wave.element = this.createElement('path', {
+      fill: 'none',
+      stroke: this.getColorByFrequency('high'),
+      'stroke-width': '1',
+      'stroke-opacity': '0.3',
+      'stroke-dasharray': '5,5'
+    });
+
+    this.waveGroup.appendChild(wave.element);
+    this.waveFunctions.push(wave);
+  }
+
+  createMeasurementPoint() {
+    const point = {
+      x: Math.random() * 600,
+      y: Math.random() * 600,
+      radius: Math.random() * 20 + 10,
+      strength: Math.random() * 0.5 + 0.5,
+      element: null
+    };
+
+    point.element = this.createElement('circle', {
+      cx: point.x,
+      cy: point.y,
+      r: point.radius,
+      fill: 'none',
+      stroke: this.getColorByFrequency('mid'),
+      'stroke-width': '1',
+      'stroke-opacity': '0.2',
+      'stroke-dasharray': '3,3'
+    });
+
+    this.measurementGroup.appendChild(point.element);
+    this.measurementPoints.push(point);
+  }
+
+  update(audioData) {
+    super.update(audioData);
+    const { bass, mid, high, beat } = audioData;
+    const time = Date.now() * 0.001;
+
+    // Update quantum particles
+    this.particles.forEach((particle, index) => {
+      if (!particle.isCollapsed) {
+        // Wave-like behavior
+        particle.phase += particle.frequency * (1 + high * 0.5);
+        
+        // Update position with quantum uncertainty
+        const uncertainty = this.uncertaintyPrinciple ? (1 - high) * 20 : 0;
+        particle.x += particle.vx * (1 + bass * 0.3) + Math.sin(particle.phase) * uncertainty;
+        particle.y += particle.vy * (1 + mid * 0.2) + Math.cos(particle.phase) * uncertainty;
+
+        // Boundary handling with quantum tunneling
+        if (particle.x < 0 || particle.x > 600) {
+          if (Math.random() < 0.1) { // Quantum tunneling
+            particle.x = particle.x < 0 ? 600 : 0;
+          } else {
+            particle.vx *= -0.8;
+            particle.x = Math.max(0, Math.min(600, particle.x));
+          }
+        }
+        if (particle.y < 0 || particle.y > 600) {
+          if (Math.random() < 0.1) { // Quantum tunneling
+            particle.y = particle.y < 0 ? 600 : 0;
+          } else {
+            particle.vy *= -0.8;
+            particle.y = Math.max(0, Math.min(600, particle.y));
+          }
+        }
+
+        // Update wave function visualization
+        this.updateWaveFunction(particle, time);
+
+        // Check for measurement collapse
+        this.measurementPoints.forEach(point => {
+          const distance = Math.sqrt(
+            Math.pow(particle.x - point.x, 2) + Math.pow(particle.y - point.y, 2)
+          );
+          if (distance < point.radius && Math.random() < point.strength * 0.01) {
+            this.collapseWaveFunction(particle);
+          }
+        });
+      } else {
+        // Particle-like behavior (collapsed state)
+        particle.x += particle.vx * (1 + bass * 0.5);
+        particle.y += particle.vy * (1 + mid * 0.3);
+        
+        // Reset to wave state after some time
+        if (Math.random() < 0.001) {
+          particle.isCollapsed = false;
+        }
+      }
+
+      // Update visual elements
+      particle.element.setAttribute('cx', particle.x);
+      particle.element.setAttribute('cy', particle.y);
+      
+      const color = this.getDynamicColor(audioData);
+      particle.element.setAttribute('fill', color);
+      particle.element.setAttribute('r', particle.size * (1 + (bass + mid + high) * 0.3));
+      particle.element.setAttribute('fill-opacity', particle.isCollapsed ? 0.9 : 0.6);
+
+      // Beat effects
+      if (beat && !particle.isCollapsed) {
+        particle.element.style.transform = 'scale(1.5)';
+        setTimeout(() => {
+          particle.element.style.transform = 'scale(1)';
+        }, 100);
+      }
+    });
+
+    // Update wave functions
+    this.waveFunctions.forEach((wave, index) => {
+      let path = 'M';
+      for (let x = 0; x <= 600; x += 10) {
+        const y = wave.y + Math.sin(x * wave.frequency + time + wave.phase) * wave.amplitude * (1 + high * 0.5);
+        path += `${x},${y} `;
+      }
+      
+      wave.element.setAttribute('d', path);
+      wave.element.setAttribute('stroke-opacity', 0.2 + high * 0.4);
+      wave.element.setAttribute('stroke-dashoffset', time * 10 + index * 5);
+    });
+
+    // Update measurement points
+    this.measurementPoints.forEach((point, index) => {
+      point.element.setAttribute('stroke-opacity', 0.1 + mid * 0.3);
+      point.element.setAttribute('r', point.radius * (1 + Math.sin(time + index) * 0.2));
+    });
+
+    // Add quantum entanglement effects
+    if (high > 0.8) {
+      this.createEntanglement();
+    }
+  }
+
+  updateWaveFunction(particle, time) {
+    const points = 20;
+    let path = 'M';
+    
+    for (let i = 0; i < points; i++) {
+      const angle = (i / points) * Math.PI * 2;
+      const radius = particle.size * (1 + Math.sin(particle.phase + angle * 3) * 0.3);
+      const x = particle.x + Math.cos(angle) * radius;
+      const y = particle.y + Math.sin(angle) * radius;
+      path += `${x},${y} `;
+    }
+    path += 'Z';
+    
+    particle.waveElement.setAttribute('d', path);
+    particle.waveElement.setAttribute('stroke-opacity', 0.3 + Math.sin(particle.phase) * 0.2);
+  }
+
+  collapseWaveFunction(particle) {
+    particle.isCollapsed = true;
+    particle.waveElement.setAttribute('stroke-opacity', '0');
+    
+    // Add collapse effect
+    const collapseEffect = this.createElement('circle', {
+      cx: particle.x,
+      cy: particle.y,
+      r: '0',
+      fill: 'none',
+      stroke: this.getColorByFrequency('beat', 1),
+      'stroke-width': '3',
+      'stroke-opacity': '0.8',
+      filter: 'url(#glow)'
+    });
+    
+    this.quantumGroup.appendChild(collapseEffect);
+    
+    // Animate collapse
+    let radius = 0;
+    const animateCollapse = () => {
+      radius += 5;
+      collapseEffect.setAttribute('r', radius);
+      collapseEffect.setAttribute('stroke-opacity', 0.8 * (1 - radius / 100));
+      
+      if (radius < 100) {
+        requestAnimationFrame(animateCollapse);
+      } else {
+        collapseEffect.remove();
+      }
+    };
+    animateCollapse();
+  }
+
+  createEntanglement() {
+    // Create entangled particle pairs
+    if (this.particles.length >= 2 && Math.random() < 0.1) {
+      const particle1 = this.particles[Math.floor(Math.random() * this.particles.length)];
+      const particle2 = this.particles[Math.floor(Math.random() * this.particles.length)];
+      
+      if (particle1 !== particle2) {
+        const entanglement = this.createElement('line', {
+          x1: particle1.x,
+          y1: particle1.y,
+          x2: particle2.x,
+          y2: particle2.y,
+          stroke: this.getColorByFrequency('high'),
+          'stroke-width': '2',
+          'stroke-opacity': '0.6',
+          'stroke-dasharray': '5,5',
+          filter: 'url(#glow)'
+        });
+        
+        this.quantumGroup.appendChild(entanglement);
+        
+        // Remove after animation
+        setTimeout(() => {
+          if (entanglement.parentNode) {
+            entanglement.parentNode.removeChild(entanglement);
+          }
+        }, 1000);
+      }
+    }
+  }
+}
+
+window.NeuralNetworkAnimation = NeuralNetworkAnimation;
+window.QuantumParticlesAnimation = QuantumParticlesAnimation;
