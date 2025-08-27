@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <!-- SEO Meta Tags -->
+  <title>API Reference — PulseColor Documentation</title>
+  <meta name="description" content="Documentation complète de l'API PulseColor. Toutes les méthodes, options et événements pour personnaliser vos animations audio-réactives." />
+  <meta name="keywords" content="pulsecolor, api, documentation, javascript, audio-réactif, méthodes" />
+  <meta name="author" content="PulseColor Team" />
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://pulsecolor.dev/docs/api-reference" />
+  <meta property="og:title" content="API Reference — PulseColor" />
+  <meta property="og:description" content="Documentation complète de l'API PulseColor" />
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../css/main.css" />
+</head>
+<body>
+  <!-- Skip to main content for accessibility -->
+  <a href="#main-content" class="sr-only sr-only-focusable">Passer au contenu principal</a>
+  
+  <div class="wrapper">
+    <!-- NAVIGATION -->
+    <nav class="nav" role="navigation" aria-label="Navigation principale">
+      <a class="logo" href="../index.html" aria-label="PulseColor - Accueil">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="hsl(var(--bg-a))"/>
+              <stop offset="100%" stop-color="hsl(var(--bg-b))"/>
+            </linearGradient>
+          </defs>
+          <path d="M12 3c4.97 0 9 4.03 9 9s-4.03 9-9 9S3 16.97 3 12" stroke="url(#g1)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M3 12c0-1 .2-2 .6-2.9" stroke="url(#g1)" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        PulseColor
+      </a>
+      
+      <div class="nav-links">
+        <a class="btn btn-ghost" href="../index.html">Accueil</a>
+        <a class="btn btn-ghost" href="../gallery.html">Galerie</a>
+        <a class="btn btn-ghost" href="api-reference.html" aria-current="page">Documentation</a>
+        <a class="btn btn-primary" href="../index.html#demo">Essayer</a>
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main id="main-content">
+      <!-- HERO SECTION -->
+      <header class="hero" role="banner">
+        <div class="hero-content">
+          <div class="badge" aria-label="Documentation">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6z"/>
+            </svg>
+            Documentation
+          </div>
+          
+          <h1>API Reference</h1>
+          <p>Documentation complète de l'API PulseColor. Découvrez toutes les méthodes, options et événements pour créer des animations audio-réactives personnalisées.</p>
+          
+          <div class="cta-row">
+            <a href="#constructor" class="btn btn-primary">📖 Lire l'API</a>
+            <a href="quickstart.html" class="btn btn-secondary">🚀 Démarrage Rapide</a>
+          </div>
+        </div>
+      </header>
+
+      <!-- DOCUMENTATION NAVIGATION -->
+      <nav class="docs-nav" aria-label="Navigation documentation">
+        <div class="docs-nav-content">
+          <a href="quickstart.html" class="docs-nav-item">🚀 Démarrage Rapide</a>
+          <a href="api-reference.html" class="docs-nav-item active">📚 API Reference</a>
+          <a href="personnalisations.html" class="docs-nav-item">🎨 Personnalisations</a>
+          <a href="../changelogs.html" class="docs-nav-item">📝 Changelogs</a>
+        </div>
+      </nav>
+
+      <!-- TABLE OF CONTENTS -->
+      <nav class="toc" aria-label="Table des matières">
+        <h3>Table des matières</h3>
+        <ul>
+          <li><a href="#constructor">Constructeur</a></li>
+          <li><a href="#methods">Méthodes</a></li>
+          <li><a href="#events">Événements</a></li>
+          <li><a href="#options">Options</a></li>
+          <li><a href="#animations">Animations</a></li>
+        </ul>
+      </nav>
+
+      <!-- CONSTRUCTOR SECTION -->
+      <section id="constructor" class="section" aria-labelledby="constructor-heading">
+        <h2 id="constructor-heading">Constructeur</h2>
+        
+        <div class="docs-content">
+          <h3>PulseColor(options)</h3>
+          <p>Crée une nouvelle instance de PulseColor avec les options spécifiées.</p>
+          
+          <div class="code-block">
+            <div class="code-header">
+              <span>JavaScript</span>
+              <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+            </div>
+            <pre><code>const pulseColor = new PulseColor({
+  canvas: '#reactiveSVG',        // Sélecteur du canvas SVG
+  animation: 'blob',            // Type d'animation
+  sensitivity: 0.8,             // Sensibilité audio (0-1)
+  colors: {                     // Couleurs personnalisées
+    primary: 'hsl(260, 95%, 60%)',
+    secondary: 'hsl(200, 95%, 60%)'
+  },
+  audio: {                      // Options audio
+    fftSize: 2048,
+    smoothing: 0.8
+  }
+});</code></pre>
+          </div>
+
+          <h4>Options du constructeur</h4>
+          <div class="api-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Option</th>
+                  <th>Type</th>
+                  <th>Défaut</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>canvas</code></td>
+                  <td>string</td>
+                  <td><code>'#reactiveSVG'</code></td>
+                  <td>Sélecteur CSS du canvas SVG</td>
+                </tr>
+                <tr>
+                  <td><code>animation</code></td>
+                  <td>string</td>
+                  <td><code>'blob'</code></td>
+                  <td>Type d'animation à utiliser</td>
+                </tr>
+                <tr>
+                  <td><code>sensitivity</code></td>
+                  <td>number</td>
+                  <td><code>0.8</code></td>
+                  <td>Sensibilité audio (0-1)</td>
+                </tr>
+                <tr>
+                  <td><code>colors</code></td>
+                  <td>object</td>
+                  <td><code>{}</code></td>
+                  <td>Couleurs personnalisées</td>
+                </tr>
+                <tr>
+                  <td><code>audio</code></td>
+                  <td>object</td>
+                  <td><code>{}</code></td>
+                  <td>Options de configuration audio</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- METHODS SECTION -->
+      <section id="methods" class="section" aria-labelledby="methods-heading">
+        <h2 id="methods-heading">Méthodes</h2>
+        
+        <div class="docs-content">
+          <div class="method-card">
+            <h3>start()</h3>
+            <p>Démarre l'animation et l'analyse audio.</p>
+            <div class="code-block">
+              <pre><code>pulseColor.start();</code></pre>
+            </div>
+          </div>
+
+          <div class="method-card">
+            <h3>stop()</h3>
+            <p>Arrête l'animation et libère les ressources audio.</p>
+            <div class="code-block">
+              <pre><code>pulseColor.stop();</code></pre>
+            </div>
+          </div>
+
+          <div class="method-card">
+            <h3>enableMicrophone()</h3>
+            <p>Active l'utilisation du microphone pour l'analyse audio.</p>
+            <div class="code-block">
+              <pre><code>pulseColor.enableMicrophone();</code></pre>
+            </div>
+          </div>
+
+          <div class="method-card">
+            <h3>loadAudio(file)</h3>
+            <p>Charge un fichier audio pour l'analyse.</p>
+            <div class="code-block">
+              <pre><code>const audioFile = document.getElementById('audioFile');
+pulseColor.loadAudio(audioFile.files[0]);</code></pre>
+            </div>
+          </div>
+
+          <div class="method-card">
+            <h3>play()</h3>
+            <p>Lance la lecture de l'audio chargé.</p>
+            <div class="code-block">
+              <pre><code>pulseColor.play();</code></pre>
+            </div>
+          </div>
+
+          <div class="method-card">
+            <h3>pause()</h3>
+            <p>Met en pause la lecture audio.</p>
+            <div class="code-block">
+              <pre><code>pulseColor.pause();</code></pre>
+            </div>
+          </div>
+
+          <div class="method-card">
+            <h3>setAnimation(type)</h3>
+            <p>Change le type d'animation en cours d'exécution.</p>
+            <div class="code-block">
+              <pre><code>pulseColor.setAnimation('particles');</code></pre>
+            </div>
+          </div>
+
+          <div class="method-card">
+            <h3>setColors(colors)</h3>
+            <p>Change les couleurs de l'animation.</p>
+            <div class="code-block">
+              <pre><code>pulseColor.setColors({
+  primary: 'hsl(120, 95%, 60%)',
+  secondary: 'hsl(300, 95%, 60%)'
+});</code></pre>
+            </div>
+          </div>
+
+          <div class="method-card">
+            <h3>setSensitivity(value)</h3>
+            <p>Change la sensibilité audio (0-1).</p>
+            <div class="code-block">
+              <pre><code>pulseColor.setSensitivity(0.5);</code></pre>
+            </div>
+          </div>
+
+          <div class="method-card">
+            <h3>on(event, callback)</h3>
+            <p>Ajoute un écouteur d'événement.</p>
+            <div class="code-block">
+              <pre><code>pulseColor.on('audio', (data) => {
+  console.log('Niveaux audio:', data);
+});</code></pre>
+            </div>
+          </div>
+
+          <div class="method-card">
+            <h3>off(event, callback)</h3>
+            <p>Supprime un écouteur d'événement.</p>
+            <div class="code-block">
+              <pre><code>pulseColor.off('audio', callback);</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EVENTS SECTION -->
+      <section id="events" class="section" aria-labelledby="events-heading">
+        <h2 id="events-heading">Événements</h2>
+        
+        <div class="docs-content">
+          <div class="event-card">
+            <h3>audio</h3>
+            <p>Émis à chaque frame avec les données d'analyse audio.</p>
+            <div class="code-block">
+              <pre><code>pulseColor.on('audio', (data) => {
+  console.log('Basses:', data.bass);
+  console.log('Médiums:', data.mid);
+  console.log('Aigus:', data.high);
+  console.log('Énergie totale:', data.energy);
+});</code></pre>
+            </div>
+          </div>
+
+          <div class="event-card">
+            <h3>animation</h3>
+            <p>Émis quand l'animation change.</p>
+            <div class="code-block">
+              <pre><code>pulseColor.on('animation', (type) => {
+  console.log('Nouvelle animation:', type);
+});</code></pre>
+            </div>
+          </div>
+
+          <div class="event-card">
+            <h3>ready</h3>
+            <p>Émis quand PulseColor est prêt à être utilisé.</p>
+            <div class="code-block">
+              <pre><code>pulseColor.on('ready', () => {
+  console.log('PulseColor est prêt !');
+});</code></pre>
+            </div>
+          </div>
+
+          <div class="event-card">
+            <h3>error</h3>
+            <p>Émis en cas d'erreur.</p>
+            <div class="code-block">
+              <pre><code>pulseColor.on('error', (error) => {
+  console.error('Erreur PulseColor:', error);
+});</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- OPTIONS SECTION -->
+      <section id="options" class="section" aria-labelledby="options-heading">
+        <h2 id="options-heading">Options Détaillées</h2>
+        
+        <div class="docs-content">
+          <h3>Options Audio</h3>
+          <div class="api-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Option</th>
+                  <th>Type</th>
+                  <th>Défaut</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>fftSize</code></td>
+                  <td>number</td>
+                  <td><code>2048</code></td>
+                  <td>Taille de la FFT (1024, 2048, 4096, 8192)</td>
+                </tr>
+                <tr>
+                  <td><code>smoothing</code></td>
+                  <td>number</td>
+                  <td><code>0.8</code></td>
+                  <td>Lissage des données (0-1)</td>
+                </tr>
+                <tr>
+                  <td><code>minDecibels</code></td>
+                  <td>number</td>
+                  <td><code>-90</code></td>
+                  <td>Seuil minimum en décibels</td>
+                </tr>
+                <tr>
+                  <td><code>maxDecibels</code></td>
+                  <td>number</td>
+                  <td><code>-10</code></td>
+                  <td>Seuil maximum en décibels</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Options d'Animation</h3>
+          <div class="api-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Option</th>
+                  <th>Type</th>
+                  <th>Défaut</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>fps</code></td>
+                  <td>number</td>
+                  <td><code>60</code></td>
+                  <td>Images par seconde</td>
+                </tr>
+                <tr>
+                  <td><code>blur</code></td>
+                  <td>number</td>
+                  <td><code>0.35</code></td>
+                  <td>Intensité du flou (0-1)</td>
+                </tr>
+                <tr>
+                  <td><code>scale</code></td>
+                  <td>number</td>
+                  <td><code>1</code></td>
+                  <td>Échelle de l'animation</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ANIMATIONS SECTION -->
+      <section id="animations" class="section" aria-labelledby="animations-heading">
+        <h2 id="animations-heading">Types d'Animations</h2>
+        
+        <div class="docs-content">
+          <div class="animations-list">
+            <div class="animation-item">
+              <h3>blob</h3>
+              <p>Formes organiques qui se déforment au rythme de la musique</p>
+            </div>
+            
+            <div class="animation-item">
+              <h3>particles</h3>
+              <p>Système de particules réactives</p>
+            </div>
+            
+            <div class="animation-item">
+              <h3>waves</h3>
+              <p>Ondes sonores fluides</p>
+            </div>
+            
+            <div class="animation-item">
+              <h3>shapes</h3>
+              <p>Formes géométriques animées</p>
+            </div>
+            
+            <div class="animation-item">
+              <h3>bars</h3>
+              <p>Barres audio classiques</p>
+            </div>
+            
+            <div class="animation-item">
+              <h3>circles</h3>
+              <p>Ondes circulaires</p>
+            </div>
+            
+            <div class="animation-item">
+              <h3>matrix</h3>
+              <p>Pluie de caractères Matrix</p>
+            </div>
+            
+            <div class="animation-item">
+              <h3>fireworks</h3>
+              <p>Feux d'artifice synchronisés</p>
+            </div>
+            
+            <div class="animation-item">
+              <h3>dna</h3>
+              <p>Hélice ADN animée</p>
+            </div>
+            
+            <div class="animation-item">
+              <h3>fractal</h3>
+              <p>Arbres fractals</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer role="contentinfo">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="logo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 3c4.97 0 9 4.03 9 9s-4.03 9-9 9S3 16.97 3 12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+            PulseColor
+          </div>
+          <p>Animations audio-réactives open source</p>
+          <p>© <span id="year"></span> PulseColor. Tous droits réservés.</p>
+        </div>
+        
+        <div class="footer-links">
+          <div class="footer-section">
+            <h4>Documentation</h4>
+            <a href="quickstart.html">Démarrage Rapide</a>
+            <a href="api-reference.html">API Reference</a>
+            <a href="personnalisations.html">Personnalisations</a>
+          </div>
+          
+          <div class="footer-section">
+            <h4>Projet</h4>
+            <a href="../index.html">Accueil</a>
+            <a href="../gallery.html">Galerie</a>
+            <a href="../changelogs.html">Changelog</a>
+          </div>
+          
+          <div class="footer-section">
+            <h4>Support</h4>
+            <a href="../contact.html">Contact</a>
+            <a href="../support.html">Support</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>Propulsé par l'amour de la musique et du code open source 🎵</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../js/animations.js"></script>
+  <script src="../js/main.js"></script>
+  
+  <script>
+    // Copy code functionality
+    function copyCode(button) {
+      const codeBlock = button.closest('.code-block');
+      const code = codeBlock.querySelector('code').textContent;
+      
+      navigator.clipboard.writeText(code).then(() => {
+        button.textContent = 'Copié !';
+        setTimeout(() => {
+          button.textContent = 'Copier';
+        }, 2000);
+      });
+    }
+    
+    // Set current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
